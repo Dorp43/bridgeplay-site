@@ -10,13 +10,17 @@
         .hero { text-align: center; padding: 80px 20px 60px; }
         .hero h1 { font-size: 3rem; font-weight: 800; background: linear-gradient(135deg, #4a9eff, #6dd5a0); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 16px; }
         .hero p { font-size: 1.25rem; color: #999; max-width: 600px; margin: 0 auto 32px; line-height: 1.6; }
-        .pricing { max-width: 420px; margin: 0 auto; padding: 0 20px 60px; }
-        .pricing-card { background: #14141f; border: 1px solid #2a2a3a; border-radius: 16px; padding: 32px; text-align: center; }
-        .pricing-card h2 { font-size: 1.5rem; margin-bottom: 8px; color: #fff; }
-        .pricing-card .price { font-size: 2.5rem; font-weight: 800; color: #4a9eff; margin: 16px 0; }
-        .pricing-card .price span { font-size: 1rem; color: #777; font-weight: 400; }
+        .pricing { max-width: 900px; margin: 0 auto; padding: 0 20px 60px; }
+        .pricing-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; align-items: start; }
+        .pricing-card { background: #14141f; border: 1px solid #2a2a3a; border-radius: 16px; padding: 32px; text-align: center; position: relative; }
+        .pricing-card.popular { border-color: #4a9eff; }
+        .pricing-card .badge { position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: #4a9eff; color: #fff; font-size: 0.75rem; font-weight: 700; padding: 4px 14px; border-radius: 20px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .pricing-card h2 { font-size: 1.3rem; margin-bottom: 8px; color: #fff; }
+        .pricing-card .price { font-size: 2.2rem; font-weight: 800; color: #4a9eff; margin: 16px 0 4px; }
+        .pricing-card .price span { font-size: 0.9rem; color: #777; font-weight: 400; }
+        .pricing-card .savings { font-size: 0.8rem; color: #6dd5a0; margin-bottom: 8px; }
         .pricing-card ul { list-style: none; text-align: left; margin: 24px 0; }
-        .pricing-card li { padding: 8px 0; color: #bbb; font-size: 0.95rem; }
+        .pricing-card li { padding: 7px 0; color: #bbb; font-size: 0.9rem; }
         .pricing-card li::before { content: "\2713"; color: #6dd5a0; margin-right: 10px; font-weight: bold; }
         .features { max-width: 700px; margin: 0 auto; padding: 0 20px 60px; }
         .features h2 { text-align: center; font-size: 1.8rem; margin-bottom: 32px; color: #fff; }
@@ -27,7 +31,7 @@
         footer { text-align: center; padding: 40px 20px; border-top: 1px solid #1a1a2a; color: #555; font-size: 0.85rem; }
         footer a { color: #4a9eff; text-decoration: none; }
         footer a:hover { text-decoration: underline; }
-        @media (max-width: 600px) { .feature-grid { grid-template-columns: 1fr; } .hero h1 { font-size: 2rem; } }
+        @media (max-width: 700px) { .feature-grid { grid-template-columns: 1fr; } .pricing-grid { grid-template-columns: 1fr; max-width: 380px; margin: 0 auto; } .hero h1 { font-size: 2rem; } }
     </style>
 </head>
 <body>
@@ -37,16 +41,43 @@
     </div>
 
     <div class="pricing" id="pricing">
-        <div class="pricing-card">
-            <h2>BridgePlay License</h2>
-            <div class="price">$9.99 <span>one-time</span></div>
-            <ul>
-                <li>Full access to BridgePlay</li>
-                <li>Play Windows games on macOS</li>
-                <li>Automatic updates</li>
-                <li>7-day free trial included</li>
-            </ul>
+        <div class="pricing-grid">
+            <div class="pricing-card">
+                <h2>Monthly</h2>
+                <div class="price">$9.99 <span>/month</span></div>
+                <div class="savings">&nbsp;</div>
+                <ul>
+                    <li>Full access to BridgePlay</li>
+                    <li>Play Windows games on macOS</li>
+                    <li>Automatic updates</li>
+                    <li>Cancel anytime</li>
+                </ul>
+            </div>
+            <div class="pricing-card popular">
+                <div class="badge">Best Value</div>
+                <h2>Yearly</h2>
+                <div class="price">$49.99 <span>/year</span></div>
+                <div class="savings">Save 58% vs monthly</div>
+                <ul>
+                    <li>Full access to BridgePlay</li>
+                    <li>Play Windows games on macOS</li>
+                    <li>Automatic updates</li>
+                    <li>Cancel anytime</li>
+                </ul>
+            </div>
+            <div class="pricing-card">
+                <h2>Lifetime</h2>
+                <div class="price">$79.99 <span>one-time</span></div>
+                <div class="savings">Pay once, own forever</div>
+                <ul>
+                    <li>Full access to BridgePlay</li>
+                    <li>Play Windows games on macOS</li>
+                    <li>Automatic updates forever</li>
+                    <li>No recurring charges</li>
+                </ul>
+            </div>
         </div>
+        <p style="text-align: center; color: #666; font-size: 0.85rem; margin-top: 16px;">All plans include a 7-day free trial. 14-day money-back guarantee.</p>
     </div>
 
     <div class="features">
