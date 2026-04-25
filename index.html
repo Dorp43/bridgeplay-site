@@ -30,7 +30,14 @@
             --radius: 16px;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * {
+            margin: 0; padding: 0; box-sizing: border-box;
+            -webkit-user-drag: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
         html { scroll-behavior: smooth; }
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
@@ -38,6 +45,12 @@
             color: var(--text-primary);
             line-height: 1.6;
             overflow-x: hidden;
+        }
+        img, svg, a, p, h1, h2, h3, h4, span, div, li, button {
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            user-select: none;
+            -webkit-user-drag: none;
         }
 
         /* Animated background */
@@ -271,58 +284,92 @@
             flex: 1; text-align: center;
             font-size: 0.8rem; color: var(--text-muted); font-weight: 500;
         }
-        .mac-body { display: flex; min-height: 420px; }
+        .mac-body { display: flex; min-height: 460px; }
 
         /* Sidebar */
         .mac-sidebar {
             width: 200px; flex-shrink: 0;
-            background: #18191f;
+            background: rgba(30,31,40,0.95);
             border-right: 1px solid rgba(255,255,255,0.06);
             display: flex; flex-direction: column;
-            padding: 12px 10px;
+            padding: 0;
+        }
+        .mac-sb-title {
+            font-size: 1.15rem; font-weight: 800; color: var(--text-primary);
+            padding: 16px 14px 8px; letter-spacing: -0.3px;
         }
         .mac-sb-label {
-            font-size: 0.65rem; font-weight: 700; text-transform: uppercase;
-            letter-spacing: 1px; color: var(--text-muted);
-            padding: 12px 10px 6px; margin-top: 4px;
+            font-size: 0.6rem; font-weight: 700; text-transform: uppercase;
+            letter-spacing: 1.2px; color: var(--text-muted);
+            padding: 14px 14px 4px;
         }
         .mac-sb-item {
             display: flex; align-items: center; gap: 8px;
-            padding: 7px 10px; border-radius: 6px;
-            font-size: 0.82rem; font-weight: 500;
+            padding: 6px 14px; border-radius: 6px;
+            font-size: 0.8rem; font-weight: 500;
             color: var(--text-secondary); cursor: default;
-            margin-bottom: 2px;
+            margin: 1px 6px;
         }
-        .mac-sb-item.active { background: rgba(74,158,255,0.12); color: var(--accent); }
-        .mac-sb-item .sb-icon { font-size: 0.85rem; width: 18px; text-align: center; }
+        .mac-sb-item.active {
+            background: rgba(74,158,255,0.12); color: var(--accent);
+        }
+        .mac-sb-item .sb-icon {
+            font-size: 0.78rem; width: 16px; text-align: center;
+            opacity: 0.8;
+        }
+        .mac-sb-item.active .sb-icon { opacity: 1; }
         .mac-sb-spacer { flex: 1; }
+        .mac-sb-actions {
+            padding: 8px 10px;
+            display: flex; flex-direction: column; gap: 6px;
+        }
         .mac-sb-btn {
             display: flex; align-items: center; justify-content: center; gap: 6px;
-            padding: 8px; border-radius: 8px;
-            font-size: 0.8rem; font-weight: 600;
-            margin-bottom: 4px; cursor: default;
+            padding: 7px 10px; border-radius: 8px;
+            font-size: 0.78rem; font-weight: 600;
+            cursor: default;
         }
         .mac-sb-btn-primary {
             background: rgba(59,156,245,0.9); color: #fff;
         }
         .mac-sb-btn-secondary {
-            background: rgba(255,255,255,0.06); color: var(--text-secondary);
-            border: 1px solid rgba(255,255,255,0.08);
+            background: rgba(255,255,255,0.05); color: var(--text-secondary);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .mac-sb-profile-section {
+            border-top: 1px solid rgba(255,255,255,0.06);
+            padding: 10px;
+            display: flex; flex-direction: column; gap: 6px;
+        }
+        .mac-sb-license-pill {
+            display: flex; align-items: center; justify-content: center; gap: 4px;
+            padding: 4px 10px; border-radius: 100px;
+            font-size: 0.62rem; font-weight: 700;
+            color: var(--green);
+            background: rgba(109,213,160,0.1);
+            border: 1px solid rgba(109,213,160,0.12);
         }
         .mac-sb-profile {
             display: flex; align-items: center; gap: 8px;
-            padding: 8px; border-top: 1px solid rgba(255,255,255,0.06);
-            margin-top: 8px; padding-top: 12px;
+            padding: 2px 4px;
         }
         .mac-sb-avatar {
-            width: 28px; height: 28px; border-radius: 50%;
+            width: 24px; height: 24px; border-radius: 50%;
             background: linear-gradient(135deg, var(--accent), var(--green));
             display: flex; align-items: center; justify-content: center;
-            font-size: 0.7rem; font-weight: 700; color: #fff;
+            font-size: 0.6rem; font-weight: 800; color: #fff;
+            flex-shrink: 0;
         }
-        .mac-sb-profile-info { font-size: 0.72rem; }
-        .mac-sb-profile-email { color: var(--text-secondary); font-weight: 500; }
-        .mac-sb-profile-status { color: var(--green); font-size: 0.65rem; font-weight: 600; }
+        .mac-sb-profile-email {
+            font-size: 0.68rem; color: var(--text-secondary); font-weight: 500;
+            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+        }
+        .mac-sb-signout {
+            width: 20px; height: 20px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 0.55rem; color: var(--text-muted); cursor: default;
+            margin-left: auto; flex-shrink: 0;
+        }
 
         /* Main content */
         .mac-main {
@@ -330,28 +377,76 @@
             background: #1e1f28;
         }
 
+        /* Toolbar */
+        .mac-toolbar {
+            display: flex; align-items: center; gap: 12px;
+            padding: 8px 16px;
+            background: rgba(28,29,38,0.95);
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+        }
+        .mac-toolbar-title {
+            font-size: 0.95rem; font-weight: 700; color: var(--text-primary);
+            letter-spacing: -0.2px;
+        }
+        .mac-toolbar-search {
+            display: flex; align-items: center; gap: 6px;
+            padding: 5px 10px; border-radius: 6px;
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.08);
+            font-size: 0.72rem; color: var(--text-muted);
+            margin-left: auto;
+        }
+        .mac-toolbar-search .search-icon {
+            font-size: 0.7rem; opacity: 0.6;
+        }
+        .mac-toolbar-gear {
+            width: 28px; height: 28px;
+            display: flex; align-items: center; justify-content: center;
+            border-radius: 6px; cursor: default;
+            font-size: 0.85rem; color: var(--text-secondary);
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.06);
+        }
+
         /* Status dock */
         .mac-dock {
-            display: flex; align-items: center; gap: 10px;
-            padding: 10px 16px; margin: 12px 16px 0;
-            background: rgba(255,255,255,0.03);
+            display: flex; align-items: center; gap: 8px;
+            padding: 10px 14px; margin: 12px 16px 0;
+            background: rgba(255,255,255,0.025);
             border: 1px solid rgba(255,255,255,0.06);
-            border-radius: 14px;
+            border-radius: 16px;
         }
         .dock-pill {
-            display: flex; align-items: center; gap: 6px;
-            padding: 5px 10px; border-radius: 8px;
-            background: rgba(255,255,255,0.04);
-            font-size: 0.72rem; font-weight: 600;
+            display: flex; align-items: center; gap: 5px;
+            padding: 6px 10px; border-radius: 10px;
+            background: rgba(255,255,255,0.035);
+            border: 1px solid rgba(255,255,255,0.05);
+            font-size: 0.65rem;
         }
-        .dock-pill .pill-dot {
-            width: 7px; height: 7px; border-radius: 50%;
+        .dock-pill .pill-icon {
+            font-size: 0.75rem;
         }
-        .dock-pill .pill-label { color: var(--text-muted); }
-        .dock-pill .pill-value { color: var(--text-secondary); }
+        .dock-pill .pill-info {
+            display: flex; flex-direction: column; line-height: 1.2;
+        }
+        .dock-pill .pill-label {
+            font-size: 0.55rem; font-weight: 700; color: var(--text-muted);
+            text-transform: uppercase; letter-spacing: 0.5px;
+        }
+        .dock-pill .pill-value {
+            font-size: 0.72rem; font-weight: 600; color: var(--text-primary);
+        }
         .dock-spacer { flex: 1; }
         .dock-status {
-            font-size: 0.72rem; color: var(--text-muted); font-weight: 500;
+            font-size: 0.68rem; color: var(--text-muted); font-weight: 500;
+        }
+        .dock-logs-btn {
+            padding: 4px 10px; border-radius: 6px;
+            font-size: 0.68rem; font-weight: 600;
+            color: var(--text-secondary);
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            cursor: default;
         }
 
         /* Empty state */
@@ -360,22 +455,31 @@
             align-items: center; justify-content: center;
             padding: 40px 20px; text-align: center;
         }
-        .mac-empty-icon {
-            font-size: 3.5rem; margin-bottom: 16px;
-            opacity: 0.5;
+        .mac-empty-icon-wrap {
+            width: 80px; height: 80px; border-radius: 50%;
+            background: rgba(74,158,255,0.12);
+            display: flex; align-items: center; justify-content: center;
+            margin-bottom: 18px;
+        }
+        .mac-empty-icon-wrap .empty-icon {
+            font-size: 2rem; color: var(--accent);
         }
         .mac-empty-title {
-            font-size: 1.3rem; font-weight: 800;
+            font-size: 1.6rem; font-weight: 900;
             color: var(--text-primary); margin-bottom: 6px;
-            letter-spacing: -0.3px;
+            letter-spacing: -0.5px;
         }
         .mac-empty-subtitle {
-            font-size: 0.85rem; color: var(--text-muted);
-            margin-bottom: 20px;
+            font-size: 0.85rem; color: var(--text-secondary);
+            font-weight: 500; margin-bottom: 4px;
+        }
+        .mac-empty-detail {
+            font-size: 0.75rem; color: var(--text-muted);
+            max-width: 340px; margin-bottom: 20px; line-height: 1.5;
         }
         .mac-empty-btn {
             display: inline-flex; align-items: center; gap: 6px;
-            padding: 10px 22px; border-radius: 10px;
+            padding: 10px 24px; border-radius: 10px;
             background: rgba(59,156,245,0.9); color: #fff;
             font-size: 0.85rem; font-weight: 700;
             cursor: default;
@@ -787,14 +891,208 @@
             from { opacity: 0; transform: translateY(24px); }
             to { opacity: 1; transform: translateY(0); }
         }
+        @keyframes fadeInLeft {
+            from { opacity: 0; transform: translateX(-30px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        @keyframes fadeInRight {
+            from { opacity: 0; transform: translateX(30px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        @keyframes scaleIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        @keyframes glowPulse {
+            0%, 100% { box-shadow: 0 0 20px rgba(74,158,255,0.08); }
+            50% { box-shadow: 0 0 40px rgba(74,158,255,0.15); }
+        }
+        @keyframes floatY {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-8px); }
+        }
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+        @keyframes borderGlow {
+            0%, 100% { border-color: rgba(74,158,255,0.15); }
+            50% { border-color: rgba(74,158,255,0.35); }
+        }
+        @keyframes countUp {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
         .reveal {
             opacity: 0;
-            transform: translateY(30px);
-            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+            transform: translateY(40px);
+            transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
         }
         .reveal.visible {
             opacity: 1;
             transform: translateY(0);
+        }
+        /* Staggered children */
+        .reveal-stagger .reveal { transition-delay: 0s; }
+        .reveal-stagger .reveal:nth-child(1) { transition-delay: 0s; }
+        .reveal-stagger .reveal:nth-child(2) { transition-delay: 0.08s; }
+        .reveal-stagger .reveal:nth-child(3) { transition-delay: 0.16s; }
+        .reveal-stagger .reveal:nth-child(4) { transition-delay: 0.24s; }
+        .reveal-stagger .reveal:nth-child(5) { transition-delay: 0.32s; }
+        .reveal-stagger .reveal:nth-child(6) { transition-delay: 0.4s; }
+        /* Reveal from sides */
+        .reveal-left {
+            opacity: 0;
+            transform: translateX(-40px);
+            transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .reveal-right {
+            opacity: 0;
+            transform: translateX(40px);
+            transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .reveal-scale {
+            opacity: 0;
+            transform: scale(0.92);
+            transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .reveal-left.visible, .reveal-right.visible, .reveal-scale.visible {
+            opacity: 1;
+            transform: translateX(0) scale(1);
+        }
+
+        /* Floating particles */
+        .particles {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none; overflow: hidden; z-index: 0;
+        }
+        .particle {
+            position: absolute;
+            width: 4px; height: 4px;
+            border-radius: 50%;
+            background: var(--accent);
+            opacity: 0;
+            animation: particleFloat 8s ease-in-out infinite;
+        }
+        .particle:nth-child(1) { left: 10%; top: 20%; animation-delay: 0s; animation-duration: 7s; }
+        .particle:nth-child(2) { left: 25%; top: 60%; animation-delay: 1.5s; animation-duration: 9s; background: var(--green); }
+        .particle:nth-child(3) { left: 55%; top: 30%; animation-delay: 3s; animation-duration: 6s; background: var(--purple); }
+        .particle:nth-child(4) { left: 75%; top: 70%; animation-delay: 2s; animation-duration: 8s; }
+        .particle:nth-child(5) { left: 90%; top: 15%; animation-delay: 4s; animation-duration: 10s; background: var(--green); }
+        .particle:nth-child(6) { left: 40%; top: 80%; animation-delay: 1s; animation-duration: 7.5s; background: var(--purple); }
+        @keyframes particleFloat {
+            0% { opacity: 0; transform: translateY(0) scale(0); }
+            10% { opacity: 0.6; transform: translateY(-20px) scale(1); }
+            90% { opacity: 0.4; transform: translateY(-120px) scale(0.8); }
+            100% { opacity: 0; transform: translateY(-140px) scale(0); }
+        }
+
+        /* App preview glow animation */
+        .app-preview .mac-window {
+            animation: glowPulse 4s ease-in-out infinite;
+        }
+        .app-preview:hover .mac-window {
+            box-shadow: 0 50px 100px rgba(0,0,0,0.6), 0 0 100px rgba(74, 158, 255, 0.08);
+            transition: box-shadow 0.5s;
+        }
+
+        /* Feature card enhanced hover */
+        .feature-card {
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .feature-card:hover .feature-icon {
+            transform: scale(1.1) translateY(-2px);
+            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .feature-icon {
+            transition: transform 0.3s;
+        }
+
+        /* Step number pulse on visible */
+        .step.visible .step-number {
+            animation: scaleIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+        }
+        .step:nth-child(1).visible .step-number { animation-delay: 0s; }
+        .step:nth-child(2).visible .step-number { animation-delay: 0.15s; }
+        .step:nth-child(3).visible .step-number { animation-delay: 0.3s; }
+        .step:nth-child(4).visible .step-number { animation-delay: 0.45s; }
+
+        /* Step connector animation */
+        .step-connector {
+            background: linear-gradient(90deg, rgba(74,158,255,0.3), rgba(74,158,255,0.05));
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .step.visible .step-connector {
+            transform: scaleX(1);
+        }
+
+        /* Pricing card hover glow */
+        .pricing-card.popular {
+            animation: borderGlow 3s ease-in-out infinite;
+        }
+
+        /* Compat badge wave animation */
+        .compat-badge {
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        /* CTA shimmer effect */
+        .cta-box::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(105deg, transparent 40%, rgba(74,158,255,0.04) 45%, rgba(74,158,255,0.08) 50%, rgba(74,158,255,0.04) 55%, transparent 60%);
+            background-size: 200% 100%;
+            animation: shimmer 6s ease-in-out infinite;
+            pointer-events: none;
+            border-radius: 24px;
+        }
+
+        /* Download button pulse */
+        .btn-primary {
+            position: relative;
+            overflow: hidden;
+        }
+        .btn-primary::after {
+            content: '';
+            position: absolute;
+            top: 50%; left: 50%;
+            width: 0; height: 0;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.15);
+            transform: translate(-50%, -50%);
+            transition: width 0.5s, height 0.5s;
+        }
+        .btn-primary:hover::after {
+            width: 300px; height: 300px;
+        }
+
+        /* Hero stats counter animation */
+        .hero-stat .number {
+            display: inline-block;
+        }
+        .hero-stat.animated .number {
+            animation: countUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+        }
+
+        /* Section divider glow lines */
+        .section-divider {
+            width: 60px; height: 3px; margin: 0 auto 16px;
+            background: linear-gradient(90deg, var(--accent), var(--green));
+            border-radius: 2px;
+            opacity: 0; transform: scaleX(0);
+            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .visible .section-divider {
+            opacity: 1; transform: scaleX(1);
+        }
+
+        /* Parallax-like scroll depth */
+        .parallax-slow {
+            will-change: transform;
         }
 
         /* Responsive */
@@ -805,8 +1103,8 @@
             .pricing-grid { grid-template-columns: 1fr; max-width: 400px; }
             .footer-grid { grid-template-columns: 1fr 1fr; gap: 32px; }
             .mac-body { flex-direction: column; }
-            .mac-sidebar { width: 100%; border-right: none; border-bottom: 1px solid rgba(255,255,255,0.06); flex-direction: row; flex-wrap: wrap; gap: 4px; }
-            .mac-sb-spacer, .mac-sb-label, .mac-sb-profile { display: none; }
+            .mac-sidebar { width: 100%; border-right: none; border-bottom: 1px solid rgba(255,255,255,0.06); flex-direction: row; flex-wrap: wrap; gap: 4px; padding: 8px; }
+            .mac-sb-spacer, .mac-sb-label, .mac-sb-profile-section, .mac-sb-title, .mac-sb-actions { display: none; }
         }
         @media (max-width: 600px) {
             .features-grid { grid-template-columns: 1fr; }
@@ -923,6 +1221,12 @@
             border-color: var(--accent);
             box-shadow: 0 0 0 3px var(--accent-glow);
         }
+        .contact-form input,
+        .contact-form textarea {
+            -webkit-user-select: text;
+            -moz-user-select: text;
+            user-select: text;
+        }
         .contact-form textarea {
             min-height: 140px;
             resize: vertical;
@@ -955,7 +1259,7 @@
         }
     </style>
 </head>
-<body>
+<body oncontextmenu="return false;" ondragstart="return false;">
     <div class="bg-glow"></div>
 
     <!-- Navigation -->
@@ -972,6 +1276,14 @@
 
     <!-- Hero -->
     <section class="hero">
+        <div class="particles">
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+        </div>
         <div class="container">
             <div class="hero-badge">
                 <span class="dot"></span>
@@ -1014,12 +1326,13 @@
                         <div class="mac-dot red"></div>
                         <div class="mac-dot yellow"></div>
                         <div class="mac-dot green"></div>
-                        <div class="mac-titlebar-text">BridgePlay &mdash; Library</div>
+                        <div class="mac-titlebar-text">BridgePlay</div>
                         <div style="width: 52px;"></div>
                     </div>
                     <div class="mac-body">
                         <!-- Sidebar -->
                         <div class="mac-sidebar">
+                            <div class="mac-sb-title">BridgePlay</div>
                             <div class="mac-sb-label">System</div>
                             <div class="mac-sb-item active">
                                 <span class="sb-icon">&#9638;</span> Library
@@ -1035,42 +1348,66 @@
                                 <span class="sb-icon">&#128193;</span> Multiplayer
                             </div>
                             <div class="mac-sb-spacer"></div>
-                            <div class="mac-sb-btn mac-sb-btn-primary">+ Install Game</div>
-                            <div class="mac-sb-btn mac-sb-btn-secondary">+ New Collection</div>
-                            <div class="mac-sb-profile">
-                                <div class="mac-sb-avatar">D</div>
-                                <div class="mac-sb-profile-info">
-                                    <div class="mac-sb-profile-email">Player</div>
-                                    <div class="mac-sb-profile-status">&#10003; Licensed</div>
+                            <div class="mac-sb-actions">
+                                <div class="mac-sb-btn mac-sb-btn-primary">&#43; Install Game</div>
+                                <div class="mac-sb-btn mac-sb-btn-secondary">&#43; New Collection</div>
+                            </div>
+                            <div class="mac-sb-profile-section">
+                                <div class="mac-sb-license-pill">&#10003; Licensed</div>
+                                <div class="mac-sb-profile">
+                                    <div class="mac-sb-avatar">D</div>
+                                    <div class="mac-sb-profile-email">player@email.com</div>
+                                    <div class="mac-sb-signout">&#10132;</div>
                                 </div>
                             </div>
                         </div>
                         <!-- Main -->
                         <div class="mac-main">
+                            <!-- Toolbar -->
+                            <div class="mac-toolbar">
+                                <div class="mac-toolbar-title">Library</div>
+                                <div class="mac-toolbar-search">
+                                    <span class="search-icon">&#128269;</span>
+                                    Search games...
+                                </div>
+                                <div class="mac-toolbar-gear">&#9881;</div>
+                            </div>
+                            <!-- Status Dock -->
                             <div class="mac-dock">
                                 <div class="dock-pill">
-                                    <span class="pill-dot" style="background: var(--green);"></span>
-                                    <span class="pill-label">Runtime</span>
-                                    <span class="pill-value">Ready</span>
+                                    <span class="pill-icon" style="color: var(--green);">&#9679;</span>
+                                    <span class="pill-info">
+                                        <span class="pill-label">Runtime</span>
+                                        <span class="pill-value">Ready</span>
+                                    </span>
                                 </div>
                                 <div class="dock-pill">
-                                    <span class="pill-dot" style="background: var(--accent);"></span>
-                                    <span class="pill-label">Installer</span>
-                                    <span class="pill-value">Selected</span>
+                                    <span class="pill-icon" style="color: var(--accent);">&#9679;</span>
+                                    <span class="pill-info">
+                                        <span class="pill-label">Installer</span>
+                                        <span class="pill-value">Selected</span>
+                                    </span>
                                 </div>
                                 <div class="dock-pill">
-                                    <span class="pill-dot" style="background: #f9c826;"></span>
-                                    <span class="pill-label">Display</span>
-                                    <span class="pill-value">Retina</span>
+                                    <span class="pill-icon" style="color: #f9c826;">&#9679;</span>
+                                    <span class="pill-info">
+                                        <span class="pill-label">Display</span>
+                                        <span class="pill-value">Retina</span>
+                                    </span>
                                 </div>
                                 <div class="dock-spacer"></div>
                                 <div class="dock-status">All systems ready</div>
+                                <div class="dock-logs-btn">Open Logs</div>
                             </div>
+                            <!-- Empty State -->
                             <div class="mac-empty-state">
-                                <div class="mac-empty-icon">&#128230;</div>
+                                <div class="mac-empty-icon-wrap">
+                                    <span class="empty-icon">&#128230;</span>
+                                </div>
                                 <div class="mac-empty-title">No games installed</div>
                                 <div class="mac-empty-subtitle">Install your first game to get started</div>
-                                <div class="mac-empty-btn">+ Install Game</div>
+                                <div class="mac-empty-detail">Choose a Windows installer .exe, confirm the target environment, and BridgePlay will import it into your library.</div>
+                                <div class="mac-empty-btn">&#43; Install Game</div>
                             </div>
                         </div>
                     </div>
@@ -1084,10 +1421,11 @@
         <div class="container">
             <div class="features-header reveal">
                 <div class="section-label">Features</div>
+                <div class="section-divider"></div>
                 <h2 class="section-title">Everything You Need to Game on Mac</h2>
                 <p class="section-desc">BridgePlay handles the complexity so you can focus on what matters — playing your games.</p>
             </div>
-            <div class="features-grid">
+            <div class="features-grid reveal-stagger">
                 <div class="feature-card reveal">
                     <div class="feature-icon" style="background: var(--accent-glow); color: var(--accent);">&#9654;</div>
                     <h3>One-Click Launch</h3>
@@ -1127,6 +1465,7 @@
         <div class="container">
             <div class="features-header reveal">
                 <div class="section-label">Getting Started</div>
+                <div class="section-divider"></div>
                 <h2 class="section-title">Up and Running in Minutes</h2>
                 <p class="section-desc">From download to playing your first game — it only takes a few minutes.</p>
             </div>
@@ -1163,11 +1502,12 @@
         <div class="container">
             <div class="features-header reveal">
                 <div class="section-label">Compatibility</div>
+                <div class="section-divider"></div>
                 <h2 class="section-title">Broad Compatibility, Native Performance</h2>
                 <p class="section-desc">BridgePlay translates Windows graphics APIs to Metal, delivering broad game support on your Mac.</p>
             </div>
-            <div class="compat-grid reveal">
-                <ul class="compat-list">
+            <div class="compat-grid">
+                <ul class="compat-list reveal-left">
                     <li class="compat-item">
                         <div class="compat-icon" style="background: var(--accent-glow); color: var(--accent);">&#128187;</div>
                         <div>
@@ -1183,10 +1523,10 @@
                         </div>
                     </li>
                     <li class="compat-item">
-                        <div class="compat-icon" style="background: rgba(167,139,250,0.12); color: var(--purple);">&#127918;</div>
+                        <div class="compat-icon" style="background: rgba(167,139,250,0.12); color: var(--purple);">&#128377;</div>
                         <div>
-                            <h4>Controller Support</h4>
-                            <p>Works with Xbox, PlayStation, and other controllers</p>
+                            <h4>Fullscreen Mode</h4>
+                            <p>Play in windowed or fullscreen with auto-expand support</p>
                         </div>
                     </li>
                     <li class="compat-item">
@@ -1197,7 +1537,7 @@
                         </div>
                     </li>
                 </ul>
-                <div class="compat-visual">
+                <div class="compat-visual reveal-right">
                     <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 20px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">Supported Technologies</p>
                     <div class="compat-badge-grid">
                         <div class="compat-badge">DirectX 9</div>
@@ -1208,7 +1548,7 @@
                         <div class="compat-badge">Apple Silicon</div>
                         <div class="compat-badge">Intel x86</div>
                         <div class="compat-badge">Retina Display</div>
-                        <div class="compat-badge">Game Controllers</div>
+                        <div class="compat-badge">Fullscreen Mode</div>
                         <div class="compat-badge">Auto-Configuration</div>
                     </div>
                 </div>
@@ -1221,6 +1561,7 @@
         <div class="container">
             <div class="pricing-header reveal">
                 <div class="section-label">Pricing</div>
+                <div class="section-divider"></div>
                 <h2 class="section-title">Simple, Honest Pricing</h2>
                 <p class="section-desc">Start with a free 7-day trial. No credit card required. Choose a plan when you're ready.</p>
             </div>
@@ -1263,7 +1604,7 @@
                     <a href="#download" class="pricing-btn pricing-btn-secondary">Get Started</a>
                 </div>
             </div>
-            <p class="pricing-footer">All plans include a 7-day free trial. 14-day money-back guarantee.</p>
+            <p class="pricing-footer">All plans include a 7-day free trial. 7-day money-back guarantee.</p>
         </div>
     </section>
 
@@ -1272,6 +1613,7 @@
         <div class="container">
             <div class="faq-header reveal">
                 <div class="section-label">FAQ</div>
+                <div class="section-divider"></div>
                 <h2 class="section-title">Frequently Asked Questions</h2>
             </div>
             <div class="faq-list">
@@ -1326,7 +1668,7 @@
                         <span class="faq-arrow">+</span>
                     </button>
                     <div class="faq-answer">
-                        <p>Yes. We offer a 14-day money-back guarantee on all plans, no questions asked. Use the contact form below to request a refund.</p>
+                        <p>Yes. We offer a 7-day money-back guarantee on all plans. Use the contact form below to request a refund.</p>
                     </div>
                 </div>
                 <div class="faq-item reveal">
@@ -1345,11 +1687,11 @@
     <!-- CTA / Download -->
     <section class="cta-section" id="download">
         <div class="container">
-            <div class="cta-box reveal">
+            <div class="cta-box reveal-scale">
                 <h2>Ready to Play?</h2>
                 <p>Download BridgePlay and start gaming on your Mac today. Free 7-day trial, no credit card required.</p>
                 <div class="hero-actions">
-                    <a href="BridgePlay-latest.zip" class="btn-primary" download>
+                    <a href="BridgePlay-latest.dmg" class="btn-primary" download>
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
                         Download for macOS
                     </a>
@@ -1364,6 +1706,7 @@
         <div class="container">
             <div class="contact-header reveal">
                 <div class="section-label">Contact</div>
+                <div class="section-divider"></div>
                 <h2 class="section-title">Get in Touch</h2>
                 <p class="section-desc" style="margin: 0 auto;">Have a question, feedback, or need help? Send us a message and we'll get back to you.</p>
             </div>
@@ -1419,23 +1762,93 @@
     </footer>
 
     <script>
-        // Scroll reveal
-        const observer = new IntersectionObserver((entries) => {
+        // Enhanced scroll reveal with multiple animation types
+        const revealObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('visible');
                 }
             });
-        }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+        }, { threshold: 0.08, rootMargin: '0px 0px -60px 0px' });
 
-        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-
-        // Nav scroll effect
-        window.addEventListener('scroll', () => {
-            document.querySelector('nav').classList.toggle('scrolled', window.scrollY > 50);
+        document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale').forEach(el => {
+            revealObserver.observe(el);
         });
 
-        // FAQ accordion
+        // Parallax scroll effect for app preview and hero
+        let ticking = false;
+        window.addEventListener('scroll', () => {
+            if (!ticking) {
+                requestAnimationFrame(() => {
+                    const scrollY = window.scrollY;
+                    // Nav
+                    document.querySelector('nav').classList.toggle('scrolled', scrollY > 50);
+                    // Subtle parallax on app preview
+                    const preview = document.querySelector('.app-preview');
+                    if (preview) {
+                        const rate = scrollY * 0.03;
+                        preview.style.transform = `translateY(${Math.min(rate, 30)}px)`;
+                    }
+                    // Floating particles speed based on scroll
+                    const particles = document.querySelector('.particles');
+                    if (particles) {
+                        particles.style.transform = `translateY(${scrollY * -0.05}px)`;
+                    }
+                    ticking = false;
+                });
+                ticking = true;
+            }
+        });
+
+        // Compat badges wave animation on scroll into view
+        const badgeObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const badges = entry.target.querySelectorAll('.compat-badge');
+                    badges.forEach((badge, i) => {
+                        badge.style.opacity = '0';
+                        badge.style.transform = 'translateY(15px) scale(0.9)';
+                        setTimeout(() => {
+                            badge.style.transition = 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)';
+                            badge.style.opacity = '1';
+                            badge.style.transform = 'translateY(0) scale(1)';
+                        }, i * 60);
+                    });
+                    badgeObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.3 });
+
+        const badgeGrid = document.querySelector('.compat-badge-grid');
+        if (badgeGrid) badgeObserver.observe(badgeGrid);
+
+        // Pricing cards stagger
+        const pricingObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const cards = entry.target.querySelectorAll('.pricing-card');
+                    cards.forEach((card, i) => {
+                        setTimeout(() => {
+                            card.style.opacity = '1';
+                            card.style.transform = 'translateY(0)';
+                        }, i * 120);
+                    });
+                    pricingObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.15 });
+
+        const pricingGrid = document.querySelector('.pricing-grid');
+        if (pricingGrid) {
+            pricingGrid.querySelectorAll('.pricing-card').forEach(card => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(30px)';
+                card.style.transition = 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1)';
+            });
+            pricingObserver.observe(pricingGrid);
+        }
+
+        // FAQ accordion with smooth animation
         document.querySelectorAll('.faq-question').forEach(btn => {
             btn.addEventListener('click', () => {
                 const item = btn.parentElement;
@@ -1444,6 +1857,24 @@
                 if (!wasOpen) item.classList.add('open');
             });
         });
+
+        // FAQ items stagger on reveal
+        const faqObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const items = entry.target.querySelectorAll('.faq-item');
+                    items.forEach((item, i) => {
+                        setTimeout(() => {
+                            item.classList.add('visible');
+                        }, i * 80);
+                    });
+                    faqObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1 });
+
+        const faqList = document.querySelector('.faq-list');
+        if (faqList) faqObserver.observe(faqList);
 
         // Smooth scroll for nav links
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -1454,6 +1885,32 @@
                     target.scrollIntoView({ behavior: 'smooth', block: 'start' });
                 }
             });
+        });
+
+        // Hero stats animate in
+        const statsObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.querySelectorAll('.hero-stat').forEach((stat, i) => {
+                        setTimeout(() => {
+                            stat.classList.add('animated');
+                        }, i * 150);
+                    });
+                    statsObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.5 });
+
+        const heroStats = document.querySelector('.hero-stats');
+        if (heroStats) statsObserver.observe(heroStats);
+
+        // Copy protection
+        document.addEventListener('copy', e => e.preventDefault());
+        document.addEventListener('cut', e => e.preventDefault());
+        document.addEventListener('keydown', e => {
+            if ((e.ctrlKey || e.metaKey) && (e.key === 'c' || e.key === 'x' || e.key === 'a' || e.key === 'u')) {
+                e.preventDefault();
+            }
         });
     </script>
 </body>
