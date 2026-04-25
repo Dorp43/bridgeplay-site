@@ -242,115 +242,175 @@
             margin-top: 2px;
         }
 
-        /* App Preview */
+        /* App Preview - Accurate BridgePlay Mockup */
         .app-preview {
-            max-width: 900px;
+            max-width: 960px;
             margin: 60px auto 0;
             animation: fadeInUp 0.8s ease-out 0.5s both;
         }
         .mac-window {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
+            background: #14151c;
+            border: 1px solid rgba(255,255,255,0.08);
             border-radius: 12px;
             overflow: hidden;
-            box-shadow: 0 40px 80px rgba(0,0,0,0.5), 0 0 60px rgba(74, 158, 255, 0.05);
+            box-shadow: 0 50px 100px rgba(0,0,0,0.6), 0 0 80px rgba(74, 158, 255, 0.04);
         }
         .mac-titlebar {
             display: flex;
             align-items: center;
             gap: 8px;
             padding: 12px 16px;
-            background: #1a1a28;
-            border-bottom: 1px solid var(--border);
+            background: #1c1d26;
+            border-bottom: 1px solid rgba(255,255,255,0.06);
         }
-        .mac-dot {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-        }
+        .mac-dot { width: 12px; height: 12px; border-radius: 50%; }
         .mac-dot.red { background: #ff5f57; }
         .mac-dot.yellow { background: #febc2e; }
         .mac-dot.green { background: #28c840; }
         .mac-titlebar-text {
-            flex: 1;
-            text-align: center;
-            font-size: 0.8rem;
-            color: var(--text-muted);
-            font-weight: 500;
+            flex: 1; text-align: center;
+            font-size: 0.8rem; color: var(--text-muted); font-weight: 500;
         }
-        .mac-content {
-            padding: 32px;
-            min-height: 400px;
-            background: linear-gradient(180deg, #0e0e1a 0%, #12121f 100%);
-            display: flex;
-            gap: 24px;
-        }
+        .mac-body { display: flex; min-height: 420px; }
+
+        /* Sidebar */
         .mac-sidebar {
-            width: 200px;
-            flex-shrink: 0;
+            width: 200px; flex-shrink: 0;
+            background: #18191f;
+            border-right: 1px solid rgba(255,255,255,0.06);
+            display: flex; flex-direction: column;
+            padding: 12px 10px;
         }
-        .mac-sidebar-item {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 10px 14px;
-            border-radius: 8px;
-            font-size: 0.85rem;
-            color: var(--text-secondary);
-            margin-bottom: 4px;
+        .mac-sb-label {
+            font-size: 0.65rem; font-weight: 700; text-transform: uppercase;
+            letter-spacing: 1px; color: var(--text-muted);
+            padding: 12px 10px 6px; margin-top: 4px;
         }
-        .mac-sidebar-item.active {
-            background: rgba(74, 158, 255, 0.1);
-            color: var(--accent);
+        .mac-sb-item {
+            display: flex; align-items: center; gap: 8px;
+            padding: 7px 10px; border-radius: 6px;
+            font-size: 0.82rem; font-weight: 500;
+            color: var(--text-secondary); cursor: default;
+            margin-bottom: 2px;
         }
-        .mac-sidebar-icon {
-            width: 18px;
-            height: 18px;
-            border-radius: 4px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.7rem;
+        .mac-sb-item.active { background: rgba(74,158,255,0.12); color: var(--accent); }
+        .mac-sb-item .sb-icon { font-size: 0.85rem; width: 18px; text-align: center; }
+        .mac-sb-spacer { flex: 1; }
+        .mac-sb-btn {
+            display: flex; align-items: center; justify-content: center; gap: 6px;
+            padding: 8px; border-radius: 8px;
+            font-size: 0.8rem; font-weight: 600;
+            margin-bottom: 4px; cursor: default;
         }
-        .mac-main { flex: 1; }
+        .mac-sb-btn-primary {
+            background: rgba(59,156,245,0.9); color: #fff;
+        }
+        .mac-sb-btn-secondary {
+            background: rgba(255,255,255,0.06); color: var(--text-secondary);
+            border: 1px solid rgba(255,255,255,0.08);
+        }
+        .mac-sb-profile {
+            display: flex; align-items: center; gap: 8px;
+            padding: 8px; border-top: 1px solid rgba(255,255,255,0.06);
+            margin-top: 8px; padding-top: 12px;
+        }
+        .mac-sb-avatar {
+            width: 28px; height: 28px; border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent), var(--green));
+            display: flex; align-items: center; justify-content: center;
+            font-size: 0.7rem; font-weight: 700; color: #fff;
+        }
+        .mac-sb-profile-info { font-size: 0.72rem; }
+        .mac-sb-profile-email { color: var(--text-secondary); font-weight: 500; }
+        .mac-sb-profile-status { color: var(--green); font-size: 0.65rem; font-weight: 600; }
+
+        /* Main content */
+        .mac-main {
+            flex: 1; display: flex; flex-direction: column;
+            background: #1e1f28;
+        }
+
+        /* Status dock */
+        .mac-dock {
+            display: flex; align-items: center; gap: 10px;
+            padding: 10px 16px; margin: 12px 16px 0;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 14px;
+        }
+        .dock-pill {
+            display: flex; align-items: center; gap: 6px;
+            padding: 5px 10px; border-radius: 8px;
+            background: rgba(255,255,255,0.04);
+            font-size: 0.72rem; font-weight: 600;
+        }
+        .dock-pill .pill-dot {
+            width: 7px; height: 7px; border-radius: 50%;
+        }
+        .dock-pill .pill-label { color: var(--text-muted); }
+        .dock-pill .pill-value { color: var(--text-secondary); }
+        .dock-spacer { flex: 1; }
+        .dock-status {
+            font-size: 0.72rem; color: var(--text-muted); font-weight: 500;
+        }
+
+        /* Game grid */
         .mac-game-grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 16px;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 14px; padding: 16px;
+            flex: 1; align-content: start;
         }
         .mac-game-card {
-            background: rgba(255,255,255,0.03);
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            padding: 16px;
-            text-align: center;
-            transition: all 0.3s;
+            aspect-ratio: 1;
+            background: rgba(255,255,255,0.025);
+            border: 1px solid rgba(255,255,255,0.07);
+            border-radius: 14px;
+            padding: 12px;
+            display: flex; flex-direction: column;
+            transition: all 0.25s;
+            cursor: default;
         }
         .mac-game-card:hover {
-            background: rgba(74, 158, 255, 0.05);
-            border-color: rgba(74, 158, 255, 0.2);
-            transform: translateY(-2px);
+            background: rgba(74,158,255,0.04);
+            border-color: rgba(74,158,255,0.2);
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.3);
         }
-        .mac-game-icon {
-            width: 56px;
-            height: 56px;
-            border-radius: 12px;
-            margin: 0 auto 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
+        .mac-game-card.selected {
+            border-color: rgba(74,158,255,0.4);
+            background: rgba(74,158,255,0.06);
+            box-shadow: 0 16px 40px rgba(0,0,0,0.35);
         }
-        .mac-game-title {
-            font-size: 0.8rem;
-            font-weight: 600;
-            color: var(--text-primary);
-            margin-bottom: 4px;
+        .mac-card-top {
+            display: flex; justify-content: space-between; align-items: center;
         }
-        .mac-game-status {
-            font-size: 0.7rem;
-            color: var(--green);
-            font-weight: 500;
+        .mac-card-badge {
+            display: flex; align-items: center; gap: 4px;
+            font-size: 0.6rem; font-weight: 700;
+            padding: 2px 7px; border-radius: 4px;
+        }
+        .mac-card-badge.ready { background: rgba(120,205,36,0.12); color: var(--green); }
+        .mac-card-badge.fav { color: #f9c826; font-size: 0.75rem; }
+        .mac-card-opts { color: var(--text-muted); font-size: 0.8rem; }
+        .mac-card-icon-wrap {
+            flex: 1; display: flex; align-items: center; justify-content: center;
+        }
+        .mac-card-icon {
+            width: 48px; height: 48px; border-radius: 10px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.3rem;
+        }
+        .mac-card-info { margin-top: auto; }
+        .mac-card-title {
+            font-size: 0.78rem; font-weight: 700;
+            color: var(--text-primary); line-height: 1.2;
+            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+        }
+        .mac-card-sub {
+            font-size: 0.65rem; font-weight: 500;
+            color: var(--text-muted); margin-top: 2px;
+            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
         }
 
         /* Features */
@@ -776,14 +836,16 @@
             .step-connector { display: none; }
             .pricing-grid { grid-template-columns: 1fr; max-width: 400px; }
             .footer-grid { grid-template-columns: 1fr 1fr; gap: 32px; }
-            .mac-content { flex-direction: column; }
-            .mac-sidebar { width: 100%; }
+            .mac-body { flex-direction: column; }
+            .mac-sidebar { width: 100%; border-right: none; border-bottom: 1px solid rgba(255,255,255,0.06); flex-direction: row; flex-wrap: wrap; gap: 4px; }
+            .mac-sb-spacer, .mac-sb-label, .mac-sb-profile { display: none; }
             .mac-game-grid { grid-template-columns: repeat(3, 1fr); }
         }
         @media (max-width: 600px) {
             .features-grid { grid-template-columns: 1fr; }
             .steps { grid-template-columns: 1fr; }
             .mac-game-grid { grid-template-columns: repeat(2, 1fr); }
+            .mac-dock { display: none; }
             .hero-stats { gap: 24px; }
             .nav-links a:not(.nav-cta) { display: none; }
             .footer-grid { grid-template-columns: 1fr; }
@@ -903,62 +965,169 @@
                 </div>
             </div>
 
-            <!-- App Preview -->
+            <!-- App Preview — accurate BridgePlay mockup -->
             <div class="app-preview">
                 <div class="mac-window">
                     <div class="mac-titlebar">
                         <div class="mac-dot red"></div>
                         <div class="mac-dot yellow"></div>
                         <div class="mac-dot green"></div>
-                        <div class="mac-titlebar-text">BridgePlay</div>
+                        <div class="mac-titlebar-text">BridgePlay &mdash; Library</div>
                         <div style="width: 52px;"></div>
                     </div>
-                    <div class="mac-content">
+                    <div class="mac-body">
+                        <!-- Sidebar -->
                         <div class="mac-sidebar">
-                            <div class="mac-sidebar-item active">
-                                <div class="mac-sidebar-icon" style="background: rgba(74,158,255,0.15); color: var(--accent);">&#9776;</div>
-                                Library
+                            <div class="mac-sb-label">System</div>
+                            <div class="mac-sb-item active">
+                                <span class="sb-icon">&#9638;</span> Library
                             </div>
-                            <div class="mac-sidebar-item">
-                                <div class="mac-sidebar-icon" style="background: rgba(109,213,160,0.12); color: var(--green);">&#9733;</div>
-                                Favorites
+                            <div class="mac-sb-item">
+                                <span class="sb-icon">&#9733;</span> Favorites
                             </div>
-                            <div class="mac-sidebar-item">
-                                <div class="mac-sidebar-icon" style="background: rgba(167,139,250,0.12); color: var(--purple);">&#9881;</div>
-                                Settings
+                            <div class="mac-sb-label">Collections</div>
+                            <div class="mac-sb-item">
+                                <span class="sb-icon">&#128193;</span> RPGs
+                            </div>
+                            <div class="mac-sb-item">
+                                <span class="sb-icon">&#128193;</span> Multiplayer
+                            </div>
+                            <div class="mac-sb-spacer"></div>
+                            <div class="mac-sb-btn mac-sb-btn-primary">+ Install Game</div>
+                            <div class="mac-sb-btn mac-sb-btn-secondary">+ New Collection</div>
+                            <div class="mac-sb-profile">
+                                <div class="mac-sb-avatar">D</div>
+                                <div class="mac-sb-profile-info">
+                                    <div class="mac-sb-profile-email">dor9000@gmail.com</div>
+                                    <div class="mac-sb-profile-status">&#10003; Licensed</div>
+                                </div>
                             </div>
                         </div>
+                        <!-- Main -->
                         <div class="mac-main">
+                            <div class="mac-dock">
+                                <div class="dock-pill">
+                                    <span class="pill-dot" style="background: var(--green);"></span>
+                                    <span class="pill-label">Runtime</span>
+                                    <span class="pill-value">Ready</span>
+                                </div>
+                                <div class="dock-pill">
+                                    <span class="pill-dot" style="background: var(--accent);"></span>
+                                    <span class="pill-label">Installer</span>
+                                    <span class="pill-value">Selected</span>
+                                </div>
+                                <div class="dock-pill">
+                                    <span class="pill-dot" style="background: #f9c826;"></span>
+                                    <span class="pill-label">Display</span>
+                                    <span class="pill-value">Retina</span>
+                                </div>
+                                <div class="dock-spacer"></div>
+                                <div class="dock-status">All systems ready</div>
+                            </div>
                             <div class="mac-game-grid">
-                                <div class="mac-game-card">
-                                    <div class="mac-game-icon" style="background: linear-gradient(135deg, #1a1a2e, #16213e);">&#9876;</div>
-                                    <div class="mac-game-title">Age of Empires</div>
-                                    <div class="mac-game-status">Ready to Play</div>
+                                <div class="mac-game-card selected">
+                                    <div class="mac-card-top">
+                                        <div class="mac-card-badge ready">&#9679; Ready</div>
+                                        <span class="mac-card-badge fav">&#9733;</span>
+                                    </div>
+                                    <div class="mac-card-icon-wrap">
+                                        <div class="mac-card-icon" style="background: linear-gradient(135deg, #1a2540, #1e3a5f);">&#9876;</div>
+                                    </div>
+                                    <div class="mac-card-info">
+                                        <div class="mac-card-title">Age of Empires II</div>
+                                        <div class="mac-card-sub">AoE2DE_s.exe</div>
+                                    </div>
                                 </div>
                                 <div class="mac-game-card">
-                                    <div class="mac-game-icon" style="background: linear-gradient(135deg, #1e1e30, #2d1b4e);">&#9812;</div>
-                                    <div class="mac-game-title">Civilization VI</div>
-                                    <div class="mac-game-status">Ready to Play</div>
+                                    <div class="mac-card-top">
+                                        <div class="mac-card-badge ready">&#9679; Ready</div>
+                                        <span class="mac-card-opts">&#9776;</span>
+                                    </div>
+                                    <div class="mac-card-icon-wrap">
+                                        <div class="mac-card-icon" style="background: linear-gradient(135deg, #2d1b4e, #1e1040);">&#9812;</div>
+                                    </div>
+                                    <div class="mac-card-info">
+                                        <div class="mac-card-title">Civilization VI</div>
+                                        <div class="mac-card-sub">CivilizationVI.exe</div>
+                                    </div>
                                 </div>
                                 <div class="mac-game-card">
-                                    <div class="mac-game-icon" style="background: linear-gradient(135deg, #1a2e1a, #0f3d0f);">&#9730;</div>
-                                    <div class="mac-game-title">Stardew Valley</div>
-                                    <div class="mac-game-status">Ready to Play</div>
+                                    <div class="mac-card-top">
+                                        <div class="mac-card-badge ready">&#9679; Ready</div>
+                                        <span class="mac-card-opts">&#9776;</span>
+                                    </div>
+                                    <div class="mac-card-icon-wrap">
+                                        <div class="mac-card-icon" style="background: linear-gradient(135deg, #1a3020, #0f3d18);">&#127793;</div>
+                                    </div>
+                                    <div class="mac-card-info">
+                                        <div class="mac-card-title">Stardew Valley</div>
+                                        <div class="mac-card-sub">Stardew Valley.exe</div>
+                                    </div>
                                 </div>
                                 <div class="mac-game-card">
-                                    <div class="mac-game-icon" style="background: linear-gradient(135deg, #2e1a1a, #3d1515);">&#9760;</div>
-                                    <div class="mac-game-title">Diablo IV</div>
-                                    <div class="mac-game-status">Ready to Play</div>
+                                    <div class="mac-card-top">
+                                        <div class="mac-card-badge ready">&#9679; Ready</div>
+                                        <span class="mac-card-opts">&#9776;</span>
+                                    </div>
+                                    <div class="mac-card-icon-wrap">
+                                        <div class="mac-card-icon" style="background: linear-gradient(135deg, #3d1515, #2e1a1a);">&#128293;</div>
+                                    </div>
+                                    <div class="mac-card-info">
+                                        <div class="mac-card-title">Diablo IV</div>
+                                        <div class="mac-card-sub">Diablo IV.exe</div>
+                                    </div>
                                 </div>
                                 <div class="mac-game-card">
-                                    <div class="mac-game-icon" style="background: linear-gradient(135deg, #1a1a2e, #0f2d4a);">&#9789;</div>
-                                    <div class="mac-game-title">Hollow Knight</div>
-                                    <div class="mac-game-status">Ready to Play</div>
+                                    <div class="mac-card-top">
+                                        <div class="mac-card-badge ready">&#9679; Ready</div>
+                                        <span class="mac-card-opts">&#9776;</span>
+                                    </div>
+                                    <div class="mac-card-icon-wrap">
+                                        <div class="mac-card-icon" style="background: linear-gradient(135deg, #0f2040, #1a3050);">&#128171;</div>
+                                    </div>
+                                    <div class="mac-card-info">
+                                        <div class="mac-card-title">Hollow Knight</div>
+                                        <div class="mac-card-sub">hollow_knight.exe</div>
+                                    </div>
                                 </div>
                                 <div class="mac-game-card">
-                                    <div class="mac-game-icon" style="background: linear-gradient(135deg, #2e2e1a, #4a3d0f);">&#9732;</div>
-                                    <div class="mac-game-title">Elden Ring</div>
-                                    <div class="mac-game-status">Ready to Play</div>
+                                    <div class="mac-card-top">
+                                        <div class="mac-card-badge ready">&#9679; Ready</div>
+                                        <span class="mac-card-opts">&#9776;</span>
+                                    </div>
+                                    <div class="mac-card-icon-wrap">
+                                        <div class="mac-card-icon" style="background: linear-gradient(135deg, #3d3010, #2e2a0f);">&#9876;</div>
+                                    </div>
+                                    <div class="mac-card-info">
+                                        <div class="mac-card-title">Elden Ring</div>
+                                        <div class="mac-card-sub">eldenring.exe</div>
+                                    </div>
+                                </div>
+                                <div class="mac-game-card">
+                                    <div class="mac-card-top">
+                                        <div class="mac-card-badge ready">&#9679; Ready</div>
+                                        <span class="mac-card-opts">&#9776;</span>
+                                    </div>
+                                    <div class="mac-card-icon-wrap">
+                                        <div class="mac-card-icon" style="background: linear-gradient(135deg, #20203a, #15154a);">&#127775;</div>
+                                    </div>
+                                    <div class="mac-card-info">
+                                        <div class="mac-card-title">Terraria</div>
+                                        <div class="mac-card-sub">Terraria.exe</div>
+                                    </div>
+                                </div>
+                                <div class="mac-game-card">
+                                    <div class="mac-card-top">
+                                        <div class="mac-card-badge ready">&#9679; Ready</div>
+                                        <span class="mac-card-opts">&#9776;</span>
+                                    </div>
+                                    <div class="mac-card-icon-wrap">
+                                        <div class="mac-card-icon" style="background: linear-gradient(135deg, #1a3040, #0f2530);">&#9973;</div>
+                                    </div>
+                                    <div class="mac-card-info">
+                                        <div class="mac-card-title">Valheim</div>
+                                        <div class="mac-card-sub">valheim.exe</div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
