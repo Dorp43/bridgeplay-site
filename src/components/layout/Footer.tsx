@@ -16,6 +16,7 @@ export default function Footer() {
                         <a href="/#pricing">Pricing</a>
                         <a href="/#download">Download</a>
                         <a href="/#faq">FAQ</a>
+                        <Link to="/changelog">Changelog</Link>
                     </div>
                     <div className={styles.col}>
                         <h4>Legal</h4>

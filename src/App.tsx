@@ -8,6 +8,7 @@ import PrivacyPolicy from './pages/PrivacyPolicy';
 import TermsAndConditions from './pages/TermsAndConditions';
 import RefundPolicy from './pages/RefundPolicy';
 import NotFound from './pages/NotFound';
+import Changelog from './pages/Changelog';
 import ScrollToTop from './components/ui/ScrollToTop';
 
 const PAGE_TITLES: Record<string, string> = {
@@ -16,6 +17,7 @@ const PAGE_TITLES: Record<string, string> = {
     '/privacy-policy': 'Privacy Policy — BridgePlay',
     '/terms': 'Terms of Service — BridgePlay',
     '/refund-policy': 'Refund Policy — BridgePlay',
+    '/changelog': 'Changelog — BridgePlay',
 };
 
 function PageTitle() {
@@ -66,6 +68,7 @@ export default function App() {
                     <Route path="/privacy-policy" element={<PrivacyPolicy />} />
                     <Route path="/terms" element={<TermsAndConditions />} />
                     <Route path="/refund-policy" element={<RefundPolicy />} />
+                    <Route path="/changelog" element={<Changelog />} />
                 </Route>
                 <Route path="*" element={<NotFound />} />
             </Routes>

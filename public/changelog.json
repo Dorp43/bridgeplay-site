@@ -1,0 +1,19 @@
+[
+  {
+    "version": "0.2.0",
+    "date": "2026-04-26",
+    "notes": [
+      "Added auto-update system with private GitHub release downloads",
+      "Added Firebase Auth, 7-day trial system with device fingerprinting, and onboarding wizard"
+    ]
+  },
+  {
+    "version": "0.1.0",
+    "date": "2026-04-20",
+    "notes": [
+      "Initial release of BridgePlay",
+      "Wine-based Windows game compatibility for macOS",
+      "Apple Silicon native support"
+    ]
+  }
+]
