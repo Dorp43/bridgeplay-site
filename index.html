@@ -1267,6 +1267,13 @@
             text-overflow: ellipsis;
             white-space: nowrap;
         }
+        #nav-auth-slot {
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        #nav-auth-slot.ready {
+            opacity: 1;
+        }
 
         /* Contact form */
         .contact {
@@ -2082,6 +2089,7 @@
             } else {
                 slot.innerHTML = '<a href="account.html">Login</a>';
             }
+            slot.classList.add('ready');
         });
     </script>
 </body>
