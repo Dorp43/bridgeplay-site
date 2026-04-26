@@ -1,0 +1,46 @@
+.page {
+    min-height: 100dvh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+}
+.card {
+    text-align: center;
+    animation: fadeInUp 0.5s ease-out;
+}
+.code {
+    font-size: 6rem;
+    font-weight: 900;
+    background: linear-gradient(135deg, var(--accent), var(--green));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    line-height: 1;
+    display: block;
+    margin-bottom: 16px;
+}
+.card h1 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+.card p {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    margin-bottom: 32px;
+}
+.btn {
+    display: inline-block;
+    padding: 12px 28px;
+    background: linear-gradient(135deg, var(--accent), #3b82f6);
+    color: #fff;
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: 0.95rem;
+    transition: all 0.25s;
+    box-shadow: 0 4px 20px rgba(74, 158, 255, 0.25);
+}
+.btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 25px rgba(74, 158, 255, 0.35);
+}
