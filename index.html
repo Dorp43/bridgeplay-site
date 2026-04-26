@@ -1191,6 +1191,83 @@
             background: var(--accent-glow);
         }
 
+        /* Toast */
+        .toast-container {
+            position: fixed;
+            top: 80px;
+            right: 24px;
+            z-index: 200;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            pointer-events: none;
+        }
+        .toast {
+            pointer-events: auto;
+            padding: 16px 22px;
+            border-radius: 14px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            line-height: 1.4;
+            max-width: 400px;
+            transform: translateX(120%);
+            opacity: 0;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        .toast.show { transform: translateX(0); opacity: 1; }
+        .toast.hide { transform: translateX(120%); opacity: 0; }
+        .toast-success {
+            background: rgba(109, 213, 160, 0.12);
+            border: 1px solid rgba(109, 213, 160, 0.2);
+            color: var(--green);
+        }
+        .toast-error {
+            background: rgba(244, 114, 182, 0.12);
+            border: 1px solid rgba(244, 114, 182, 0.2);
+            color: var(--pink);
+        }
+
+        /* Nav profile */
+        .nav-profile {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            padding: 4px 14px 4px 4px;
+            border-radius: 100px;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.08);
+            transition: all 0.2s;
+        }
+        .nav-profile:hover {
+            background: rgba(255,255,255,0.07);
+            border-color: rgba(255,255,255,0.12);
+        }
+        .nav-avatar {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent), var(--green));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            font-weight: 800;
+            color: #fff;
+            flex-shrink: 0;
+        }
+        .nav-profile-email {
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            max-width: 160px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
         /* Contact form */
         .contact {
             padding: 120px 0;
@@ -1276,6 +1353,7 @@
 </head>
 <body oncontextmenu="return false;" ondragstart="return false;">
     <div class="bg-glow"></div>
+    <div class="toast-container" id="toast-container"></div>
 
     <!-- Navigation -->
     <nav>
@@ -1285,7 +1363,7 @@
             <a href="#how-it-works">How It Works</a>
             <a href="#pricing">Pricing</a>
             <a href="#faq">FAQ</a>
-            <a href="account.html">My Account</a>
+            <span id="nav-auth-slot"><a href="account.html">Login</a></span>
             <a href="#download" class="nav-cta">Download</a>
         </div>
     </nav>
@@ -1740,7 +1818,6 @@
                     <textarea id="contact-message" name="message" placeholder="How can we help?" required></textarea>
                 </div>
                 <button type="submit" class="contact-submit">Send Message</button>
-                <div id="form-status" style="display:none; padding: 16px; border-radius: 12px; font-size: 0.95rem; font-weight: 600; text-align: center; margin-top: 4px;"></div>
             </form>
         </div>
     </section>
@@ -1768,7 +1845,7 @@
                 </div>
                 <div class="footer-col">
                     <h4>Support</h4>
-                    <a href="account.html">My Account</a>
+                    <a href="account.html">Login</a>
                     <a href="#contact">Contact</a>
                 </div>
             </div>
@@ -1922,49 +1999,88 @@
         const heroStats = document.querySelector('.hero-stats');
         if (heroStats) statsObserver.observe(heroStats);
 
+        // Toast system
+        function showToast(message, type) {
+            var container = document.getElementById('toast-container');
+            var toast = document.createElement('div');
+            toast.className = 'toast toast-' + type;
+            toast.textContent = message;
+            container.appendChild(toast);
+            requestAnimationFrame(function() {
+                requestAnimationFrame(function() {
+                    toast.classList.add('show');
+                });
+            });
+            setTimeout(function() {
+                toast.classList.remove('show');
+                toast.classList.add('hide');
+                setTimeout(function() { toast.remove(); }, 500);
+            }, 4500);
+        }
+
         // Contact form AJAX submit
-        const contactForm = document.getElementById('contact-form');
-        const formStatus = document.getElementById('form-status');
-        contactForm.addEventListener('submit', async (e) => {
+        var contactForm = document.getElementById('contact-form');
+        contactForm.addEventListener('submit', async function(e) {
             e.preventDefault();
-            const btn = contactForm.querySelector('.contact-submit');
+            var btn = contactForm.querySelector('.contact-submit');
             btn.textContent = 'Sending...';
             btn.disabled = true;
             try {
-                const res = await fetch('https://formspree.io/f/xlgavaeo', {
+                var res = await fetch('https://formspree.io/f/xlgavaeo', {
                     method: 'POST',
                     body: new FormData(contactForm),
                     headers: { 'Accept': 'application/json' }
                 });
                 if (res.ok) {
-                    formStatus.style.display = 'block';
-                    formStatus.style.background = 'rgba(109,213,160,0.12)';
-                    formStatus.style.color = '#6dd5a0';
-                    formStatus.style.border = '1px solid rgba(109,213,160,0.2)';
-                    formStatus.textContent = 'Message sent successfully! We\'ll get back to you soon.';
+                    showToast('Message sent! We\'ll get back to you soon.', 'success');
                     contactForm.reset();
                     btn.textContent = 'Sent!';
-                    setTimeout(() => { btn.textContent = 'Send Message'; btn.disabled = false; }, 3000);
+                    setTimeout(function() { btn.textContent = 'Send Message'; btn.disabled = false; }, 3000);
                 } else {
                     throw new Error();
                 }
-            } catch {
-                formStatus.style.display = 'block';
-                formStatus.style.background = 'rgba(244,114,182,0.12)';
-                formStatus.style.color = '#f472b6';
-                formStatus.style.border = '1px solid rgba(244,114,182,0.2)';
-                formStatus.textContent = 'Something went wrong. Please try again.';
+            } catch(err) {
+                showToast('Something went wrong. Please try again.', 'error');
                 btn.textContent = 'Send Message';
                 btn.disabled = false;
             }
         });
 
         // Copy protection
-        document.addEventListener('copy', e => e.preventDefault());
-        document.addEventListener('cut', e => e.preventDefault());
-        document.addEventListener('keydown', e => {
+        document.addEventListener('copy', function(e) { e.preventDefault(); });
+        document.addEventListener('cut', function(e) { e.preventDefault(); });
+        document.addEventListener('keydown', function(e) {
             if ((e.ctrlKey || e.metaKey) && (e.key === 'c' || e.key === 'x' || e.key === 'a' || e.key === 'u')) {
                 e.preventDefault();
+            }
+        });
+    </script>
+
+    <!-- Firebase Auth for nav profile -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+    <script>
+        firebase.initializeApp({
+            apiKey: "AIzaSyBTqWbkTUzQRG6xNDYAWgjzNDcaSNtvutU",
+            authDomain: "bridgeplay-8f4f6.firebaseapp.com",
+            projectId: "bridgeplay-8f4f6",
+            storageBucket: "bridgeplay-8f4f6.firebasestorage.app",
+            messagingSenderId: "438760266610",
+            appId: "1:438760266610:ios:6c8c9319aefa219c4e5beb"
+        });
+
+        firebase.auth().onAuthStateChanged(function(user) {
+            var slot = document.getElementById('nav-auth-slot');
+            if (user) {
+                var initial = (user.email || '?')[0].toUpperCase();
+                var email = user.email || '';
+                var short = email.length > 20 ? email.substring(0, 18) + '...' : email;
+                slot.innerHTML = '<a href="account.html" class="nav-profile">' +
+                    '<span class="nav-avatar">' + initial + '</span>' +
+                    '<span class="nav-profile-email">' + short + '</span>' +
+                    '</a>';
+            } else {
+                slot.innerHTML = '<a href="account.html">Login</a>';
             }
         });
     </script>
