@@ -1,0 +1,21 @@
+.section { padding: 120px 0; background: var(--bg-secondary); position: relative; z-index: 1; }
+.container { max-width: 1140px; margin: 0 auto; padding: 0 24px; }
+.steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 32px; margin-top: 64px; }
+.step { text-align: center; position: relative; }
+.number {
+    width: 56px; height: 56px; border-radius: 50%; background: var(--accent-glow);
+    border: 2px solid rgba(74, 158, 255, 0.2); display: flex; align-items: center;
+    justify-content: center; font-size: 1.2rem; font-weight: 800; color: var(--accent); margin: 0 auto 20px;
+}
+.step h3 { font-size: 1.05rem; font-weight: 700; margin-bottom: 8px; }
+.step p { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6; }
+.connector {
+    position: absolute; top: 28px; left: calc(50% + 36px); width: calc(100% - 72px); height: 2px;
+    background: linear-gradient(90deg, rgba(74,158,255,0.3), rgba(74,158,255,0.05));
+    transform: scaleX(0); transform-origin: left; transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.step:global(.visible) .connector { transform: scaleX(1); }
+.step:global(.visible) .number { animation: scaleIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) both; }
+
+@media (max-width: 900px) { .steps { grid-template-columns: repeat(2, 1fr); } .connector { display: none; } }
+@media (max-width: 600px) { .steps { grid-template-columns: 1fr; } }
