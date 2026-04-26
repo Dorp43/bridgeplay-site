@@ -47,6 +47,7 @@ export default function Nav({ variant = 'full' }: Props) {
                     <a href="/#how-it-works" onClick={e => handleAnchor(e, '#how-it-works')}>How It Works</a>
                     <a href="/#pricing" onClick={e => handleAnchor(e, '#pricing')}>Pricing</a>
                     <a href="/#faq" onClick={e => handleAnchor(e, '#faq')}>FAQ</a>
+                    <Link to="/changelog">Changelog</Link>
                     <span className={`${styles.authSlot} ${!loading ? styles.ready : ''}`}>
                         {!loading && (
                             user ? (
@@ -78,6 +79,7 @@ export default function Nav({ variant = 'full' }: Props) {
                 <a href="/#how-it-works" onClick={e => handleAnchor(e, '#how-it-works')}>How It Works</a>
                 <a href="/#pricing" onClick={e => handleAnchor(e, '#pricing')}>Pricing</a>
                 <a href="/#faq" onClick={e => handleAnchor(e, '#faq')}>FAQ</a>
+                <Link to="/changelog" onClick={() => setMenuOpen(false)}>Changelog</Link>
                 <span className={`${styles.authSlot} ${!loading ? styles.ready : ''}`}>
                     {!loading && (
                         user ? (
