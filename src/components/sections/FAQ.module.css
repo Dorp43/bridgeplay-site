@@ -1,0 +1,15 @@
+.section { padding: 120px 0; background: var(--bg-secondary); position: relative; z-index: 1; }
+.container { max-width: 1140px; margin: 0 auto; padding: 0 24px; }
+.list { max-width: 720px; margin: 0 auto; }
+.item { border-bottom: 1px solid var(--border); padding: 24px 0; }
+.question {
+    display: flex; justify-content: space-between; align-items: center; cursor: pointer;
+    font-size: 1.05rem; font-weight: 600; color: var(--text-primary); transition: color 0.2s;
+    background: none; border: none; width: 100%; text-align: left; font-family: inherit;
+}
+.question:hover { color: var(--accent); }
+.arrow { font-size: 1.2rem; color: var(--text-muted); transition: transform 0.3s; flex-shrink: 0; margin-left: 16px; }
+.open .arrow { transform: rotate(45deg); }
+.answer { max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out, padding 0.3s; }
+.open .answer { max-height: 300px; padding-top: 16px; }
+.answer p { font-size: 0.95rem; color: var(--text-secondary); line-height: 1.7; }

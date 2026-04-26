@@ -1,0 +1,187 @@
+.hero { padding: 160px 0 100px; text-align: center; position: relative; z-index: 1; }
+.container { max-width: 1140px; margin: 0 auto; padding: 0 24px; }
+.badge {
+    display: inline-flex; align-items: center; gap: 8px; padding: 6px 16px;
+    background: var(--accent-glow); border: 1px solid rgba(74, 158, 255, 0.2);
+    border-radius: 100px; font-size: 0.8rem; font-weight: 600; color: var(--accent);
+    margin-bottom: 24px; animation: fadeInUp 0.6s ease-out;
+}
+.dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); animation: pulse 2s infinite; }
+.hero h1 {
+    font-size: clamp(2.5rem, 6vw, 4.5rem); font-weight: 900; line-height: 1.1;
+    letter-spacing: -2px; margin-bottom: 20px; animation: fadeInUp 0.6s ease-out 0.1s both;
+}
+.gradient {
+    background: linear-gradient(135deg, var(--accent) 0%, var(--green) 50%, var(--purple) 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-size: 200% 200%; animation: gradientShift 5s ease-in-out infinite;
+}
+.hero p {
+    font-size: 1.2rem; color: var(--text-secondary); max-width: 560px;
+    margin: 0 auto 40px; line-height: 1.7; animation: fadeInUp 0.6s ease-out 0.2s both;
+}
+.actions {
+    display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;
+    animation: fadeInUp 0.6s ease-out 0.3s both;
+}
+.btnPrimary {
+    display: inline-flex; align-items: center; gap: 10px; padding: 14px 32px;
+    background: linear-gradient(135deg, var(--accent), #3b82f6); color: #fff;
+    border: none; border-radius: 12px; font-size: 1rem; font-weight: 700;
+    cursor: pointer; transition: all 0.25s; box-shadow: 0 4px 20px rgba(74, 158, 255, 0.25);
+    position: relative; overflow: hidden;
+}
+.btnPrimary:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(74, 158, 255, 0.35); }
+.btnSecondary {
+    display: inline-flex; align-items: center; gap: 8px; padding: 14px 32px;
+    background: transparent; color: var(--text-secondary); border: 1px solid var(--border-light);
+    border-radius: 12px; font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.25s;
+}
+.btnSecondary:hover { border-color: var(--text-muted); color: var(--text-primary); background: rgba(255,255,255,0.03); }
+.stats {
+    display: flex; justify-content: center; gap: 48px; margin-top: 60px;
+    animation: fadeInUp 0.6s ease-out 0.4s both;
+}
+.stat { text-align: center; }
+.number { font-size: 1.5rem; font-weight: 800; color: var(--text-primary); }
+.label { font-size: 0.8rem; color: var(--text-muted); margin-top: 2px; }
+
+/* Particles */
+.particles {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    pointer-events: none; overflow: hidden; z-index: 0;
+}
+.particle {
+    position: absolute; width: 4px; height: 4px; border-radius: 50%;
+    background: var(--accent); opacity: 0; animation: particleFloat 8s ease-in-out infinite;
+}
+.particle:nth-child(1) { left: 10%; top: 20%; animation-delay: 0s; animation-duration: 7s; }
+.particle:nth-child(2) { left: 25%; top: 60%; animation-delay: 1.5s; animation-duration: 9s; background: var(--green); }
+.particle:nth-child(3) { left: 55%; top: 30%; animation-delay: 3s; animation-duration: 6s; background: var(--purple); }
+.particle:nth-child(4) { left: 75%; top: 70%; animation-delay: 2s; animation-duration: 8s; }
+.particle:nth-child(5) { left: 90%; top: 15%; animation-delay: 4s; animation-duration: 10s; background: var(--green); }
+.particle:nth-child(6) { left: 40%; top: 80%; animation-delay: 1s; animation-duration: 7.5s; background: var(--purple); }
+
+/* App preview */
+.appPreview { max-width: 960px; margin: 60px auto 0; animation: fadeInUp 0.8s ease-out 0.5s both; }
+.macWindow {
+    background: #14151c; border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 12px; overflow: hidden;
+    box-shadow: 0 50px 100px rgba(0,0,0,0.6), 0 0 80px rgba(74, 158, 255, 0.04);
+    animation: glowPulse 4s ease-in-out infinite;
+}
+.titlebar {
+    display: flex; align-items: center; gap: 8px; padding: 12px 16px;
+    background: #1c1d26; border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.dot2 { width: 12px; height: 12px; border-radius: 50%; }
+.red { background: #ff5f57; }
+.yellow { background: #febc2e; }
+.green { background: #28c840; }
+.titlebarText { flex: 1; text-align: center; font-size: 0.8rem; color: var(--text-muted); font-weight: 500; }
+.macBody { display: flex; min-height: 460px; }
+
+/* Sidebar */
+.sidebar {
+    width: 200px; flex-shrink: 0; background: rgba(30,31,40,0.95);
+    border-right: 1px solid rgba(255,255,255,0.06); display: flex; flex-direction: column;
+}
+.sbTitle { font-size: 1.15rem; font-weight: 800; color: var(--text-primary); padding: 16px 14px 8px; letter-spacing: -0.3px; }
+.sbLabel { font-size: 0.6rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1.2px; color: var(--text-muted); padding: 14px 14px 4px; }
+.sbItem {
+    display: flex; align-items: center; gap: 8px; padding: 6px 14px; border-radius: 6px;
+    font-size: 0.8rem; font-weight: 500; color: var(--text-secondary); cursor: default; margin: 1px 6px;
+}
+.active { background: rgba(74,158,255,0.12); color: var(--accent); }
+.sbIcon { font-size: 0.78rem; width: 16px; text-align: center; opacity: 0.8; }
+.sbSpacer { flex: 1; }
+.sbActions { padding: 8px 10px; display: flex; flex-direction: column; gap: 6px; }
+.sbBtn {
+    display: flex; align-items: center; justify-content: center; gap: 6px;
+    padding: 7px 10px; border-radius: 8px; font-size: 0.78rem; font-weight: 600; cursor: default;
+}
+.sbBtnPrimary { background: rgba(59,156,245,0.9); color: #fff; }
+.sbBtnSecondary { background: rgba(255,255,255,0.05); color: var(--text-secondary); border: 1px solid rgba(255,255,255,0.1); }
+.sbProfileSection { border-top: 1px solid rgba(255,255,255,0.06); padding: 10px; display: flex; flex-direction: column; gap: 6px; }
+.sbLicensePill {
+    display: flex; align-items: center; justify-content: center; gap: 4px;
+    padding: 4px 10px; border-radius: 100px; font-size: 0.62rem; font-weight: 700;
+    color: var(--green); background: rgba(109,213,160,0.1); border: 1px solid rgba(109,213,160,0.12);
+}
+.sbProfile { display: flex; align-items: center; gap: 8px; padding: 2px 4px; }
+.sbAvatar {
+    width: 24px; height: 24px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent), var(--green));
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.6rem; font-weight: 800; color: #fff; flex-shrink: 0;
+}
+.sbEmail { font-size: 0.68rem; color: var(--text-secondary); font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.sbSignout { width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.55rem; color: var(--text-muted); margin-left: auto; flex-shrink: 0; }
+
+/* Main */
+.main { flex: 1; display: flex; flex-direction: column; background: #1e1f28; }
+.toolbar {
+    display: flex; align-items: center; gap: 12px; padding: 8px 16px;
+    background: rgba(28,29,38,0.95); border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.toolbarTitle { font-size: 0.95rem; font-weight: 700; color: var(--text-primary); letter-spacing: -0.2px; }
+.toolbarSearch {
+    display: flex; align-items: center; gap: 6px; padding: 5px 10px; border-radius: 6px;
+    background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.08);
+    font-size: 0.72rem; color: var(--text-muted); margin-left: auto;
+}
+.searchIcon { font-size: 0.7rem; opacity: 0.6; }
+.toolbarGear {
+    width: 28px; height: 28px; display: flex; align-items: center; justify-content: center;
+    border-radius: 6px; font-size: 0.85rem; color: var(--text-secondary);
+    background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.06);
+}
+
+/* Dock */
+.dock {
+    display: flex; align-items: center; gap: 8px; padding: 10px 14px; margin: 12px 16px 0;
+    background: rgba(255,255,255,0.025); border: 1px solid rgba(255,255,255,0.06); border-radius: 16px;
+}
+.pill {
+    display: flex; align-items: center; gap: 5px; padding: 6px 10px; border-radius: 10px;
+    background: rgba(255,255,255,0.035); border: 1px solid rgba(255,255,255,0.05); font-size: 0.65rem;
+}
+.pillIcon { font-size: 0.75rem; }
+.pillInfo { display: flex; flex-direction: column; line-height: 1.2; }
+.pillLabel { font-size: 0.55rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
+.pillValue { font-size: 0.72rem; font-weight: 600; color: var(--text-primary); }
+.dockSpacer { flex: 1; }
+.dockStatus { font-size: 0.68rem; color: var(--text-muted); font-weight: 500; }
+.dockLogs {
+    padding: 4px 10px; border-radius: 6px; font-size: 0.68rem; font-weight: 600;
+    color: var(--text-secondary); background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+}
+
+/* Empty state */
+.emptyState {
+    flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center;
+    padding: 40px 20px; text-align: center;
+}
+.emptyIcon {
+    width: 80px; height: 80px; border-radius: 50%; background: rgba(74,158,255,0.12);
+    display: flex; align-items: center; justify-content: center; margin-bottom: 18px;
+    font-size: 2rem; color: var(--accent);
+}
+.emptyTitle { font-size: 1.6rem; font-weight: 900; color: var(--text-primary); margin-bottom: 6px; letter-spacing: -0.5px; }
+.emptySubtitle { font-size: 0.85rem; color: var(--text-secondary); font-weight: 500; margin-bottom: 4px; }
+.emptyDetail { font-size: 0.75rem; color: var(--text-muted); max-width: 340px; margin-bottom: 20px; line-height: 1.5; }
+.emptyBtn {
+    display: inline-flex; align-items: center; gap: 6px; padding: 10px 24px; border-radius: 10px;
+    background: rgba(59,156,245,0.9); color: #fff; font-size: 0.85rem; font-weight: 700;
+}
+
+@media (max-width: 900px) {
+    .macBody { flex-direction: column; }
+    .sidebar { width: 100%; border-right: none; border-bottom: 1px solid rgba(255,255,255,0.06); flex-direction: row; flex-wrap: wrap; gap: 4px; padding: 8px; }
+    .sbSpacer, .sbLabel, .sbProfileSection, .sbTitle, .sbActions { display: none; }
+}
+@media (max-width: 600px) {
+    .dock { display: none; }
+    .stats { gap: 24px; }
+    .actions { flex-direction: column; align-items: center; }
+}
