@@ -11,7 +11,7 @@ export default function CTA() {
                     <h2>Ready to Play?</h2>
                     <p>Download BridgePlay and start gaming on your Mac today. Free 7-day trial, no credit card required.</p>
                     <div className={styles.actions}>
-                        <a href="/BridgePlay-latest.dmg" className={styles.btn} download>
+                        <a href="https://github.com/Dorp43/BridgePlay/releases/latest/download/BridgePlay.dmg" className={styles.btn}>
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" width="20" height="20"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
                             Download for macOS
                         </a>

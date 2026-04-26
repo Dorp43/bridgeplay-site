@@ -208,7 +208,7 @@ export default function AccountPage() {
                 <div className={styles.statusCard}>
                     <h3>Quick Actions</h3>
                     <div className={styles.actionsGrid}>
-                        <a href="/BridgePlay-latest.dmg" download className={`${styles.actionBtn} ${styles.actionPrimary}`}>Download BridgePlay</a>
+                        <a href="https://github.com/Dorp43/BridgePlay/releases/latest/download/BridgePlay.dmg" className={`${styles.actionBtn} ${styles.actionPrimary}`}>Download BridgePlay</a>
                         <button className={`${styles.actionBtn} ${styles.actionDanger}`} onClick={handleSignOut}>Sign Out</button>
                     </div>
                 </div>
