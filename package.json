@@ -10,8 +10,10 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@paddle/paddle-node-sdk": "^3.8.0",
     "@vercel/analytics": "^2.0.1",
     "firebase": "^12.12.1",
+    "firebase-admin": "^13.8.0",
     "react": "^19.2.5",
     "react-dom": "^19.2.5",
     "react-router-dom": "^7.14.2"
