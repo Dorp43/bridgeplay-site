@@ -92,6 +92,8 @@
     box-shadow: 0 4px 15px rgba(74, 158, 255, 0.2);
 }
 .actionPrimary:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(74, 158, 255, 0.3); }
+.actionSecondary { background: rgba(255,255,255,0.05); color: var(--text-primary); border: 1px solid var(--border-light); }
+.actionSecondary:hover { background: rgba(255,255,255,0.08); }
 .actionDanger { background: transparent; color: var(--danger); border: 1px solid rgba(248,113,113,0.2); }
 .actionDanger:hover { background: rgba(248,113,113,0.08); }
 

@@ -4,6 +4,7 @@ import { doc, getDoc } from 'firebase/firestore';
 import { auth, db, friendlyAuthError } from '../lib/firebase';
 import { useAuth } from '../context/AuthContext';
 import { useToast } from '../context/ToastContext';
+import { openCheckout, PRICE_IDS } from '../lib/paddle';
 import styles from './AccountPage.module.css';
 
 interface LicenseData {
@@ -208,7 +209,10 @@ export default function AccountPage() {
                 <div className={styles.statusCard}>
                     <h3>Quick Actions</h3>
                     <div className={styles.actionsGrid}>
-                        <a href="/BridgePlay.dmg" download className={`${styles.actionBtn} ${styles.actionPrimary}`}>Download BridgePlay</a>
+                        {license && (license.status === 'expired' || license.status === 'noTrial') && (
+                            <button onClick={() => openCheckout(PRICE_IDS.yearly, user.email || undefined, user.uid)} className={`${styles.actionBtn} ${styles.actionPrimary}`}>Upgrade Now</button>
+                        )}
+                        <a href="/BridgePlay.dmg" download className={`${styles.actionBtn} ${license && (license.status === 'expired' || license.status === 'noTrial') ? styles.actionSecondary : styles.actionPrimary}`}>Download BridgePlay</a>
                         <button className={`${styles.actionBtn} ${styles.actionDanger}`} onClick={handleSignOut}>Sign Out</button>
                     </div>
                 </div>
