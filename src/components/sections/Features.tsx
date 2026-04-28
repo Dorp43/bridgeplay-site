@@ -20,7 +20,11 @@ export default function Features() {
                 <SectionHeader label="Features" title="Everything You Need to Game on Mac" description="BridgePlay handles the complexity so you can focus on what matters — playing your games." />
                 <div className={`${styles.grid} reveal-stagger`}>
                     {features.map((f, i) => (
-                        <div key={i} className={`${styles.card} reveal`}>
+                        <div
+                            key={i}
+                            className={`${styles.card} reveal`}
+                            style={{ ['--card-accent' as string]: f.color, ['--card-glow' as string]: f.bg }}
+                        >
                             <div className={styles.icon} style={{ background: f.bg, color: f.color }}>{f.icon}</div>
                             <h3>{f.title}</h3>
                             <p>{f.desc}</p>

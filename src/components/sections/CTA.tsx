@@ -8,15 +8,15 @@ export default function CTA() {
         <section className={styles.section} id="download" ref={ref}>
             <div className={styles.container}>
                 <div className={`${styles.box} reveal-scale`}>
-                    <h2>Ready to Play?</h2>
-                    <p>Download BridgePlay and start gaming on your Mac today. Free 7-day trial, no credit card required.</p>
+                    <h2>Releasing Soon</h2>
+                    <p>BridgePlay is putting the final touches on the macOS build. The download will land here the moment it's ready.</p>
                     <div className={styles.actions}>
-                        <a href="/BridgePlay.dmg" className={styles.btn} download>
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" width="20" height="20"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                            Download for macOS
-                        </a>
+                        <button type="button" className={`${styles.btn} ${styles.disabled}`} disabled aria-disabled="true" title="Releasing soon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" width="20" height="20"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                            Releasing Soon
+                        </button>
                     </div>
-                    <p className={styles.note}>Requires macOS 14+ &middot; Apple Silicon or Intel &middot; 25MB download</p>
+                    <p className={styles.note}>Built for macOS 14+ &middot; Apple Silicon &amp; Intel</p>
                 </div>
             </div>
         </section>

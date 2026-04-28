@@ -56,6 +56,22 @@
 @keyframes spin {
     to { transform: rotate(360deg); }
 }
+@keyframes shineSweep {
+    0% { transform: translateX(-120%) skewX(-20deg); opacity: 0; }
+    20% { opacity: 0.8; }
+    100% { transform: translateX(220%) skewX(-20deg); opacity: 0; }
+}
+@keyframes subtleFloat {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-4px); }
+}
+@keyframes auroraSpin {
+    to { transform: rotate(360deg); }
+}
+@keyframes badgeBob {
+    0%, 100% { transform: translateX(-50%) translateY(0); }
+    50% { transform: translateX(-50%) translateY(-3px); }
+}
 
 /* Reveal classes */
 .reveal {

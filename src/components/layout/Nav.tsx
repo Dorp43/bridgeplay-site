@@ -66,7 +66,7 @@ export default function Nav({ variant = 'full' }: Props) {
                             )
                         )}
                     </span>
-                    <a href="/#download" onClick={e => handleAnchor(e, '#download')} className={styles.cta}>Download</a>
+                    <button type="button" disabled aria-disabled="true" title="Releasing soon" className={`${styles.cta} ${styles.ctaDisabled}`}>Coming Soon</button>
                 </div>
                 <button className={`${styles.burger} ${menuOpen ? styles.burgerOpen : ''}`} onClick={() => setMenuOpen(!menuOpen)} aria-label="Menu">
                     <span /><span /><span />
@@ -98,7 +98,7 @@ export default function Nav({ variant = 'full' }: Props) {
                         )
                     )}
                 </span>
-                <a href="/#download" onClick={e => handleAnchor(e, '#download')} className={styles.mobileCta}>Download</a>
+                <button type="button" disabled aria-disabled="true" className={`${styles.mobileCta} ${styles.ctaDisabled}`}>Coming Soon</button>
             </div>
         </>
     );

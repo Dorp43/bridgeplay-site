@@ -22,9 +22,31 @@ img { display: block; max-width: 100%; }
     left: -50%;
     width: 200%;
     height: 200%;
-    background: radial-gradient(ellipse at 30% 20%, rgba(74, 158, 255, 0.04) 0%, transparent 50%),
-                radial-gradient(ellipse at 70% 60%, rgba(109, 213, 160, 0.03) 0%, transparent 50%),
-                radial-gradient(ellipse at 50% 80%, rgba(167, 139, 250, 0.02) 0%, transparent 40%);
+    background: radial-gradient(ellipse at 30% 20%, rgba(74, 158, 255, 0.06) 0%, transparent 50%),
+                radial-gradient(ellipse at 70% 60%, rgba(109, 213, 160, 0.04) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 80%, rgba(167, 139, 250, 0.035) 0%, transparent 40%);
     pointer-events: none;
     z-index: 0;
+}
+
+/* Dotted grid backdrop — adds quiet rhythm without visual noise */
+.bg-grid {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    background-image: radial-gradient(rgba(255,255,255,0.035) 1px, transparent 1px);
+    background-size: 32px 32px;
+    mask-image: radial-gradient(ellipse at 50% 30%, #000 30%, transparent 75%);
+    -webkit-mask-image: radial-gradient(ellipse at 50% 30%, #000 30%, transparent 75%);
+}
+
+/* Selection */
+::selection { background: rgba(74,158,255,0.3); color: var(--text-primary); }
+
+/* Focus ring — accessible without being heavy */
+:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 4px;
 }

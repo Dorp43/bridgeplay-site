@@ -28,6 +28,7 @@ export default function HomePage() {
 
     return (
         <>
+            <div className="bg-grid" />
             <div className="bg-glow" />
             <Hero />
             <Features />

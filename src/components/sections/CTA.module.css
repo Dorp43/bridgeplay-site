@@ -24,4 +24,12 @@
     cursor: pointer; transition: all 0.25s; box-shadow: 0 4px 20px rgba(74, 158, 255, 0.25);
 }
 .btn:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(74, 158, 255, 0.35); }
+.disabled, .disabled:hover {
+    cursor: not-allowed;
+    background: linear-gradient(135deg, #2a2a3d, #1e1e2e) !important;
+    color: var(--text-secondary) !important;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.04) !important;
+    transform: none !important;
+    opacity: 0.85;
+}
 .note { font-size: 0.8rem; color: var(--text-muted); margin-top: 16px; position: relative; }
