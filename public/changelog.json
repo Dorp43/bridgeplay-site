@@ -1,5 +1,16 @@
 [
   {
+    "version": "0.4.1",
+    "date": "2026-07-24",
+    "notes": [
+      "Per-game running status: only the launched game shows as running",
+      "Running games show Launch Another / Run Another (N)",
+      "Exact client detection, no Screen Recording permission needed",
+      "Fixed launcher stalls while applying game settings",
+      "Wine commands tolerate slow cold starts"
+    ]
+  },
+  {
     "version": "0.2.0",
     "date": "2026-04-26",
     "notes": [
