@@ -1,5 +1,15 @@
 [
   {
+    "version": "0.4.4",
+    "date": "2026-07-24",
+    "notes": [
+      "Double-click a game name to rename it inline (card + details panel)",
+      "Clicking outside the name field saves the new name",
+      "Details panel Rename button works again",
+      "Seamless rename with no flash of the old name"
+    ]
+  },
+  {
     "version": "0.4.3",
     "date": "2026-07-24",
     "notes": [
