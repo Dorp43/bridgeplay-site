@@ -1,5 +1,14 @@
 [
   {
+    "version": "0.4.3",
+    "date": "2026-07-24",
+    "notes": [
+      "Starting… indication while a game launches (badge + button with spinner)",
+      "Double-launch protection while a game is starting",
+      "Double-clicking a game card now also selects it"
+    ]
+  },
+  {
     "version": "0.4.2",
     "date": "2026-07-24",
     "notes": [
