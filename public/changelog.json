@@ -1,5 +1,14 @@
 [
   {
+    "version": "0.4.5",
+    "date": "2026-07-24",
+    "notes": [
+      "Deleting a game now completely removes it (game folder, Wine environment, shader cache, desktop shortcuts)",
+      "Automatic cleanup of orphaned game folders from older versions — can reclaim many GB",
+      "Deletion precisely targets only the chosen game"
+    ]
+  },
+  {
     "version": "0.4.4",
     "date": "2026-07-24",
     "notes": [
