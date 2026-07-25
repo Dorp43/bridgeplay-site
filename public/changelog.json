@@ -1,5 +1,14 @@
 [
   {
+    "version": "0.5.1",
+    "date": "2026-07-25",
+    "notes": [
+      "Per-client audio mute and a CLIENTS section (mute / close one / close all)",
+      "Block macOS Shortcuts per game — stops Spotlight, Mission Control, etc. while the game window is focused",
+      "Storage breakdown (Game vs Runtime) and app-wide hover polish"
+    ]
+  },
+  {
     "version": "0.5.0",
     "date": "2026-07-25",
     "notes": [
