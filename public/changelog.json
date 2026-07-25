@@ -1,5 +1,17 @@
 [
   {
+    "version": "0.5.0",
+    "date": "2026-07-25",
+    "notes": [
+      "Per-client audio mute and a new CLIENTS section (mute / close one / close all)",
+      "Repair Game + automatic cleanup of stuck wine processes",
+      "Live launch status so long launches never look frozen",
+      "Complete game deletion with disk-usage breakdown",
+      "Installer cleanup, rename by double-click, What's New, and a launch log viewer",
+      "App-wide hover polish"
+    ]
+  },
+  {
     "version": "0.4.5",
     "date": "2026-07-24",
     "notes": [
