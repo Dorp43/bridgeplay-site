@@ -1,5 +1,15 @@
 [
   {
+    "version": "0.5.3",
+    "date": "2026-08-02",
+    "notes": [
+      "Fixes a login crash introduced in 0.5.2.",
+      "MapleRoyals: fixed a crash right after entering your PIC and logging in. 0.5.2 shipped a patched network library into the Wine runtime that was never meant to load for every game; it is now only applied on demand, per game, as it was before.",
+      "Fixed the What's New window's Close button doing nothing.",
+      "Note: your first launch after this update will take longer than usual while the runtime and game prefixes are refreshed. This is expected — let it finish."
+    ]
+  },
+  {
     "version": "0.5.1",
     "date": "2026-07-25",
     "notes": [
