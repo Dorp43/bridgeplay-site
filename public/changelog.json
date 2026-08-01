@@ -1,5 +1,15 @@
 [
   {
+    "version": "0.5.4",
+    "date": "2026-08-02",
+    "notes": [
+      "Completes the login-crash fix started in 0.5.3.",
+      "MapleRoyals: fixes the crash after entering your PIC and logging in. 0.5.3 removed the bad network library from the installer, but the launcher still reinstalled it on every launch — that path is now fixed too, and existing installs repair themselves on the next launch.",
+      "Fixed the What's New window's Close button doing nothing.",
+      "Note: your first launch after this update may take longer than usual while the runtime and game prefixes are refreshed. This is expected — let it finish."
+    ]
+  },
+  {
     "version": "0.5.3",
     "date": "2026-08-02",
     "notes": [
