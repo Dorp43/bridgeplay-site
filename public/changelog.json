@@ -1,5 +1,16 @@
 [
   {
+    "version": "0.6.0",
+    "date": "2026-08-03",
+    "notes": [
+      "New global hotkeys while you're in a game: jump straight to Client 1-4 (⌥1-⌥4), minimize (⌥M) or mute (⌥U) the client you're playing, Solo Audio (⌥⇧U) to hear only that client, Launch Another Client (⌥N), and Show BridgePlay (⌥B)",
+      "Optional instant-close hotkey (⌥W) — off by default, flip it on in Settings → Hotkeys if you want a kill switch",
+      "Hotkeys settings rebuilt: every shortcut has its own on/off switch, real key-cap rendering, and duplicate shortcuts are caught and explained",
+      "Shortcuts no longer use ⌘, so pressing one can't make your character jump — an old ⌘⌥S binding migrates to ⌥S automatically",
+      "Show BridgePlay now reopens the launcher window even if you had closed it"
+    ]
+  },
+  {
     "version": "0.5.4",
     "date": "2026-08-02",
     "notes": [
