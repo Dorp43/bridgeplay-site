@@ -1,5 +1,15 @@
 [
   {
+    "version": "0.6.1",
+    "date": "2026-08-06",
+    "notes": [
+      "The x87 compatibility layer now runs inside the game itself instead of the Wine desktop host. Themida-protected clients like MapleEra and MapleLegends finally get the protection they were always meant to have.",
+      "64-bit titles such as Ha Repacker now correctly skip the 32-bit compatibility shim, and a shim that cannot load can no longer stop a game from launching at all.",
+      "Config recovery no longer resets your per-game settings, hotkeys or selected game after a damaged config file, and can no longer silently drop a game and leave its files to be cleaned up.",
+      "A bound hotkey chord no longer leaks through into the game."
+    ]
+  },
+  {
     "version": "0.6.0",
     "date": "2026-08-03",
     "notes": [
