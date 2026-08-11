@@ -114,12 +114,6 @@
     transform: translateY(0) scale(0.97);
     transition-duration: 0.08s !important;
 }
-/* Sizing for the pre-launch CTA — visual state comes from global .btn-waiting */
-.ctaWaiting {
-    padding: 9px 22px;
-    border-radius: 10px;
-    font-size: 0.9rem;
-}
 .backLink {
     color: var(--text-secondary);
     font-size: 0.9rem;
@@ -254,11 +248,28 @@
 .mobileMenuOpen > :nth-child(5) { transition-delay: 220ms; }
 .mobileMenuOpen > :nth-child(6) { transition-delay: 260ms; }
 .mobileMenuOpen > :nth-child(7) { transition-delay: 300ms; }
-/* Sizing for the mobile pre-launch CTA — visual state from global .btn-waiting */
-.mobileCta {
+/* Mobile download CTA — the drawer's launch button. Compound selector outranks
+   the `.mobileMenu a` link treatment (color/border/hover) above. Deliberately
+   declares NO `transition:` — the drawer cascade (opacity/transform + the
+   nth-child delays) must keep driving this element's entrance. */
+.mobileMenu a.mobileCta {
     margin-top: 12px;
     padding: 14px;
     border-radius: 10px;
+    border-bottom: none;
+    background: var(--gradient-cta);
+    color: #fff;
+    font-weight: 700;
+    text-align: center;
+    box-shadow: 0 4px 16px rgba(74, 158, 255, 0.25), inset 0 1px 0 rgba(255,255,255,0.18); /* chamfer catch-light */
+}
+/* Press seat-down — fast in; release rides the cascade transition back out.
+   transition-delay: 0s beats the open-state nth-child(7) 300ms entrance delay
+   (0,3,1 vs 0,2,0) so the press fires immediately on tap. */
+.mobileMenu a.mobileCta:active {
+    transform: scale(0.97);
+    transition-duration: 0.08s;
+    transition-delay: 0s;
 }
 
 @media (max-width: 768px) {

@@ -16,10 +16,11 @@
 }
 .box:global(.visible)::before { animation-play-state: running; }
 .box h2 { font-size: clamp(1.8rem, 3.5vw, 2.5rem); font-weight: 800; margin-bottom: 16px; letter-spacing: -0.5px; position: relative; }
-.soon { font-family: var(--font-display); font-style: italic; font-weight: 400; }
+/* Serif-italic accent — one word only, mirrors the hero's "Your Mac." */
+.accent { font-family: var(--font-display); font-style: italic; font-weight: 400; }
 .box p { font-size: 1.1rem; color: var(--text-secondary); margin-bottom: 32px; max-width: 480px; margin-left: auto; margin-right: auto; position: relative; }
 .actions { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; position: relative; }
-/* Launch-state button style — unreferenced until the download ships */
+/* Primary download button — the section's launch-state CTA */
 .btn {
     display: inline-flex; align-items: center; gap: 10px; padding: 14px 32px;
     background: var(--gradient-cta); color: #fff;
@@ -27,4 +28,18 @@
     cursor: pointer; transition: all 0.25s; box-shadow: 0 4px 20px color-mix(in srgb, var(--accent) 25%, transparent);
 }
 .btn:hover { transform: translateY(-2px); box-shadow: 0 8px 30px color-mix(in srgb, var(--accent) 35%, transparent); }
+/* Press seat-down — fast in; release rides the hover transition back out */
+.btn:active { transform: translateY(0) scale(0.97); transition-duration: 0.08s; }
+.btnSecondary {
+    display: inline-flex; align-items: center; gap: 8px; padding: 14px 32px;
+    background: rgba(255,255,255,0.025); color: var(--text-secondary);
+    border: 1px solid var(--border-light);
+    border-radius: 12px; font-size: 1rem; font-weight: 600; cursor: pointer;
+    transition: all 0.25s var(--ease-out-expo);
+}
+.btnSecondary:hover {
+    border-color: rgba(74,158,255,0.4); color: var(--text-primary);
+    background: rgba(74,158,255,0.06); transform: translateY(-2px);
+}
+.btnSecondary:active { transform: translateY(0) scale(0.97); transition-duration: 0.08s; }
 .note { font-size: 0.8rem; color: var(--text-muted); margin-top: 16px; position: relative; }

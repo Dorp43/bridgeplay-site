@@ -13,7 +13,7 @@ export default function Hero() {
             <div className={styles.container}>
                 <div className={styles.badge}>
                     <span className={styles.dot} />
-                    Releasing soon for macOS
+                    Now available for macOS
                 </div>
                 <h1>
                     Windows Games.<br />
@@ -24,9 +24,10 @@ export default function Hero() {
                     No dual boot. No virtual machines. Just launch and play.
                 </p>
                 <div className={styles.actions}>
-                    <button type="button" className="btn-waiting" disabled aria-disabled="true" title="Releasing soon">
-                        Releasing Soon
-                    </button>
+                    <a href="/BridgePlay.dmg" download className={styles.btnPrimary}>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" width="20" height="20"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                        Download Now
+                    </a>
                     <a href="#features" className={styles.btnSecondary}>Learn More</a>
                 </div>
                 <div className={styles.statsWrap}>

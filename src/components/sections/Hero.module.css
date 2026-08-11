@@ -28,7 +28,8 @@
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
 }
-.dot { width: 6px; height: 6px; border-radius: 50%; background: var(--orange); animation: global(pulse) 2s infinite; box-shadow: 0 0 8px var(--orange); }
+/* Live indicator — green, not the waiting amber */
+.dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); animation: global(pulse) 2s infinite; box-shadow: 0 0 8px var(--green); }
 .hero h1 {
     font-size: var(--text-hero); font-weight: 900; line-height: 1.1;
     letter-spacing: var(--tracking-tight); margin-bottom: 20px;
@@ -49,6 +50,22 @@
 .actions {
     display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;
     animation: global(fadeInUp) 0.7s var(--ease-out-expo) 0.3s both;
+}
+.btnPrimary {
+    display: inline-flex; align-items: center; gap: 10px; padding: 14px 32px;
+    background: var(--gradient-cta); color: #fff;
+    border: none; border-radius: 12px; font-size: 1rem; font-weight: 700;
+    cursor: pointer; transition: all 0.25s var(--ease-out-expo);
+    box-shadow: 0 4px 20px color-mix(in srgb, var(--accent) 25%, transparent), inset 0 1px 0 rgba(255,255,255,0.18); /* chamfer catch-light */
+}
+.btnPrimary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px color-mix(in srgb, var(--accent) 35%, transparent), inset 0 1px 0 rgba(255,255,255,0.25);
+}
+/* Press seat-down — fast in; release rides the hover transition back out */
+.btnPrimary:active {
+    transform: translateY(0) scale(0.97);
+    transition-duration: 0.08s;
 }
 .btnSecondary {
     display: inline-flex; align-items: center; gap: 8px; padding: 14px 32px;

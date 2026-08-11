@@ -4,6 +4,7 @@ import HowItWorks from '../components/sections/HowItWorks';
 import Compatibility from '../components/sections/Compatibility';
 import Pricing from '../components/sections/Pricing';
 import FAQ from '../components/sections/FAQ';
+import WhatsNew from '../components/sections/WhatsNew';
 import CTA from '../components/sections/CTA';
 import ContactForm from '../components/sections/ContactForm';
 import { useParallax } from '../hooks/useParallax';
@@ -33,6 +34,7 @@ export default function HomePage() {
             <div className="bg-grain" />
             <Hero />
             <Features />
+            <WhatsNew />
             <HowItWorks />
             <Compatibility />
             <Pricing />

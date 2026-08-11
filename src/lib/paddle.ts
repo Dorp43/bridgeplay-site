@@ -17,7 +17,7 @@ declare global {
     }
 }
 
-export const SALES_LIVE = false;  // flip to true to start selling
+export const SALES_LIVE = true;  // sales are live — flip to false to pause checkout
 
 const SANDBOX = import.meta.env.VITE_PADDLE_SANDBOX === '1';
 

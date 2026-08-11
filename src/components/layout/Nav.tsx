@@ -89,7 +89,7 @@ export default function Nav({ variant = 'full' }: Props) {
                             )
                         )}
                     </span>
-                    <button type="button" disabled aria-disabled="true" title="Releasing soon" className={`${styles.ctaWaiting} btn-waiting`}>Coming Soon</button>
+                    <a href="/BridgePlay.dmg" download className={styles.cta}>Download</a>
                 </div>
                 <button className={`${styles.burger} ${menuOpen ? styles.burgerOpen : ''}`} onClick={() => setMenuOpen(!menuOpen)} aria-label="Menu">
                     <span /><span /><span />
@@ -122,7 +122,7 @@ export default function Nav({ variant = 'full' }: Props) {
                         )
                     )}
                 </span>
-                <button type="button" disabled aria-disabled="true" className={`${styles.mobileCta} btn-waiting`}>Coming Soon</button>
+                <a href="/BridgePlay.dmg" download className={styles.mobileCta} onClick={() => setMenuOpen(false)}>Download</a>
             </div>
         </>
     );

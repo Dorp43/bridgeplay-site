@@ -66,8 +66,10 @@ img { display: block; max-width: 100%; }
     mix-blend-mode: overlay;
 }
 
-/* Waiting button — shared restyle for every disabled "coming soon" CTA.
-   Dignified waiting instead of dead button; buttons stay `disabled`. */
+/* Waiting button — was the shared restyle for the pre-launch disabled CTAs.
+   DEAD since the launch flip: no rendered users. The only remaining reference
+   is Pricing's SALES_LIVE=false fallback branch, which never mounts now that
+   sales are live. Kept (with the ::before dot below) as the rollback path. */
 .btn-waiting {
     display: inline-flex;
     align-items: center;

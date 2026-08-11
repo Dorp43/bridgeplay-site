@@ -19,7 +19,7 @@ export default function Pricing() {
     return (
         <section className={styles.section} id="pricing" ref={ref}>
             <div className={styles.container}>
-                <SectionHeader label="Pricing" title="Simple, Honest Pricing" description="Plans go live at launch. Start with a free 7-day trial — no credit card required when we ship." />
+                <SectionHeader label="Pricing" title="Simple, Honest Pricing" description="Start with a free 7-day trial — no credit card required." />
                 <div className={styles.grid}>
                     {plans.map((p, i) => (
                         <div
@@ -62,7 +62,7 @@ export default function Pricing() {
                         </div>
                     ))}
                 </div>
-                <p className={styles.footer}>7-day free trial &middot; 7-day money-back guarantee &middot; Available at launch.</p>
+                <p className={styles.footer}>7-day free trial &middot; 7-day money-back guarantee</p>
             </div>
         </section>
     );
