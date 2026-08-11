@@ -13,12 +13,12 @@ export default function HowItWorks() {
     const ref = useScrollReveal<HTMLElement>();
 
     return (
-        <section className={styles.section} id="how-it-works" ref={ref}>
+        <section className={styles.section} id="how-it-works" ref={ref} data-band-seam>
             <div className={styles.container}>
                 <SectionHeader label="Getting Started" title="Up and Running in Minutes" description="From download to playing your first game — it only takes a few minutes." />
                 <div className={styles.steps}>
                     {steps.map((s, i) => (
-                        <div key={i} className={`${styles.step} reveal`}>
+                        <div key={i} className={`${styles.step} reveal`} style={{ ['--i' as string]: i }}>
                             {i < steps.length - 1 && <div className={styles.connector} />}
                             <div className={styles.number}>{s.num}</div>
                             <h3>{s.title}</h3>

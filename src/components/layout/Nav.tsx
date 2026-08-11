@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { useAuth } from '../../context/AuthContext';
+import { useAuth } from '../../context/useAuth';
 import styles from './Nav.module.css';
 
 interface Props {
@@ -10,11 +10,32 @@ interface Props {
 export default function Nav({ variant = 'full' }: Props) {
     const { user, loading } = useAuth();
     const location = useLocation();
-    const [menuOpen, setMenuOpen] = useState(false);
+    // Track which history entry the menu was opened on; navigating away
+    // changes location.key, so the menu closes automatically without an effect.
+    const [menuOpenAt, setMenuOpenAt] = useState<string | null>(null);
+    const menuOpen = menuOpenAt === location.key;
+    const setMenuOpen = (open: boolean) => setMenuOpenAt(open ? location.key : null);
+    const navRef = useRef<HTMLElement>(null);
 
+    // Nav owns its own scrolled state so every page gets it, not just home.
     useEffect(() => {
-        setMenuOpen(false);
-    }, [location]);
+        const nav = navRef.current;
+        if (!nav) return;
+
+        let ticking = false;
+        const onScroll = () => {
+            if (ticking) return;
+            ticking = true;
+            requestAnimationFrame(() => {
+                nav.classList.toggle('scrolled', window.scrollY > 50);
+                ticking = false;
+            });
+        };
+
+        onScroll();
+        window.addEventListener('scroll', onScroll, { passive: true });
+        return () => window.removeEventListener('scroll', onScroll);
+    }, []);
 
     useEffect(() => {
         document.body.style.overflow = menuOpen ? 'hidden' : '';
@@ -24,23 +45,25 @@ export default function Nav({ variant = 'full' }: Props) {
     const handleAnchor = (e: React.MouseEvent<HTMLAnchorElement>, hash: string) => {
         if (location.pathname === '/') {
             e.preventDefault();
-            document.querySelector(hash)?.scrollIntoView({ behavior: 'smooth' });
+            const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            document.querySelector(hash)?.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth' });
         }
         setMenuOpen(false);
     };
 
     if (variant === 'minimal') {
         return (
-            <nav className={styles.nav}>
+            <nav ref={navRef} className={styles.nav}>
                 <Link to="/" className={styles.logo}>BridgePlay</Link>
                 <Link to="/" className={styles.backLink}>&larr; Back to home</Link>
+                <span aria-hidden="true" data-nav-progress className={styles.progress} />
             </nav>
         );
     }
 
     return (
         <>
-            <nav className={styles.nav}>
+            <nav ref={navRef} className={styles.nav}>
                 <Link to="/" className={styles.logo}>BridgePlay</Link>
                 <div className={styles.links}>
                     <a href="/#features" onClick={e => handleAnchor(e, '#features')}>Features</a>
@@ -66,11 +89,12 @@ export default function Nav({ variant = 'full' }: Props) {
                             )
                         )}
                     </span>
-                    <button type="button" disabled aria-disabled="true" title="Releasing soon" className={`${styles.cta} ${styles.ctaDisabled}`}>Coming Soon</button>
+                    <button type="button" disabled aria-disabled="true" title="Releasing soon" className={`${styles.ctaWaiting} btn-waiting`}>Coming Soon</button>
                 </div>
                 <button className={`${styles.burger} ${menuOpen ? styles.burgerOpen : ''}`} onClick={() => setMenuOpen(!menuOpen)} aria-label="Menu">
                     <span /><span /><span />
                 </button>
+                <span aria-hidden="true" data-nav-progress className={styles.progress} />
             </nav>
 
             {menuOpen && <div className={styles.overlay} onClick={() => setMenuOpen(false)} />}
@@ -98,7 +122,7 @@ export default function Nav({ variant = 'full' }: Props) {
                         )
                     )}
                 </span>
-                <button type="button" disabled aria-disabled="true" className={`${styles.mobileCta} ${styles.ctaDisabled}`}>Coming Soon</button>
+                <button type="button" disabled aria-disabled="true" className={`${styles.mobileCta} btn-waiting`}>Coming Soon</button>
             </div>
         </>
     );

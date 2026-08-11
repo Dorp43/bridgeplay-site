@@ -7,7 +7,7 @@
 }
 .card {
     text-align: center;
-    animation: fadeInUp 0.5s ease-out;
+    animation: global(fadeInUp) 0.5s ease-out;
 }
 .code {
     font-size: 6rem;

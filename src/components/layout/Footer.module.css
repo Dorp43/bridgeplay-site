@@ -1,14 +1,39 @@
 .footer {
-    padding: 60px 0 40px;
-    border-top: 1px solid var(--border);
+    padding: 0 0 40px;
+    position: relative;
 }
-.container { max-width: 1140px; margin: 0 auto; padding: 0 24px; }
+/* Very faint bottom-up accent pool behind the columns */
+.footer::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(60% 240px at 50% 100%, color-mix(in srgb, var(--accent) 3%, transparent), transparent 70%);
+    pointer-events: none;
+}
+.container { max-width: 1140px; margin: 0 auto; padding: 0 24px; position: relative; }
+/* Curtain close — the top hairline draws out from the center on reveal */
+.topline {
+    height: 1px;
+    background: var(--hairline);
+    margin-bottom: 60px;
+}
+.topline:global(.reveal) {
+    opacity: 0;
+    transform: scaleX(0);
+    transform-origin: center;
+    transition: opacity 0.8s var(--ease-out-expo), transform 0.8s var(--ease-out-expo);
+}
+.topline:global(.reveal.visible) {
+    opacity: 1;
+    transform: scaleX(1);
+}
 .grid {
     display: grid;
     grid-template-columns: 2fr 1fr 1fr 1fr;
     gap: 48px;
     margin-bottom: 48px;
 }
+.grid > :global(.reveal) { transition-delay: min(calc(var(--i, 0) * 80ms), 480ms); }
 .brand .logo {
     font-size: 1.2rem;
     font-weight: 800;
@@ -26,7 +51,7 @@
     font-size: 0.8rem;
     font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 1px;
+    letter-spacing: var(--tracking-wide);
     color: var(--text-secondary);
     margin-bottom: 16px;
 }
@@ -35,16 +60,23 @@
     color: var(--text-muted);
     font-size: 0.9rem;
     padding: 4px 0;
-    transition: color 0.2s;
+    transition: color 0.25s var(--ease-out-quart), transform 0.25s var(--ease-out-quart);
 }
-.col a:hover { color: var(--text-primary); }
+.col a:hover { color: var(--text-primary); transform: translateX(2px); }
 .bottom {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding-top: 32px;
-    border-top: 1px solid var(--border);
+    background: var(--hairline) top / 100% 1px no-repeat;
     font-size: 0.8rem;
+    color: var(--text-muted);
+}
+/* The site's closing whisper — serif register 4 of 4 */
+.tagline {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 0.95rem;
     color: var(--text-muted);
 }
 @media (max-width: 900px) { .grid { grid-template-columns: 1fr 1fr; gap: 32px; } }

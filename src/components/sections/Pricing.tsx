@@ -18,7 +18,11 @@ export default function Pricing() {
                 <SectionHeader label="Pricing" title="Simple, Honest Pricing" description="Plans go live at launch. Start with a free 7-day trial — no credit card required when we ship." />
                 <div className={styles.grid}>
                     {plans.map((p, i) => (
-                        <div key={i} className={`${styles.card} ${p.popular ? styles.popular : ''} reveal`}>
+                        <div
+                            key={i}
+                            className={`${styles.card} ${p.popular ? styles.popular : ''} reveal`}
+                            style={{ ['--i' as string]: [0, 2, 1][i] }}
+                        >
                             {p.popular && <div className={styles.badge}>Most Popular</div>}
                             <h3>{p.name}</h3>
                             <div className={styles.amount}>{p.price} <span>{p.period}</span></div>
@@ -31,7 +35,7 @@ export default function Pricing() {
                                 disabled
                                 aria-disabled="true"
                                 title="Available at launch"
-                                className={`${p.popular ? styles.btnPrimary : styles.btnSecondary} ${styles.disabled}`}
+                                className={`${styles.btnWait} btn-waiting`}
                             >
                                 Available at Launch
                             </button>

@@ -1,51 +1,42 @@
+/* ============================================================
+   MOTION GRAMMAR — "Machined Glass"
+   One grammar, three roles. Every new or edited rule fits one:
+
+   1. Entrances:  0.7s var(--ease-out-expo), opacity 0 -> 1,
+      travel capped at 16px for text, 24px for cards.
+      Expensive = short distances, long tails.
+   2. Micro-interactions (hover/focus): 0.3-0.5s var(--ease-out-quart).
+   3. Pops (step numerals, badges, icons): 0.5s var(--ease-spring),
+      scale(0.9) -> 1 only, never on anything larger than ~60px.
+
+   Stagger: children carry --i (via inline style in .map() calls);
+   delay = min(--i * step, 480ms). Steps: 60ms small items,
+   80ms feature cards / footer columns, 90-120ms large cards.
+   Shorthand trap: a module that declares its own `transition:`
+   shorthand resets transition-delay — re-declare the delay there
+   and include opacity + transform in the module's transition list.
+
+   Section sequence: SectionHeader label 0ms -> divider scaleX
+   (0.6s expo, origin left) +100ms -> content stagger +150ms.
+
+   Loops (borderGlow, ctaBreath): animation-play-state: paused by
+   default, flipped to running by :global(.visible) — no off-screen
+   GPU work. Nothing loops for attention; scroll, entry, and hover
+   are the only triggers.
+   ============================================================ */
+
 @keyframes fadeInUp {
-    from { opacity: 0; transform: translateY(24px); }
+    from { opacity: 0; transform: translateY(16px); }
     to { opacity: 1; transform: translateY(0); }
 }
-@keyframes fadeInLeft {
-    from { opacity: 0; transform: translateX(-30px); }
-    to { opacity: 1; transform: translateX(0); }
-}
-@keyframes fadeInRight {
-    from { opacity: 0; transform: translateX(30px); }
-    to { opacity: 1; transform: translateX(0); }
-}
-@keyframes scaleIn {
-    from { opacity: 0; transform: scale(0.9); }
-    to { opacity: 1; transform: scale(1); }
-}
-@keyframes glowPulse {
-    0%, 100% { box-shadow: 0 0 20px rgba(74,158,255,0.08); }
-    50% { box-shadow: 0 0 40px rgba(74,158,255,0.15); }
-}
-@keyframes floatY {
-    0%, 100% { transform: translateY(0px); }
-    50% { transform: translateY(-8px); }
-}
-@keyframes shimmer {
-    0% { background-position: -200% 0; }
-    100% { background-position: 200% 0; }
-}
+/* Pricing popular ring — slow breath, gated by .visible in the module */
 @keyframes borderGlow {
-    0%, 100% { border-color: rgba(74,158,255,0.15); }
-    50% { border-color: rgba(74,158,255,0.35); }
-}
-@keyframes countUp {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-@keyframes bgFloat {
-    0%, 100% { transform: translate(0, 0); }
-    33% { transform: translate(-2%, 1%); }
-    66% { transform: translate(1%, -1%); }
+    0%, 100% { opacity: 0.55; }
+    50% { opacity: 0.9; }
 }
 @keyframes pulse {
     0%, 100% { opacity: 1; }
     50% { opacity: 0.4; }
-}
-@keyframes gradientShift {
-    0%, 100% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
 }
 @keyframes particleFloat {
     0% { opacity: 0; transform: translateY(0) scale(0); }
@@ -61,51 +52,84 @@
     20% { opacity: 0.8; }
     100% { transform: translateX(220%) skewX(-20deg); opacity: 0; }
 }
-@keyframes subtleFloat {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-4px); }
-}
 @keyframes auroraSpin {
     to { transform: rotate(360deg); }
 }
-@keyframes badgeBob {
-    0%, 100% { transform: translateX(-50%) translateY(0); }
-    50% { transform: translateX(-50%) translateY(-3px); }
+@keyframes ctaBreath {
+    from { opacity: 0.6; }
+    to { opacity: 1; }
 }
 
-/* Reveal classes */
+/* Reveal classes — entrance grammar (role 1) */
 .reveal {
     opacity: 0;
-    transform: translateY(40px);
-    transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+    transform: translateY(24px);
+    transition: opacity 0.7s var(--ease-out-expo), transform 0.7s var(--ease-out-expo);
 }
 .reveal.visible {
     opacity: 1;
     transform: translateY(0);
 }
-.reveal-stagger .reveal { transition-delay: 0s; }
-.reveal-stagger .reveal:nth-child(1) { transition-delay: 0s; }
-.reveal-stagger .reveal:nth-child(2) { transition-delay: 0.08s; }
-.reveal-stagger .reveal:nth-child(3) { transition-delay: 0.16s; }
-.reveal-stagger .reveal:nth-child(4) { transition-delay: 0.24s; }
-.reveal-stagger .reveal:nth-child(5) { transition-delay: 0.32s; }
-.reveal-stagger .reveal:nth-child(6) { transition-delay: 0.4s; }
+/* Stagger: children carry --i via inline style; hard ceiling 480ms */
+.reveal-stagger > * {
+    transition-delay: min(calc(var(--i, 0) * 60ms), 480ms);
+}
 .reveal-left {
     opacity: 0;
-    transform: translateX(-40px);
-    transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+    transform: translateX(-32px);
+    transition: opacity 0.7s var(--ease-out-expo), transform 0.7s var(--ease-out-expo);
 }
 .reveal-right {
     opacity: 0;
-    transform: translateX(40px);
-    transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+    transform: translateX(32px);
+    transition: opacity 0.7s var(--ease-out-expo), transform 0.7s var(--ease-out-expo);
 }
 .reveal-scale {
     opacity: 0;
-    transform: scale(0.92);
-    transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+    transform: scale(0.96);
+    transition: opacity 0.7s var(--ease-out-expo), transform 0.7s var(--ease-out-expo);
 }
 .reveal-left.visible, .reveal-right.visible, .reveal-scale.visible {
     opacity: 1;
     transform: translateX(0) scale(1);
+}
+
+/* Nav reading progress — scrubbed by scroll(root) in Nav.module.css */
+@keyframes navProgress { to { transform: scaleX(1); } }
+
+/* Band-seam dawn — the 120px seam brightens as its own box enters (scrubbed).
+   Global rule via data attribute: the modules' .section::before never set
+   opacity, so there is no cascade tie. Fallback outside @supports: today's
+   static full-strength seam, untouched. */
+@keyframes seamDawn { to { opacity: 1; } }
+@supports (animation-timeline: view()) {
+    [data-band-seam]::before {
+        opacity: 0.25;
+        animation: seamDawn linear both;   /* linear: scroll-scrubbed */
+        animation-timeline: view();        /* MUST come after the shorthand */
+        animation-range: entry 0% entry 70%;
+    }
+}
+
+/* ============================================================
+   Reduced motion — authoritative block, keep LAST in this file.
+   JS guards live in useParallax / usePointerGlow;
+   the IntersectionObserver still adds .visible, so no content ever
+   depends on this media query to become visible or interactive.
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-delay: 0s !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        transition-delay: 0s !important;
+    }
+    .reveal, .reveal-left, .reveal-right, .reveal-scale { opacity: 1; transform: none; }
+    html { scroll-behavior: auto; }
+    /* Scroll-driven timelines ignore the duration flatten above, so they are
+       killed explicitly; !important because module CSS is emitted after
+       global.css and would otherwise win the tie. */
+    [data-nav-progress] { animation: none !important; opacity: 0 !important; }
+    [data-band-seam]::before { animation: none !important; opacity: 1 !important; }
 }

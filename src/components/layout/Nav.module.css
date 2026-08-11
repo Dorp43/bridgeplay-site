@@ -15,11 +15,43 @@
     box-shadow: inset 0 1px 0 rgba(255,255,255,0.04);
     transition: padding 0.3s ease, background 0.3s ease, border-color 0.3s ease;
 }
+.nav::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -1px;
+    height: 1px;
+    background: var(--hairline-accent);
+    opacity: 0;
+    transition: opacity 0.4s var(--ease-out-quart);
+    pointer-events: none;
+}
 .nav:global(.scrolled) {
     padding: 12px 32px;
     background: rgba(6, 6, 11, 0.85);
     border-bottom-color: rgba(255, 255, 255, 0.08);
     box-shadow: 0 8px 32px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.05);
+}
+.nav:global(.scrolled)::after { opacity: 1; }
+/* Reading progress — fills via scroll(root); invisible where unsupported */
+.progress {
+    position: absolute;
+    left: 0; right: 0; bottom: -1px;
+    height: 1px;
+    background: var(--gradient-brand);
+    transform-origin: left;
+    transform: scaleX(0);
+    opacity: 0;
+    pointer-events: none;
+    z-index: 1; /* paint above the ::after track */
+}
+@supports (animation-timeline: scroll()) {
+    .progress {
+        opacity: 1;
+        animation: global(navProgress) linear both; /* linear: scrubbed by scroll; global() — keyframes live in animations.css */
+        animation-timeline: scroll(root);   /* MUST come after the shorthand */
+    }
 }
 .logo {
     font-size: 1.3rem;
@@ -77,17 +109,17 @@
     transform: translateY(-2px);
     box-shadow: 0 10px 32px rgba(74, 158, 255, 0.4), inset 0 1px 0 rgba(255,255,255,0.25) !important;
 }
-.cta:hover::after { animation: shineSweep 1s var(--ease-out-expo); }
-.ctaDisabled, .ctaDisabled:hover {
-    cursor: not-allowed;
-    background: linear-gradient(135deg, #2a2a3d, #1e1e2e) !important;
-    color: var(--text-secondary) !important;
-    box-shadow: inset 0 1px 0 rgba(255,255,255,0.04) !important;
-    transform: none !important;
-    opacity: 0.9;
-    border: 1px solid var(--border-light);
+.cta:hover::after { animation: global(shineSweep) 1s var(--ease-out-expo); }
+.cta:active {
+    transform: translateY(0) scale(0.97);
+    transition-duration: 0.08s !important;
 }
-.ctaDisabled::after { display: none !important; }
+/* Sizing for the pre-launch CTA — visual state comes from global .btn-waiting */
+.ctaWaiting {
+    padding: 9px 22px;
+    border-radius: 10px;
+    font-size: 0.9rem;
+}
 .backLink {
     color: var(--text-secondary);
     font-size: 0.9rem;
@@ -116,6 +148,10 @@
 .profile:hover {
     background: rgba(255,255,255,0.07);
     border-color: rgba(255,255,255,0.12);
+}
+.profile:active {
+    transform: scale(0.97);
+    transition-duration: 0.08s;
 }
 .avatar {
     width: 28px;
@@ -199,15 +235,30 @@
     transition: color 0.2s;
 }
 .mobileMenu a:hover { color: var(--text-primary); }
+/* Drawer items cascade in behind the panel slide; instant on close.
+   Placed AFTER `.mobileMenu a` so this transition wins the equal-
+   specificity tie (delays live only on the open state below). */
+.mobileMenu > a, .mobileMenu > span, .mobileMenu > button {
+    opacity: 0;
+    transform: translateX(16px);
+    transition: opacity 0.4s var(--ease-out-quart), transform 0.4s var(--ease-out-quart);
+}
+.mobileMenuOpen > a, .mobileMenuOpen > span, .mobileMenuOpen > button {
+    opacity: 1;
+    transform: none;
+}
+.mobileMenuOpen > :nth-child(1) { transition-delay: 60ms; }
+.mobileMenuOpen > :nth-child(2) { transition-delay: 100ms; }
+.mobileMenuOpen > :nth-child(3) { transition-delay: 140ms; }
+.mobileMenuOpen > :nth-child(4) { transition-delay: 180ms; }
+.mobileMenuOpen > :nth-child(5) { transition-delay: 220ms; }
+.mobileMenuOpen > :nth-child(6) { transition-delay: 260ms; }
+.mobileMenuOpen > :nth-child(7) { transition-delay: 300ms; }
+/* Sizing for the mobile pre-launch CTA — visual state from global .btn-waiting */
 .mobileCta {
     margin-top: 12px;
-    background: var(--accent) !important;
-    color: #fff !important;
-    padding: 14px !important;
+    padding: 14px;
     border-radius: 10px;
-    font-weight: 700 !important;
-    text-align: center;
-    border-bottom: none !important;
 }
 
 @media (max-width: 768px) {

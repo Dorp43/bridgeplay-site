@@ -4,8 +4,10 @@ import { BrowserRouter } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import { ToastProvider } from './context/ToastContext';
 import { inject } from '@vercel/analytics';
-import App from './App';
+// global.css must be imported BEFORE App so global styles are emitted first
+// and *.module.css rules win specificity ties (button sizing, card transforms).
 import './styles/global.css';
+import App from './App';
 
 inject();
 

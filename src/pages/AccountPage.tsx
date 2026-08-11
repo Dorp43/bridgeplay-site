@@ -1,9 +1,9 @@
-import { useState, type FormEvent } from 'react';
+import { useCallback, useEffect, useState, type FormEvent } from 'react';
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword, sendPasswordResetEmail, signOut } from 'firebase/auth';
 import { doc, getDoc } from 'firebase/firestore';
 import { auth, db, friendlyAuthError } from '../lib/firebase';
-import { useAuth } from '../context/AuthContext';
-import { useToast } from '../context/ToastContext';
+import { useAuth } from '../context/useAuth';
+import { useToast } from '../context/useToast';
 import { openCheckout, PRICE_IDS } from '../lib/paddle';
 import styles from './AccountPage.module.css';
 
@@ -75,24 +75,23 @@ export default function AccountPage() {
     };
 
     // Load dashboard data when user is available
-    const loadDashboard = async () => {
-        if (!user) return;
+    const loadDashboard = useCallback(async (): Promise<{ license: LicenseData; memberSince: string } | null> => {
+        if (!user) return null;
         try {
             const snap = await getDoc(doc(db, 'users', user.uid));
             if (!snap.exists()) {
-                setLicense({ status: 'pending', label: 'New Account', pillClass: 'trial', planInfo: 'Open the app to activate your trial' });
-                return;
+                return { license: { status: 'pending', label: 'New Account', pillClass: 'trial', planInfo: 'Open the app to activate your trial' }, memberSince: '' };
             }
             const data = snap.data();
 
+            let memberSince = '';
             if (data.createdAt) {
                 const date = data.createdAt.toDate ? data.createdAt.toDate() : new Date(data.createdAt);
-                setMemberSince('Member since ' + date.toLocaleDateString('en-US', { month: 'long', year: 'numeric' }));
+                memberSince = 'Member since ' + date.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
             }
 
             if (data.purchaseStatus === 'active') {
-                setLicense({ status: 'licensed', label: 'Licensed', pillClass: 'licensed', planInfo: 'Active subscription', planColor: 'var(--green)' });
-                return;
+                return { license: { status: 'licensed', label: 'Licensed', pillClass: 'licensed', planInfo: 'Active subscription', planColor: 'var(--green)' }, memberSince };
             }
 
             if (data.trialStartDate) {
@@ -102,35 +101,42 @@ export default function AccountPage() {
 
                 if (daysLeft > 0) {
                     const isWarning = daysLeft <= 2;
-                    setLicense({
-                        status: isWarning ? 'trial-warning' : 'trial',
-                        label: `${daysLeft} day${daysLeft === 1 ? '' : 's'} left`,
-                        pillClass: isWarning ? 'trialWarning' : 'trial',
-                        trialInfo: `${daysLeft} of 7 days remaining`,
-                        trialColor: isWarning ? 'var(--orange)' : 'var(--accent)',
-                        planInfo: 'Free trial',
-                    });
-                } else {
-                    setLicense({ status: 'expired', label: 'Trial Expired', pillClass: 'expired', trialInfo: 'Expired', trialColor: 'var(--danger)', planInfo: 'No active plan' });
+                    return {
+                        license: {
+                            status: isWarning ? 'trial-warning' : 'trial',
+                            label: `${daysLeft} day${daysLeft === 1 ? '' : 's'} left`,
+                            pillClass: isWarning ? 'trialWarning' : 'trial',
+                            trialInfo: `${daysLeft} of 7 days remaining`,
+                            trialColor: isWarning ? 'var(--orange)' : 'var(--accent)',
+                            planInfo: 'Free trial',
+                        },
+                        memberSince,
+                    };
                 }
-                return;
+                return { license: { status: 'expired', label: 'Trial Expired', pillClass: 'expired', trialInfo: 'Expired', trialColor: 'var(--danger)', planInfo: 'No active plan' }, memberSince };
             }
 
             if (data.trialEligible === false) {
-                setLicense({ status: 'noTrial', label: 'No Trial', pillClass: 'expired', planInfo: 'No active plan' });
-            } else {
-                setLicense({ status: 'pending', label: 'Pending', pillClass: 'trial', planInfo: 'Sign in from the app to activate' });
+                return { license: { status: 'noTrial', label: 'No Trial', pillClass: 'expired', planInfo: 'No active plan' }, memberSince };
             }
+            return { license: { status: 'pending', label: 'Pending', pillClass: 'trial', planInfo: 'Sign in from the app to activate' }, memberSince };
         } catch (err) {
             console.error('Failed to load user data:', err);
-            setLicense({ status: 'noTrial', label: 'Error loading', pillClass: 'expired', planInfo: '—' });
+            return { license: { status: 'noTrial', label: 'Error loading', pillClass: 'expired', planInfo: '—' }, memberSince: '' };
         }
-    };
+    }, [user]);
 
     // Trigger dashboard load when user changes
-    if (user && !license && !loading) {
-        loadDashboard();
-    }
+    useEffect(() => {
+        if (!user || license || loading) return;
+        let cancelled = false;
+        loadDashboard().then(result => {
+            if (cancelled || !result) return;
+            setLicense(result.license);
+            if (result.memberSince) setMemberSince(result.memberSince);
+        });
+        return () => { cancelled = true; };
+    }, [user, license, loading, loadDashboard]);
 
     if (loading) {
         return (

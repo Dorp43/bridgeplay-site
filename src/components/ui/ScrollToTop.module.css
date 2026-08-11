@@ -29,6 +29,11 @@
     border-color: var(--accent);
     box-shadow: 0 4px 20px rgba(74, 158, 255, 0.2);
 }
+/* Press seat-down — 0.94 on a 44px round button reads equal to 0.97 wide */
+.btn:active {
+    transform: translateY(0) scale(0.94);
+    transition-duration: 0.08s;
+}
 
 @media (max-width: 768px) {
     .btn { bottom: 20px; right: 20px; width: 40px; height: 40px; }

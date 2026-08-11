@@ -30,6 +30,7 @@ export default function HomePage() {
         <>
             <div className="bg-grid" />
             <div className="bg-glow" />
+            <div className="bg-grain" />
             <Hero />
             <Features />
             <HowItWorks />

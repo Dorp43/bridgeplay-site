@@ -1,4 +1,4 @@
-.section { padding: 120px 0; position: relative; z-index: 1; }
+.section { padding: 144px 0; position: relative; z-index: 1; }
 .container { max-width: 1140px; margin: 0 auto; padding: 0 24px; }
 .grid {
     display: grid;
@@ -16,26 +16,74 @@
     padding: 36px 32px;
     text-align: center;
     position: relative;
-    transition: transform 0.4s var(--ease-out-expo), box-shadow 0.4s ease, border-color 0.4s ease;
     display: flex;
     flex-direction: column;
     isolation: isolate;
 }
+/* Shorthand trap: the transition list must carry the reveal props +
+   the stagger delay (--i is 0/2/1 so the popular card lands last).
+   Delay is per-property so hover feedback stays instant. */
+.card:global(.reveal) {
+    transition: opacity 0.7s var(--ease-out-expo),
+                transform 0.7s var(--ease-out-expo),
+                border-color 0.4s ease,
+                box-shadow 0.4s ease;
+    transition-delay: min(calc(var(--i, 0) * 90ms), 480ms),
+                      min(calc(var(--i, 0) * 90ms), 480ms),
+                      0s, 0s;
+}
+/* --rest is the card's resting lift (popular sits -6px) */
+.card:global(.visible) {
+    opacity: 1;
+    transform: translateY(var(--rest, 0px));
+}
 .card:hover {
-    transform: translateY(-6px);
-    border-color: var(--border-light);
+    transform: translateY(calc(var(--rest, 0px) - 4px));
+    border-color: var(--border-strong);
     box-shadow: 0 24px 48px rgba(0,0,0,0.35);
+    transition-delay: 0s;
 }
 
-/* Popular: persistent glowing border + shine sweep on hover */
+/* Price rack-focus — the payload gets its own beat after the card lands.
+   ORDER MATTERS: each .visible rule sits after its .reveal rule (equal
+   specificity; later wins). One-shot — useScrollReveal unobserves, so
+   the base-state delay never plays in reverse. */
+.card:global(.reveal) .amount {
+    opacity: 0;
+    filter: blur(6px);
+    transform: scale(0.97);
+    transition: opacity 0.6s var(--ease-out-quart), filter 0.6s var(--ease-out-quart), transform 0.6s var(--ease-out-quart);
+    transition-delay: calc(min(var(--i, 0) * 90ms, 480ms) + 200ms);
+}
+.card:global(.visible) .amount {
+    opacity: 1;
+    filter: blur(0);
+    transform: scale(1);
+}
+.card:global(.reveal) .save {
+    opacity: 0;
+    transform: translateY(4px);
+    transition: opacity 0.5s var(--ease-out-quart), transform 0.5s var(--ease-out-quart);
+    transition-delay: calc(min(var(--i, 0) * 90ms, 480ms) + 320ms);
+}
+.card:global(.visible) .save {
+    opacity: 1;
+    transform: none;
+}
+
+/* Popular: pre-lifted, glowing 1px ring, spring settle, shine sweep on hover */
 .popular {
-    border-color: rgba(74,158,255,0.45);
-    box-shadow: 0 0 50px rgba(74, 158, 255, 0.15),
+    --rest: -6px;
+    border-color: color-mix(in srgb, var(--accent) 45%, transparent);
+    box-shadow: 0 0 50px var(--accent-glow),
                 inset 0 1px 0 rgba(255,255,255,0.05);
     background:
-        linear-gradient(180deg, rgba(74,158,255,0.04), transparent 40%),
+        linear-gradient(180deg, color-mix(in srgb, var(--accent) 4%, transparent), transparent 40%),
         linear-gradient(180deg, var(--bg-card), #0e0e16);
-    transform: translateY(-6px);
+}
+/* The eye ends on the popular card — it settles with a slight overshoot */
+.popular:global(.reveal) {
+    transition-timing-function: var(--ease-out-expo), var(--ease-spring), ease, ease;
 }
 .popular::before {
     content: '';
@@ -43,15 +91,17 @@
     inset: -1px;
     border-radius: var(--radius);
     padding: 1px;
-    background: linear-gradient(135deg, rgba(74,158,255,0.6), rgba(167,139,250,0.4), rgba(109,213,160,0.4));
+    background: linear-gradient(135deg, color-mix(in srgb, var(--accent) 60%, transparent), color-mix(in srgb, var(--purple) 40%, transparent), color-mix(in srgb, var(--green) 40%, transparent));
     -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
     -webkit-mask-composite: xor;
     mask-composite: exclude;
     pointer-events: none;
     z-index: -1;
     opacity: 0.7;
-    animation: borderGlow 4s ease-in-out infinite;
+    animation: global(borderGlow) 8s ease-in-out infinite;
+    animation-play-state: paused; /* no off-screen GPU work */
 }
+.popular:global(.visible)::before { animation-play-state: running; }
 .popular::after {
     content: '';
     position: absolute;
@@ -62,10 +112,10 @@
     pointer-events: none;
 }
 .popular:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 30px 60px rgba(0,0,0,0.4), 0 0 80px rgba(74,158,255,0.22);
+    border-color: color-mix(in srgb, var(--accent) 45%, transparent);
+    box-shadow: 0 30px 60px rgba(0,0,0,0.4), 0 0 80px color-mix(in srgb, var(--accent) 22%, transparent);
 }
-.popular:hover::after { animation: shineSweep 1.4s var(--ease-out-expo); }
+.popular:hover::after { animation: global(shineSweep) 1.4s var(--ease-out-expo); }
 
 .badge {
     position: absolute; top: -14px; left: 50%; transform: translateX(-50%);
@@ -77,8 +127,7 @@
     border-radius: 100px;
     text-transform: uppercase;
     letter-spacing: 0.6px;
-    box-shadow: 0 6px 20px rgba(74,158,255,0.45), inset 0 1px 0 rgba(255,255,255,0.25);
-    animation: badgeBob 3s ease-in-out infinite;
+    box-shadow: 0 6px 20px color-mix(in srgb, var(--accent) 45%, transparent), inset 0 1px 0 rgba(255,255,255,0.25);
 }
 
 .card h3 {
@@ -95,6 +144,7 @@
     color: var(--text-primary);
     margin: 12px 0 4px;
     letter-spacing: -1.5px;
+    font-variant-numeric: tabular-nums;
     background: linear-gradient(180deg, var(--text-primary), #c5c5d8);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -136,12 +186,13 @@
     flex-shrink: 0;
     width: 18px; height: 18px;
     border-radius: 50%;
-    background: rgba(109,213,160,0.12);
+    background: var(--green-glow);
     display: inline-flex;
     align-items: center;
     justify-content: center;
 }
 
+/* Launch-state button styles — unreferenced until checkout is wired */
 .btnPrimary, .btnSecondary {
     display: block;
     width: 100%;
@@ -159,10 +210,10 @@
 .btnPrimary {
     background: var(--gradient-cta);
     color: #fff;
-    box-shadow: 0 4px 16px rgba(74, 158, 255, 0.3), inset 0 1px 0 rgba(255,255,255,0.18);
+    box-shadow: 0 4px 16px color-mix(in srgb, var(--accent) 30%, transparent), inset 0 1px 0 rgba(255,255,255,0.18);
 }
 .btnPrimary:hover {
-    box-shadow: 0 10px 32px rgba(74, 158, 255, 0.45), inset 0 1px 0 rgba(255,255,255,0.25);
+    box-shadow: 0 10px 32px color-mix(in srgb, var(--accent) 45%, transparent), inset 0 1px 0 rgba(255,255,255,0.25);
     transform: translateY(-2px);
 }
 .btnSecondary {
@@ -172,17 +223,20 @@
 }
 .btnSecondary:hover {
     background: rgba(255,255,255,0.08);
-    border-color: rgba(74,158,255,0.3);
+    border-color: color-mix(in srgb, var(--accent) 30%, transparent);
     transform: translateY(-2px);
 }
-.disabled, .disabled:hover {
-    cursor: not-allowed;
-    background: linear-gradient(135deg, #20202e, #16161f) !important;
-    color: var(--text-secondary) !important;
-    border: 1px solid var(--border) !important;
-    box-shadow: inset 0 1px 0 rgba(255,255,255,0.04) !important;
-    transform: none !important;
-    opacity: 0.85;
+/* Press seat-down — fast in; release rides the hover transition back out */
+.btnPrimary:active, .btnSecondary:active {
+    transform: translateY(0) scale(0.97);
+    transition-duration: 0.08s;
+}
+/* Size override for the shared .btn-waiting (module CSS wins the tie) */
+.btnWait {
+    width: 100%;
+    padding: 14px;
+    border-radius: 10px;
+    font-size: 0.95rem;
 }
 .footer {
     text-align: center;
@@ -193,5 +247,5 @@
 
 @media (max-width: 900px) {
     .grid { grid-template-columns: 1fr; max-width: 400px; }
-    .popular { transform: none; }
+    .popular { --rest: 0px; }
 }

@@ -1,4 +1,4 @@
-.features { padding: 120px 0; position: relative; z-index: 1; }
+.features { padding: 96px 0 120px; position: relative; z-index: 1; }
 .container { max-width: 1140px; margin: 0 auto; padding: 0 24px; }
 .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
 
@@ -7,23 +7,32 @@
     border: 1px solid var(--border);
     border-radius: var(--radius);
     padding: 32px;
-    transition: transform 0.5s var(--ease-out-expo),
-                border-color 0.4s ease,
-                box-shadow 0.4s ease;
     position: relative;
     overflow: hidden;
     isolation: isolate;
 }
+/* Shorthand trap: the module transition list must carry the reveal
+   props (opacity/transform) + the stagger delay itself, or the hover
+   transitions reset the global reveal grammar. Delay is per-property
+   so hover feedback stays instant. */
+.card:global(.reveal) {
+    transition: opacity 0.7s var(--ease-out-expo),
+                transform 0.7s var(--ease-out-expo),
+                border-color 0.4s ease,
+                box-shadow 0.4s ease;
+    transition-delay: min(calc(var(--i, 0) * 80ms), 480ms),
+                      min(calc(var(--i, 0) * 80ms), 480ms),
+                      0s, 0s;
+}
 
-/* Color-matched glow halo, off until hover */
+/* Pointer spotlight — --mx/--my written by usePointerGlow, off until hover */
 .card::before {
     content: '';
     position: absolute;
-    top: -40%; left: -10%;
-    width: 120%; height: 120%;
-    background: radial-gradient(circle at 50% 0%, var(--card-glow, rgba(74,158,255,0.12)), transparent 60%);
+    inset: 0;
+    background: radial-gradient(320px circle at var(--mx, 50%) var(--my, 0%), var(--card-glow, var(--accent-glow)), transparent 70%);
     opacity: 0;
-    transition: opacity 0.5s var(--ease-out-expo);
+    transition: opacity 0.3s var(--ease-out-quart);
     pointer-events: none;
     z-index: -1;
 }
@@ -40,10 +49,11 @@
 }
 
 .card:hover {
-    transform: translateY(-6px);
+    transform: translateY(-4px);
     border-color: color-mix(in srgb, var(--card-accent, var(--accent)) 35%, var(--border-light));
     box-shadow: 0 24px 48px rgba(0,0,0,0.35),
                 0 0 60px color-mix(in srgb, var(--card-accent, var(--accent)) 12%, transparent);
+    transition-delay: 0s;
 }
 .card:hover::before { opacity: 1; }
 .card:hover::after { opacity: 1; }
@@ -52,7 +62,8 @@
     width: 52px; height: 52px;
     border-radius: 14px;
     display: flex; align-items: center; justify-content: center;
-    font-size: 1.45rem;
+    color: var(--card-accent, var(--accent));
+    background: var(--card-glow, var(--accent-glow));
     margin-bottom: 20px;
     transition: transform 0.4s var(--ease-spring), box-shadow 0.4s ease;
     border: 1px solid color-mix(in srgb, var(--card-accent, var(--accent)) 18%, transparent);
@@ -63,6 +74,15 @@
     box-shadow: 0 8px 24px color-mix(in srgb, var(--card-accent, var(--accent)) 25%, transparent),
                 inset 0 1px 0 rgba(255,255,255,0.1);
 }
+
+/* Per-glyph signatures — the icon's meaning moves, not just its chip */
+.icon svg { transition: transform 0.5s var(--ease-out-quart); }
+.card:hover [data-icon="gear"] svg { transform: rotate(60deg); }
+.card:hover [data-icon="play"] svg { transform: translateX(1.5px) scale(1.05); }
+.card:hover [data-icon="download"] svg { transform: translateY(1.5px); }
+.card:hover [data-icon="bolt"] svg { transform: rotate(-8deg) scale(1.06); transition-duration: 0.4s; transition-timing-function: var(--ease-spring); }
+.card:hover [data-icon="layers"] svg { transform: translate(1px, -1px); }
+.card:hover [data-icon="grid"] svg { transform: scale(1.06); }
 
 .card h3 {
     font-size: 1.15rem; font-weight: 700;

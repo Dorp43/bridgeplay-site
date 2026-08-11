@@ -1,15 +1,82 @@
 .section { padding: 120px 0; background: var(--bg-secondary); position: relative; z-index: 1; }
+/* Band seam — the bg change reads as a staged lighting shift */
+.section::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 120px;
+    background: var(--hairline) top / 100% 1px no-repeat,
+                radial-gradient(50% 120px at 50% 0%, color-mix(in srgb, var(--accent) 4%, transparent), transparent);
+    pointer-events: none;
+}
 .container { max-width: 1140px; margin: 0 auto; padding: 0 24px; }
 .list { max-width: 720px; margin: 0 auto; }
-.item { border-bottom: 1px solid var(--border); padding: 24px 0; }
+.item {
+    position: relative;
+    isolation: isolate;
+    padding: 24px 16px;
+    margin: 0 -16px;
+    background: var(--hairline) bottom / 100% 1px no-repeat;
+}
+/* Open state: accent bar draws down the left edge… */
+.item::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 20px; bottom: 20px;
+    width: 2px;
+    border-radius: 1px;
+    background: var(--accent);
+    transform: scaleY(0);
+    transform-origin: top;
+    transition: transform 0.3s var(--ease-out-expo);
+}
+/* …while the row washes faintly toward accent */
+.item::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: var(--radius-sm);
+    background: color-mix(in srgb, var(--accent) 4%, transparent);
+    opacity: 0;
+    transition: opacity 0.3s var(--ease-out-quart);
+    pointer-events: none;
+    z-index: -1;
+}
+.open::before { transform: scaleY(1); }
+.open::after { opacity: 1; }
 .question {
     display: flex; justify-content: space-between; align-items: center; cursor: pointer;
-    font-size: 1.05rem; font-weight: 600; color: var(--text-primary); transition: color 0.2s;
+    font-size: 1.05rem; font-weight: 600; color: var(--text-primary);
+    transition: color 0.3s var(--ease-out-quart);
     background: none; border: none; width: 100%; text-align: left; font-family: inherit;
 }
 .question:hover { color: var(--accent); }
-.arrow { font-size: 1.2rem; color: var(--text-muted); transition: transform 0.3s; flex-shrink: 0; margin-left: 16px; }
-.open .arrow { transform: rotate(45deg); }
-.answer { max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out, padding 0.3s; }
-.open .answer { max-height: 300px; padding-top: 16px; }
-.answer p { font-size: 0.95rem; color: var(--text-secondary); line-height: 1.7; }
+.qText { display: inline-block; transition: transform 0.3s var(--ease-out-quart); }
+.question:hover .qText { transform: translateX(4px); }
+.arrow {
+    font-size: 1.2rem; color: var(--text-muted); flex-shrink: 0; margin-left: 16px;
+    transition: transform 0.4s var(--ease-spring), color 0.3s var(--ease-out-quart);
+}
+.open .arrow { transform: rotate(45deg); color: var(--accent); }
+/* Grid-rows accordion — real easing both ways, no clipped long answers */
+.answer {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 0.45s var(--ease-out-expo);
+}
+.open .answer { grid-template-rows: 1fr; }
+.answer > div { overflow: hidden; min-height: 0; }
+/* Fade-through: text settles in AFTER the height reveals; fades out
+   immediately on close so the collapsing edge never scissors it */
+.answer p {
+    font-size: 0.95rem; color: var(--text-secondary); line-height: 1.7; padding-top: 16px;
+    opacity: 0;
+    transform: translateY(-6px);
+    transition: opacity 0.3s var(--ease-out-quart), transform 0.3s var(--ease-out-quart);
+    /* delay 0s here: closing fades the text immediately, ahead of the 0.45s row collapse */
+}
+.open .answer p {
+    opacity: 1;
+    transform: none;
+    transition-delay: 0.1s;
+}
