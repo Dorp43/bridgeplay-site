@@ -1,6 +1,9 @@
 declare global {
     interface Window {
         Paddle: {
+            Environment: {
+                set: (environment: 'sandbox' | 'production') => void;
+            };
             Initialize: (options: { token: string }) => void;
             Checkout: {
                 open: (options: {
@@ -14,6 +17,10 @@ declare global {
     }
 }
 
+export const SALES_LIVE = false;  // flip to true to start selling
+
+const SANDBOX = import.meta.env.VITE_PADDLE_SANDBOX === '1';
+
 const CLIENT_TOKEN = 'live_af6735b12c46a24a37ab21ec5b9';
 
 export const PRICE_IDS = {
@@ -26,7 +33,11 @@ let initialized = false;
 
 export function initPaddle() {
     if (initialized || !window.Paddle) return;
-    window.Paddle.Initialize({ token: CLIENT_TOKEN });
+    if (SANDBOX) {
+        // Must run before Initialize: https://developer.paddle.com/paddlejs/methods/paddle-environment-set
+        window.Paddle.Environment.set('sandbox');
+    }
+    window.Paddle.Initialize({ token: SANDBOX ? import.meta.env.VITE_PADDLE_SANDBOX_TOKEN : CLIENT_TOKEN });
     initialized = true;
 }
 
