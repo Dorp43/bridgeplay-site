@@ -1,4 +1,8 @@
-.section { padding: 144px 0; position: relative; z-index: 1; }
+/* Was 144px — the last band on the page at that value, and the one that sells
+   the product. Its neighbours (Compatibility, FAQ) step 120 -> 88 -> 72px, so at
+   phone widths Pricing's seam was exactly double every other seam and the page
+   lost its rhythm at the buy moment. */
+.section { padding: var(--section-y) 0; position: relative; z-index: 1; }
 .container { max-width: 1140px; margin: 0 auto; padding: 0 24px; }
 .grid {
     display: grid;
@@ -121,7 +125,7 @@
     position: absolute; top: -14px; left: 50%; transform: translateX(-50%);
     background: var(--gradient-cta);
     color: #fff;
-    font-size: 0.72rem;
+    font-size: var(--text-micro);
     font-weight: 700;
     padding: 6px 18px;
     border-radius: 100px;
@@ -130,8 +134,11 @@
     box-shadow: 0 6px 20px color-mix(in srgb, var(--accent) 45%, transparent), inset 0 1px 0 rgba(255,255,255,0.25);
 }
 
+/* Type is on the shared scale in variables.css — this band used to carry seven
+   ad-hoc decimals between 0.7rem and 0.95rem while its neighbours ran on
+   --text-micro/--text-label/--text-sm/--text-body. */
 .card h3 {
-    font-size: 0.85rem;
+    font-size: var(--text-sm);
     font-weight: 700;
     margin-bottom: 8px;
     color: var(--text-secondary);
@@ -140,7 +147,7 @@
 }
 .amount {
     font-size: 3rem;
-    font-weight: 900;
+    font-weight: var(--weight-max);
     color: var(--text-primary);
     margin: 12px 0 4px;
     letter-spacing: -1.5px;
@@ -157,7 +164,7 @@
     -webkit-text-fill-color: var(--text-muted);
 }
 .save {
-    font-size: 0.8rem;
+    font-size: var(--text-label);
     color: var(--green);
     font-weight: 700;
     margin-bottom: 24px;
@@ -170,9 +177,10 @@
     margin: 24px 0;
     flex: 1;
 }
+/* --text-body, matching Features' card copy — these bullets do the same job. */
 .features li {
     padding: 9px 0;
-    font-size: 0.9rem;
+    font-size: var(--text-body);
     color: var(--text-secondary);
     display: flex;
     align-items: center;
@@ -182,7 +190,7 @@
     content: "\2713";
     color: var(--green);
     font-weight: 700;
-    font-size: 0.7rem;
+    font-size: var(--text-micro);
     flex-shrink: 0;
     width: 18px; height: 18px;
     border-radius: 50%;
@@ -198,7 +206,7 @@
     width: 100%;
     padding: 14px;
     border-radius: 10px;
-    font-size: 0.95rem;
+    font-size: var(--text-body);
     font-weight: 700;
     cursor: pointer;
     transition: transform 0.25s var(--ease-spring), box-shadow 0.25s ease, background 0.25s ease;
@@ -236,12 +244,17 @@
     width: 100%;
     padding: 14px;
     border-radius: 10px;
-    font-size: 0.95rem;
+    font-size: var(--text-body);
 }
+/* max-width, not just centring: this is ~178 characters directly under the buy
+   buttons, and inside the 1140px container it set ~90-character lines — the same
+   defect --measure was added to SectionHeader's .desc and FAQ's .answer p to
+   kill, on the page's most consequential sentence. */
 .footer {
     text-align: center;
-    margin-top: 32px;
-    font-size: 0.85rem;
+    margin: 32px auto 0;
+    max-width: var(--measure);
+    font-size: var(--text-sm);
     color: var(--text-muted);
 }
 

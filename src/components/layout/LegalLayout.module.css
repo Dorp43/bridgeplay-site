@@ -1,42 +1,248 @@
+/* Legal documents — long-form reading, not a marketing band. These routes
+   render no nav and no footer, so this layout is the entire page chrome:
+   header, contents rail, prose, and a rail back out to the other documents.
+   Spacing and type come from the shared scale in variables.css, so these pages
+   step down at 768/600px in agreement with every homepage band. */
 .page {
-    max-width: 720px;
+    --mono: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace;
+    /* Prose ink. The old value was a hardcoded #ccc measuring 12.59:1 on
+       --bg-primary; this mix measures 12.72:1 — same perceived weight, no
+       contrast lost, and now on the token system (both parents sit on hue 240,
+       so the text picks up the site's faint blue cast instead of flat grey). */
+    --ink: color-mix(in srgb, var(--text-primary) 55%, var(--text-secondary));
+    position: relative;
+    z-index: 1;
+    padding: var(--section-y-first) 24px var(--section-y);
+}
+/* --measure is the shared ~68-character column; the whole page is prose, so it
+   is the page width rather than a cap on one element inside it. The old 720px
+   column ran to roughly 90 characters a line. */
+.shell {
+    max-width: var(--measure);
     margin: 0 auto;
-    padding: 40px 24px 80px;
-    color: #ccc;
 }
-.back {
-    display: inline-block;
-    color: var(--accent);
-    margin-bottom: 32px;
-    font-size: 0.9rem;
-    transition: opacity 0.2s;
+
+/* Head — the shared PageHeader component, left-aligned: this is a document, not
+   a hero. It owns the back link, eyebrow, h1, divider and meta row. The only
+   thing left here is `.head`, passed to it as a className purely so the header
+   can be placed in the two-column grid this shell becomes at 1080px; it is
+   declared inside that media query, at the bottom of this file. */
+
+/* Contents rail */
+.toc {
+    margin-bottom: var(--section-gap);
+    padding: var(--card-pad);
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
 }
-.back:hover { opacity: 0.8; }
-.page h1 {
-    font-size: 2rem;
-    color: var(--text-primary);
-    margin-bottom: 8px;
-}
-.date {
+.tocLabel {
+    font-size: var(--text-micro);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-wide);
     color: var(--text-muted);
-    font-size: 0.9rem;
-    margin-bottom: 40px;
+    margin-bottom: 14px;
 }
-.content h2 {
+.tocList {
+    list-style: none;
+    display: grid;
+    gap: 1px;
+}
+.tocLink {
+    position: relative;
+    display: flex;
+    gap: 10px;
+    padding: 5px 0;
+    font-size: var(--text-sm);
+    line-height: 1.5;
+    color: var(--text-secondary);
+    transition: color 0.3s var(--ease-out-quart);
+}
+.tocLink:hover { color: var(--text-primary); }
+.tocLinkActive { color: var(--accent); }
+.tocNum {
+    flex-shrink: 0;
+    min-width: 1.7em;
+    font-family: var(--mono);
+    font-size: var(--text-micro);
+    font-weight: 700;
+    line-height: 1.75;
+    color: var(--text-muted);
+    transition: color 0.3s var(--ease-out-quart);
+}
+.tocLinkActive .tocNum { color: var(--accent); }
+
+/* Prose */
+.section {
+    /* Half a section gap between clauses: the same scale, stepped down, so the
+       rhythm inside a document tracks the rhythm between bands. */
+    padding-top: calc(var(--section-gap) * 0.5);
+    /* Anchor jumps from the contents rail land with air above the heading. */
+    scroll-margin-top: 28px;
+}
+.doc > .section:first-child { padding-top: 4px; }
+.doc > * + .section { background: var(--hairline) top / 100% 1px no-repeat; }
+.heading {
+    display: flex;
+    gap: 12px;
+    font-size: var(--text-lede);
+    font-weight: 700;
+    letter-spacing: var(--tracking-tight);
+    line-height: 1.4;
     color: var(--text-primary);
-    font-size: 1.25rem;
-    margin: 32px 0 12px;
+    margin-bottom: 14px;
 }
-.content p {
-    margin-bottom: 16px;
-    line-height: 1.7;
-    font-size: 0.95rem;
+/* Hanging mono ordinal — the machined index /limitations already puts on its
+   cards, so both page families number things in one voice. */
+.headingNum {
+    flex-shrink: 0;
+    min-width: 1.7em;
+    font-family: var(--mono);
+    font-size: var(--text-micro);
+    font-weight: 700;
+    line-height: 2.05;
+    letter-spacing: var(--tracking-wide);
+    color: var(--text-muted);
 }
-.content ul {
-    margin: 0 0 16px 20px;
-    line-height: 1.7;
+.body > * + * { margin-top: 15px; }
+.body > ul, .body > ul + * { margin-top: 18px; }
+.body p {
+    font-size: var(--text-body);
+    line-height: 1.8;
+    color: var(--ink);
 }
-.content a {
+.body strong {
+    color: var(--text-primary);
+    font-weight: 700;
+}
+/* Run-in terms — "**Automatic renewal.** …" and "**Device hash:** …" are
+   definitions wearing prose clothing, so they get the vertical hairline a
+   definition list would get an indent for. The class is applied in
+   LegalLayout.tsx (see tagRunInTerms) because the CSS-only version,
+   `p:has(> strong:first-child)`, ignores text nodes and so also caught
+   paragraphs whose bold sits mid-sentence. */
+.body p.runIn {
+    padding-left: 16px;
+    background: linear-gradient(180deg, transparent, var(--border-light) 14%, var(--border-light) 86%, transparent) left / 1px 100% no-repeat;
+}
+.body ul {
+    list-style: none;
+    display: grid;
+    gap: 10px;
+}
+.body li {
+    position: relative;
+    padding-left: 22px;
+    font-size: var(--text-body);
+    line-height: 1.75;
+    color: var(--ink);
+}
+/* Machined tick instead of a bullet glyph */
+.body li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.8em;
+    width: 8px;
+    height: 1px;
+    background: color-mix(in srgb, var(--accent) 55%, transparent);
+}
+.body a {
     color: var(--accent);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+    transition: color 0.3s var(--ease-out-quart);
 }
-.content a:hover { text-decoration: underline; }
+.body a:hover {
+    color: var(--accent-hover);
+    text-decoration: underline;
+}
+
+/* Foot — the only way off these routes, so it is built rather than implied. */
+.foot {
+    margin-top: var(--section-gap);
+    padding-top: 28px;
+    background: var(--hairline) top / 100% 1px no-repeat;
+}
+.footRow {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 10px 18px;
+    margin-bottom: 22px;
+}
+.footLabel {
+    font-size: var(--text-micro);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-wide);
+    color: var(--text-muted);
+}
+.footLink {
+    font-size: var(--text-sm);
+    font-weight: 600;
+    color: var(--accent);
+    transition: opacity 0.3s var(--ease-out-quart);
+}
+.footLink:hover { opacity: 0.8; }
+/* The document's closing back link is the shared .back-link utility in
+   global.css — this was a third byte-equivalent copy of it. */
+
+/* Two-up contents wherever the card has room for it, before the rail goes
+   sticky. 13 single-file rows is a lot of page to scroll past on the way in. */
+@media (min-width: 620px) {
+    .tocList { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1px 24px; }
+}
+
+/* Wide: the rail leaves the flow, parks beside the prose and tracks it. The
+   prose column keeps its measure — the extra width buys navigation, not longer
+   lines. Sticky works because a grid item's containing block is its grid area,
+   which is as tall as the whole document row. */
+@media (min-width: 1080px) {
+    .shell {
+        max-width: 52rem;
+        display: grid;
+        grid-template-columns: 13rem minmax(0, var(--measure));
+        justify-content: center;
+        gap: 0 5rem;
+        align-items: start;
+    }
+    .head, .foot { grid-column: 1 / -1; }
+    .doc { grid-column: 2; }
+    .toc {
+        grid-column: 1;
+        position: sticky;
+        top: 40px;
+        margin-bottom: 0;
+        padding: 4px 0 4px 18px;
+        background: linear-gradient(180deg, transparent, var(--border-light) 8%, var(--border-light) 92%, transparent) left / 1px 100% no-repeat;
+        border: none;
+        border-radius: 0;
+        max-height: calc(100dvh - 96px);
+        overflow-y: auto;
+    }
+    .tocList { grid-template-columns: 1fr; gap: 2px; }
+    .tocLink { padding: 6px 0; }
+    /* Active mark rides the rail — grows from its centre on the entrance
+       grammar's micro-interaction timing. -18px, exactly the rail's own offset:
+       the sticky rail is an overflow-y:auto box, so a marker any further left
+       would have a pixel shaved off it by the clip. */
+    .tocLink::before {
+        content: '';
+        position: absolute;
+        left: -18px;
+        top: 7px;
+        bottom: 7px;
+        width: 2px;
+        border-radius: 1px;
+        background: var(--accent);
+        transform: scaleY(0);
+        transition: transform 0.3s var(--ease-out-expo);
+    }
+    .tocLinkActive::before { transform: scaleY(1); }
+}
+
+@media (max-width: 600px) {
+    .page { padding-left: 16px; padding-right: 16px; }
+}

@@ -1,12 +1,16 @@
-.section { padding: 120px 0; background: var(--bg-secondary); position: relative; z-index: 1; }
-/* Band seam — the bg change reads as a staged lighting shift */
+/* Token, not a flat 120px: identical on desktop, and it now steps down with
+   every other band below 768px instead of holding 120px alone. */
+.section { padding: var(--section-y) 0; background: var(--bg-secondary); position: relative; z-index: 1; }
+/* Band seam — the bg change reads as a staged lighting shift. Height tracks the
+   padding, per the rule in variables.css: the seam covers the top padding and
+   nothing more. */
 .section::before {
     content: '';
     position: absolute;
     top: 0; left: 0; right: 0;
-    height: 120px;
+    height: var(--section-y);
     background: var(--hairline) top / 100% 1px no-repeat,
-                radial-gradient(50% 120px at 50% 0%, color-mix(in srgb, var(--accent) 4%, transparent), transparent);
+                radial-gradient(50% var(--section-y) at 50% 0%, color-mix(in srgb, var(--accent) 4%, transparent), transparent);
     pointer-events: none;
 }
 .container { max-width: 1140px; margin: 0 auto; padding: 0 24px; }
@@ -19,7 +23,7 @@
 .field:focus-within label { color: var(--accent); }
 .field input, .field textarea {
     width: 100%; padding: 14px 16px; background: var(--bg-card); border: 1px solid var(--border);
-    border-radius: 10px; color: var(--text-primary); font-family: 'Inter', sans-serif;
+    border-radius: 10px; color: var(--text-primary); font-family: var(--font-body);
     font-size: 0.95rem; outline: none;
     transition: border-color 0.25s var(--ease-out-quart), box-shadow 0.25s var(--ease-out-quart);
     caret-color: var(--accent);
@@ -38,7 +42,7 @@
     display: inline-flex; align-items: center; justify-content: center; gap: 8px;
     padding: 14px 32px; background: var(--gradient-cta);
     color: #fff; border: none; border-radius: 12px; font-size: 1rem; font-weight: 700;
-    font-family: 'Inter', sans-serif; cursor: pointer;
+    font-family: var(--font-body); cursor: pointer;
     transition: transform 0.3s var(--ease-out-quart), box-shadow 0.3s var(--ease-out-quart);
     box-shadow: 0 4px 20px color-mix(in srgb, var(--accent) 25%, transparent), inset 0 1px 0 rgba(255,255,255,0.18);
     position: relative; overflow: hidden;

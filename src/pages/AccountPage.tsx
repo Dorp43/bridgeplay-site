@@ -1,10 +1,12 @@
 import { useCallback, useEffect, useState, type FormEvent } from 'react';
+import { Link } from 'react-router-dom';
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword, sendPasswordResetEmail, signOut } from 'firebase/auth';
 import { doc, getDoc } from 'firebase/firestore';
 import { auth, db, friendlyAuthError } from '../lib/firebase';
 import { useAuth } from '../context/useAuth';
 import { useToast } from '../context/useToast';
 import { openCheckout, PRICE_IDS } from '../lib/paddle';
+import { useDocumentMeta } from '../hooks/useDocumentMeta';
 import styles from './AccountPage.module.css';
 
 interface LicenseData {
@@ -25,6 +27,12 @@ export default function AccountPage() {
     const [submitting, setSubmitting] = useState(false);
     const [license, setLicense] = useState<LicenseData | null>(null);
     const [memberSince, setMemberSince] = useState('');
+
+    useDocumentMeta({
+        title: 'Account — BridgePlay',
+        description: 'Sign in to your BridgePlay account to check your license status and manage your plan.',
+        canonicalPath: '/account',
+    });
 
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -138,17 +146,21 @@ export default function AccountPage() {
         return () => { cancelled = true; };
     }, [user, license, loading, loadDashboard]);
 
+    /* Landmark + target for the skip link rendered in main.tsx. Every branch
+       below is this route's whole page, so each one carries it — the skip link
+       is the first focusable node on /account too, and without a
+       <main id="main-content"> here it was a dead control. */
     if (loading) {
         return (
-            <div className={styles.page}>
+            <main id="main-content" tabIndex={-1} className={styles.page}>
                 <div className={styles.loading}><div className={styles.spinner} />Loading...</div>
-            </div>
+            </main>
         );
     }
 
     if (!user) {
         return (
-            <div className={styles.page}>
+            <main id="main-content" tabIndex={-1} className={styles.page}>
                 <div className={styles.authCard}>
                     <h1>{isSignUp ? 'Create Account' : 'Sign In'}</h1>
                     <p className={styles.subtitle}>
@@ -179,12 +191,12 @@ export default function AccountPage() {
                         <a onClick={() => { setIsSignUp(!isSignUp); setError(''); }}>{isSignUp ? 'Sign In' : 'Sign Up'}</a>
                     </p>
                 </div>
-            </div>
+            </main>
         );
     }
 
     return (
-        <div className={styles.page}>
+        <main id="main-content" tabIndex={-1} className={styles.page}>
             <div className={styles.dashboard}>
                 <div className={styles.profileHeader}>
                     <div className={styles.profileAvatar}>{(user.email || '?')[0].toUpperCase()}</div>
@@ -218,11 +230,17 @@ export default function AccountPage() {
                         {license && (license.status === 'expired' || license.status === 'noTrial') && (
                             <button onClick={() => openCheckout(PRICE_IDS.yearly, user.email || undefined, user.uid)} className={`${styles.actionBtn} ${styles.actionPrimary}`}>Upgrade Now</button>
                         )}
+                        {/* Stays a direct download — this visitor has already paid. */}
                         <a href="/BridgePlay.dmg" download className={`${styles.actionBtn} ${license && (license.status === 'expired' || license.status === 'noTrial') ? styles.actionSecondary : styles.actionPrimary}`}>Download BridgePlay</a>
                         <button className={`${styles.actionBtn} ${styles.actionDanger}`} onClick={handleSignOut}>Sign Out</button>
                     </div>
+                    {/* Reuses the auth card's quiet-link treatment rather than adding a
+                        one-off style. */}
+                    <p className={styles.toggle}>
+                        Installing on a new Mac? <Link to="/download">Requirements, checksum and first-launch steps</Link>
+                    </p>
                 </div>
             </div>
-        </div>
+        </main>
     );
 }

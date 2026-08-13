@@ -4,76 +4,112 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BridgePlay — Play Windows Games on Your Mac</title>
-    <meta name="description" content="BridgePlay lets you play your favorite Windows PC games natively on macOS. No dual boot, no virtual machines. Just launch and play.">
+    <meta name="description" content="Run your existing Windows games on an Apple Silicon Mac. BridgePlay is a native macOS launcher that manages a source-built Wine 11.0 runtime for you — no dual boot, no virtual machines.">
     <meta name="keywords" content="play Windows games on Mac, Mac gaming, Wine for Mac, Windows games macOS, BridgePlay, game compatibility Mac, Apple Silicon gaming">
-    <link rel="icon" type="image/png" sizes="64x64" href="/favicon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/favicon.png">
-    <link rel="apple-touch-icon" href="/favicon.png">
+    <!-- Google Search only accepts a favicon whose dimensions are a multiple of
+         48px, so these are 96/192/512 rather than the old 16/32/64 set. -->
+    <link rel="icon" type="image/png" sizes="96x96" href="/favicon.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="/favicon-512.png">
+    <!-- iOS paints alpha black, so this one is flattened onto the brand ground. -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
     <link rel="shortcut icon" href="/favicon.png">
     <link rel="canonical" href="https://bridgeplay.app">
     <script type="application/ld+json">
     {
         "@context": "https://schema.org",
         "@type": "Organization",
+        "@id": "https://bridgeplay.app/#organization",
         "name": "BridgePlay",
         "url": "https://bridgeplay.app",
-        "logo": "https://bridgeplay.app/favicon.png"
+        "logo": "https://bridgeplay.app/favicon-512.png"
     }
     </script>
+    <!-- The 7-day free trial is stated here, on the application, and NOT inside
+         any Offer below. No trial is configured on the Paddle prices (see the
+         note at the top of src/components/sections/Pricing.tsx) — every one of
+         them charges its full amount immediately — so a trial sentence attached
+         to a chargeable Offer is a promise Paddle will not honour, and Google
+         can render it as a rich result against a $6.99/mo price. The genuine
+         free week is claimed inside the app on first launch, with no card. -->
     <script type="application/ld+json">
     {
         "@context": "https://schema.org",
         "@type": "SoftwareApplication",
+        "@id": "https://bridgeplay.app/#software",
         "name": "BridgePlay",
-        "operatingSystem": "macOS",
         "applicationCategory": "GameApplication",
-        "description": "Play your favorite Windows PC games natively on macOS. No dual boot, no virtual machines. Just launch and play.",
+        "applicationSubCategory": "Game launcher",
+        "operatingSystem": "macOS 14 (Sonoma) or later, Apple Silicon (M1 or later)",
+        "processorRequirements": "Apple Silicon (M1 or later). Intel Macs are not supported.",
+        "softwareRequirements": "Rosetta 2",
+        "description": "A native macOS launcher for Windows games on Apple Silicon. Wine 11.0 in a WoW64 prefix runs x86 game binaries through Rosetta 2 — no dual boot and no virtual machine. A free 7-day trial is claimed inside the app on first launch, with no payment method; the paid plans below each charge in full at checkout.",
         "url": "https://bridgeplay.app",
+        "downloadUrl": "https://bridgeplay.app/BridgePlay.dmg",
+        "publisher": { "@id": "https://bridgeplay.app/#organization" },
+        "isAccessibleForFree": false,
         "image": [
-            "https://bridgeplay.app/favicon.png",
-            "https://bridgeplay.app/og-image.png"
+            "https://bridgeplay.app/favicon-512.png",
+            "https://bridgeplay.app/og-cover.png"
         ],
         "offers": [
             {
                 "@type": "Offer",
-                "price": "0",
-                "priceCurrency": "USD",
-                "description": "7-day free trial"
-            },
-            {
-                "@type": "Offer",
+                "name": "Monthly",
                 "price": "6.99",
                 "priceCurrency": "USD",
-                "description": "Monthly subscription"
+                "category": "subscription",
+                "url": "https://bridgeplay.app/#pricing",
+                "availability": "https://schema.org/InStock",
+                "description": "Billed 6.99 USD every month."
             },
             {
                 "@type": "Offer",
+                "name": "Yearly",
                 "price": "39.99",
                 "priceCurrency": "USD",
-                "description": "Yearly subscription"
+                "category": "subscription",
+                "url": "https://bridgeplay.app/#pricing",
+                "availability": "https://schema.org/InStock",
+                "description": "Billed 39.99 USD every 12 months."
             },
             {
                 "@type": "Offer",
+                "name": "Lifetime",
                 "price": "59.99",
                 "priceCurrency": "USD",
-                "description": "Lifetime license"
+                "category": "one-time purchase",
+                "url": "https://bridgeplay.app/#pricing",
+                "availability": "https://schema.org/InStock",
+                "description": "One payment of 59.99 USD. All future updates included, nothing recurring."
             }
         ]
     }
     </script>
     <meta property="og:title" content="BridgePlay — Play Windows Games on Your Mac">
-    <meta property="og:description" content="Play your favorite Windows PC games natively on macOS. No dual boot, no virtual machines. Just launch and play.">
+    <meta property="og:description" content="Run your existing Windows games on an Apple Silicon Mac. No dual boot, no virtual machines — a native launcher that manages a source-built Wine 11.0 runtime for you.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://bridgeplay.app">
-    <meta property="og:image" content="https://bridgeplay.app/og-image.png">
+    <!-- og-cover.png, not the old og-image.png: the previous card was a
+         transparent PNG, so chat apps composited a floating logo onto their own
+         background. New filename because scrapers cache aggressively by URL. -->
+    <meta property="og:image" content="https://bridgeplay.app/og-cover.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="BridgePlay — Windows games. Your Mac. Shown beside the BridgePlay game library running on macOS.">
+    <meta property="og:site_name" content="BridgePlay">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="BridgePlay — Play Windows Games on Your Mac">
-    <meta name="twitter:description" content="Play your favorite Windows PC games natively on macOS. No dual boot, no virtual machines.">
-    <meta name="twitter:image" content="https://bridgeplay.app/og-image.png">
+    <meta name="twitter:description" content="Run your existing Windows games on an Apple Silicon Mac. No dual boot, no virtual machines.">
+    <meta name="twitter:image" content="https://bridgeplay.app/og-cover.png">
+    <meta name="twitter:image:alt" content="BridgePlay — Windows games. Your Mac. Shown beside the BridgePlay game library running on macOS.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+    <!-- Instrument Sans is the companion face to the Instrument Serif already
+         used for --font-display, so the body and the italic display accents come
+         from one family. It is a 400-700 variable font: nothing on the site may
+         ask for 800/900 or the browser synthesizes a smeared fake bold. -->
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400..700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
 </head>
 <body>
     <div id="root"></div>

@@ -1,16 +1,22 @@
-.section { padding: 120px 0; background: var(--bg-secondary); position: relative; z-index: 1; }
-/* Band seam — the bg change reads as a staged lighting shift */
+.section { padding: var(--section-y) 0; background: var(--bg-secondary); position: relative; z-index: 1; }
+/* Band seam — the bg change reads as a staged lighting shift. Height tracks the
+   band's own top padding, so the seam never reaches past it into the content
+   (at the 72px phone step a fixed 120px seam ran under the section label). */
 .section::before {
     content: '';
     position: absolute;
     top: 0; left: 0; right: 0;
-    height: 120px;
+    height: var(--section-y);
     background: var(--hairline) top / 100% 1px no-repeat,
-                radial-gradient(50% 120px at 50% 0%, color-mix(in srgb, var(--accent) 4%, transparent), transparent);
+                radial-gradient(50% var(--section-y) at 50% 0%, color-mix(in srgb, var(--accent) 4%, transparent), transparent);
     pointer-events: none;
 }
 .container { max-width: 1140px; margin: 0 auto; padding: 0 24px; }
-.steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 32px; margin-top: 64px; }
+/* No margin-top: SectionHeader owns the header-to-content gap. This used to add
+   64px to the header's own 64px, so this section sat twice as far from its
+   heading as Features did. Explicit 4 -> 2 -> 1 columns rather than auto-fit:
+   four ordered steps must never reflow to 3 + 1. */
+.steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 32px; }
 .step { text-align: center; position: relative; }
 .step:global(.reveal) { transition-delay: min(calc(var(--i, 0) * 90ms), 480ms); }
 
@@ -56,8 +62,10 @@
 }
 .step:global(.visible) .number::before { --arc: 100; }
 
-.step h3 { font-size: 1.05rem; font-weight: 700; margin-bottom: 8px; }
-.step p { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6; }
+.step h3 { font-size: var(--text-lg); font-weight: 700; margin-bottom: 8px; }
+/* Small step because the desktop column is only ~250px wide; the phone rule
+   below puts it back on the body step once each step has the full width. */
+.step p { font-size: var(--text-sm); color: var(--text-secondary); line-height: 1.6; }
 
 /* Connector handoff — the hairline relays left to right, each numeral
    popping 120ms after its own connector starts drawing */
@@ -71,4 +79,10 @@
 .step:global(.visible) .connector { transform: scaleX(1); }
 
 @media (max-width: 900px) { .steps { grid-template-columns: repeat(2, 1fr); } .connector { display: none; } }
-@media (max-width: 600px) { .steps { grid-template-columns: 1fr; } }
+/* One per row: the numeral, title and text get the container's full width, so
+   the copy returns to the body step and the ring loses a little of its height. */
+@media (max-width: 600px) {
+    .steps { grid-template-columns: 1fr; gap: 28px; }
+    .step p { font-size: var(--text-body); max-width: var(--measure); margin: 0 auto; }
+    .number { margin-bottom: 16px; }
+}

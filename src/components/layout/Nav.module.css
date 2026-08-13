@@ -55,7 +55,7 @@
 }
 .logo {
     font-size: 1.3rem;
-    font-weight: 800;
+    font-weight: var(--weight-max);
     background: linear-gradient(135deg, var(--accent), var(--green));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -156,7 +156,7 @@
     align-items: center;
     justify-content: center;
     font-size: 0.7rem;
-    font-weight: 800;
+    font-weight: var(--weight-max);
     color: #fff;
     flex-shrink: 0;
 }
@@ -216,6 +216,14 @@
     flex-direction: column;
     gap: 8px;
     z-index: 105;
+    /* The drawer's content is ~472px tall (5 links + auth slot + CTA + padding)
+       but the panel is capped at 100dvh, and Nav.tsx locks body scrolling while
+       it is open. Below ~475px of viewport height — an iPhone Pro in landscape
+       is 393px, and it now falls under the 900px breakpoint — the Download CTA
+       laid out past the fold with no way to reach it. Scrolls the panel itself
+       instead; no effect at normal heights, where nothing overflows. */
+    overflow-y: auto;
+    overscroll-behavior: contain;
     transform: translateX(100%);
     transition: transform 0.3s ease;
 }
@@ -272,7 +280,51 @@
     transition-delay: 0s;
 }
 
-@media (max-width: 768px) {
+/* ============================================================
+   Nav breakpoints are driven by measured content width, not by device names.
+   The row is logo + links under `justify-content: space-between`, so the nav
+   needs the SUM of both blocks plus its own padding before the last item starts
+   sliding off the right edge. Advances below are Instrument Sans's real hmtx
+   metrics at the sizes and weights this file sets:
+
+     .logo "BridgePlay"  1.3rem/700, -0.5px tracking     101.7px
+     .links  6 gaps x 32px                                 192px
+             Features 63.7 + How It Works 95.7
+             + Pricing 51.1 + FAQ 32.4 + Changelog 79.0    321.9px
+             + auth slot: "Login" 40.7 | avatar pill 38    ~41px
+             + .cta pill: "Download" 73.0 + 44 padding     117.0px
+     .nav padding 32px x 2                                  64px
+     -----------------------------------------------------------
+     minimum to fit, nothing to spare                      837px
+
+   Worst case is +28.9px on top: the CTA reads "Requirements" rather than
+   "Download" for a visitor we know cannot run the app (the widest label the
+   pill ever carries), giving 866px. The signed-in profile pill is the other
+   variable, and the 1080px rule below keeps it the same width as "Login".
+
+   Hence 900px: at 901px the worst case has 35px of air between the logo and
+   the first link, which is also the margin that absorbs the fallback stack
+   (-apple-system) before the webfont lands.
+
+   These numbers replaced Inter's when the body face changed. Instrument Sans
+   is the narrower of the two — the same worst case measured 899px under Inter,
+   i.e. this breakpoint used to clear by 2px and now clears by 35px. If the body
+   face ever changes again, re-measure: every figure here is font-specific.
+
+   The old 768px breakpoint left 769-837px broken: desktop layout in a viewport
+   too narrow for it, Download pushed off-screen, no hamburger to reach it.
+   ============================================================ */
+
+/* Signed in, 901-1080px: avatar 28 + gap 10 + email up to 160 + padding puts
+   the pill ~180px past "Login", and the row then needs 1015px to fit — so the
+   email drops and the pill becomes the avatar alone. Scoped to .links so the
+   mobile drawer, 280px wide with room to spare, keeps the address visible. */
+@media (max-width: 1080px) {
+    .links .profileEmail { display: none; }
+    .links .profile { padding: 4px; }
+}
+
+@media (max-width: 900px) {
     .links { display: none; }
     .burger { display: flex; }
     .overlay { display: block; }

@@ -1,12 +1,19 @@
-.features { padding: 96px 0 120px; position: relative; z-index: 1; }
+.features { padding: var(--section-y-first) 0 var(--section-y); position: relative; z-index: 1; }
 .container { max-width: 1140px; margin: 0 auto; padding: 0 24px; }
-.grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+/* Intrinsic columns instead of 3 -> 2 -> 1 media queries. The 300px floor
+   reproduces the old breakpoints within ~30px but collapses a beat earlier,
+   which fixes the genuinely cramped 2-up (274px wide, 210px of text) that the
+   600px breakpoint used to hold on to. Six cards, so no orphan row at any count.
+   The min() guard on the floor matters: without it a 320px-wide phone
+   (container 272px) gets a 300px track and loses 28px of every card behind
+   body's overflow clip. */
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr)); gap: 24px; }
 
 .card {
     background: linear-gradient(180deg, var(--bg-card), #0f0f18);
     border: 1px solid var(--border);
     border-radius: var(--radius);
-    padding: 32px;
+    padding: var(--card-pad);
     position: relative;
     overflow: hidden;
     isolation: isolate;
@@ -48,19 +55,26 @@
     transition: opacity 0.4s ease;
 }
 
-.card:hover {
-    transform: translateY(-4px);
-    border-color: color-mix(in srgb, var(--card-accent, var(--accent)) 35%, var(--border-light));
-    box-shadow: 0 24px 48px rgba(0,0,0,0.35),
-                0 0 60px color-mix(in srgb, var(--card-accent, var(--accent)) 12%, transparent);
-    transition-delay: 0s;
+/* Hover gated on a real pointer, matching Hero's own hover block: on a phone
+   these rules used to latch after a tap and leave a card floating 4px up with
+   its spotlight lit, with no second element to tap to clear it. */
+@media (hover: hover) and (pointer: fine) {
+    .card:hover {
+        transform: translateY(-4px);
+        border-color: color-mix(in srgb, var(--card-accent, var(--accent)) 35%, var(--border-light));
+        box-shadow: 0 24px 48px rgba(0,0,0,0.35),
+                    0 0 60px color-mix(in srgb, var(--card-accent, var(--accent)) 12%, transparent);
+        transition-delay: 0s;
+    }
+    .card:hover::before { opacity: 1; }
+    .card:hover::after { opacity: 1; }
 }
-.card:hover::before { opacity: 1; }
-.card:hover::after { opacity: 1; }
 
 .icon {
     width: 52px; height: 52px;
-    border-radius: 14px;
+    /* Constant machined corner, shared with Compatibility's row chips, instead
+       of a per-chip 14px / 10px guess. */
+    border-radius: var(--radius-md);
     display: flex; align-items: center; justify-content: center;
     color: var(--card-accent, var(--accent));
     background: var(--card-glow, var(--accent-glow));
@@ -69,31 +83,32 @@
     border: 1px solid color-mix(in srgb, var(--card-accent, var(--accent)) 18%, transparent);
     box-shadow: inset 0 1px 0 rgba(255,255,255,0.06);
 }
-.card:hover .icon {
-    transform: scale(1.08) translateY(-2px) rotate(-2deg);
-    box-shadow: 0 8px 24px color-mix(in srgb, var(--card-accent, var(--accent)) 25%, transparent),
-                inset 0 1px 0 rgba(255,255,255,0.1);
-}
-
 /* Per-glyph signatures — the icon's meaning moves, not just its chip */
 .icon svg { transition: transform 0.5s var(--ease-out-quart); }
-.card:hover [data-icon="gear"] svg { transform: rotate(60deg); }
-.card:hover [data-icon="play"] svg { transform: translateX(1.5px) scale(1.05); }
-.card:hover [data-icon="download"] svg { transform: translateY(1.5px); }
-.card:hover [data-icon="bolt"] svg { transform: rotate(-8deg) scale(1.06); transition-duration: 0.4s; transition-timing-function: var(--ease-spring); }
-.card:hover [data-icon="layers"] svg { transform: translate(1px, -1px); }
-.card:hover [data-icon="grid"] svg { transform: scale(1.06); }
+
+@media (hover: hover) and (pointer: fine) {
+    .card:hover .icon {
+        transform: scale(1.08) translateY(-2px) rotate(-2deg);
+        box-shadow: 0 8px 24px color-mix(in srgb, var(--card-accent, var(--accent)) 25%, transparent),
+                    inset 0 1px 0 rgba(255,255,255,0.1);
+    }
+    .card:hover [data-icon="gear"] svg { transform: rotate(60deg); }
+    .card:hover [data-icon="play"] svg { transform: translateX(1.5px) scale(1.05); }
+    .card:hover [data-icon="download"] svg { transform: translateY(1.5px); }
+    .card:hover [data-icon="bolt"] svg { transform: rotate(-8deg) scale(1.06); transition-duration: 0.4s; transition-timing-function: var(--ease-spring); }
+    .card:hover [data-icon="layers"] svg { transform: translate(1px, -1px); }
+    .card:hover [data-icon="grid"] svg { transform: scale(1.06); }
+}
 
 .card h3 {
-    font-size: 1.15rem; font-weight: 700;
+    font-size: var(--text-lg); font-weight: 700;
     margin-bottom: 10px;
-    letter-spacing: -0.3px;
+    letter-spacing: var(--tracking-tight);
 }
 .card p {
-    font-size: 0.9rem;
+    /* Was 0.9rem: card copy is the main explanatory text on the page, so it
+       moves up to the body step rather than sitting between two of them. */
+    font-size: var(--text-body);
     color: var(--text-secondary);
     line-height: 1.6;
 }
-
-@media (max-width: 900px) { .grid { grid-template-columns: repeat(2, 1fr); } }
-@media (max-width: 600px) { .grid { grid-template-columns: 1fr; } }

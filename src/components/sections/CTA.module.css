@@ -1,4 +1,6 @@
-.section { padding: 120px 0; text-align: center; position: relative; z-index: 1; }
+/* Token, not a flat 120px: identical on desktop, and it now steps down with
+   every other band below 768px instead of holding 120px alone. */
+.section { padding: var(--section-y) 0; text-align: center; position: relative; z-index: 1; }
 .container { max-width: 1140px; margin: 0 auto; padding: 0 24px; }
 .box {
     background: linear-gradient(135deg, color-mix(in srgb, var(--accent) 8%, transparent), color-mix(in srgb, var(--green) 5%, transparent));
@@ -15,7 +17,7 @@
     animation-play-state: paused;
 }
 .box:global(.visible)::before { animation-play-state: running; }
-.box h2 { font-size: clamp(1.8rem, 3.5vw, 2.5rem); font-weight: 800; margin-bottom: 16px; letter-spacing: -0.5px; position: relative; }
+.box h2 { font-size: clamp(1.8rem, 3.5vw, 2.5rem); font-weight: var(--weight-max); margin-bottom: 16px; letter-spacing: -0.5px; position: relative; }
 /* Serif-italic accent — one word only, mirrors the hero's "Your Mac." */
 .accent { font-family: var(--font-display); font-style: italic; font-weight: 400; }
 .box p { font-size: 1.1rem; color: var(--text-secondary); margin-bottom: 32px; max-width: 480px; margin-left: auto; margin-right: auto; position: relative; }

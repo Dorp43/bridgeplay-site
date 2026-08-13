@@ -1,0 +1,455 @@
+/* Download — three bands rather than one flat column, so the page carries the
+   same staged-lighting rhythm as the homepage: the download and the file's
+   identity sit on --bg-primary, the "before you install" work sits in a
+   --bg-secondary band behind a seam, and the outro comes back out onto primary.
+   Spacing and type come from the shared scale in variables.css. */
+.page {
+    --mono: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace;
+    --sans: var(--font-body);
+    position: relative;
+    z-index: 1;
+}
+.inner {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 0 24px;
+}
+/* 120px, not a rhythm token: this is the one measurement on the page that has a
+   job other than rhythm — clearing the fixed nav (72px) with air to spare. */
+.top { padding: 120px 0 var(--section-y); }
+.band {
+    padding: var(--section-y) 0;
+    background: var(--bg-secondary);
+    position: relative;
+}
+/* Band seam — same recipe and same height-tracks-padding rule as the homepage
+   bands. Sets no opacity, so the scroll-scrubbed [data-band-seam] dawn in
+   animations.css owns it without a cascade tie. */
+.band::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: var(--section-y);
+    background: var(--hairline) top / 100% 1px no-repeat,
+                radial-gradient(50% var(--section-y) at 50% 0%, color-mix(in srgb, var(--accent) 4%, transparent), transparent);
+    pointer-events: none;
+}
+.tail {
+    padding: calc(var(--section-y) * 0.6) 0 var(--section-y);
+    background: var(--hairline) top / 100% 1px no-repeat;
+}
+
+/* Head — the shared PageHeader component (centred, reveal-driven divider). */
+
+/* Primary action */
+.ctaBlock {
+    text-align: center;
+    margin-bottom: var(--section-gap);
+}
+.primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 15px 34px;
+    background: var(--gradient-cta);
+    color: #fff;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-weight: 700;
+    /* Chamfer catch-light, same recipe as the hero button */
+    box-shadow: 0 4px 20px color-mix(in srgb, var(--accent) 25%, transparent), inset 0 1px 0 rgba(255,255,255,0.18);
+    transition: transform 0.25s var(--ease-out-expo), box-shadow 0.25s var(--ease-out-expo);
+}
+.primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px color-mix(in srgb, var(--accent) 35%, transparent), inset 0 1px 0 rgba(255,255,255,0.25);
+}
+/* Press seat-down — fast in; release rides the hover transition back out */
+.primary:active {
+    transform: translateY(0) scale(0.97);
+    transition-duration: 0.08s;
+}
+/* The three conditions, as a list rather than a run of middots — hairline
+   separators between them instead of punctuation. */
+.ctaFacts {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 6px 18px;
+    margin-top: 16px;
+    font-size: var(--text-label);
+    color: var(--text-muted);
+}
+.ctaFacts li { position: relative; }
+.ctaFacts li + li::before {
+    content: '';
+    position: absolute;
+    left: -9px;
+    top: 50%;
+    width: 1px;
+    height: 11px;
+    margin-top: -5px;
+    background: var(--border-light);
+}
+/* Non-Mac visitors: state the fact, then get out of the way. The card treatment
+   is the shared .notice-card utility in global.css — the hero states the same
+   message and the two had drifted apart on radius, padding, background alpha and
+   glass. Only the flow is local. */
+.unsupported {
+    max-width: 560px;
+    margin: 0 auto 14px;
+    font-size: var(--text-body);
+}
+.plainLink {
+    display: inline-block;
+    color: var(--accent);
+    font-size: var(--text-sm);
+    transition: opacity 0.3s var(--ease-out-quart);
+}
+.plainLink:hover { opacity: 0.8; }
+
+/* Cards — the reveal lives on the wrapper so the card keeps its own hover
+   transition without resetting the entrance delay. */
+.stack {
+    display: grid;
+    gap: 20px;
+}
+.stack > :global(.reveal) { transition-delay: min(calc(var(--i, 0) * 90ms), 480ms); }
+/* The wrapper exists so the reveal class never lands on the card itself, whose
+   own hover transition would otherwise reset the entrance delay. */
+.cardWrap { display: block; }
+.card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: var(--card-pad);
+    transition: border-color 0.3s var(--ease-out-quart);
+}
+.card:hover { border-color: var(--border-light); }
+.cardTitle {
+    font-size: var(--text-lg);
+    font-weight: 700;
+    letter-spacing: var(--tracking-tight);
+    margin-bottom: 16px;
+}
+/* Second-level title inside a card, for the card that runs long enough to need
+   one. Sits between the card title and body copy. */
+.subTitle {
+    font-size: var(--text-body);
+    font-weight: 700;
+    color: var(--text-primary);
+    letter-spacing: var(--tracking-tight);
+    margin-bottom: 10px;
+}
+.cardNote {
+    font-size: var(--text-body);
+    color: var(--text-secondary);
+    line-height: 1.75;
+    max-width: var(--measure);
+}
+.cardNote + .cardNote { margin-top: 14px; }
+.cardNote strong { color: var(--text-primary); font-weight: 700; }
+/* Terms of the smaller print: an aside qualifying the block above it. */
+.cardFine {
+    margin-top: 14px;
+    font-size: var(--text-sm);
+    color: var(--text-muted);
+    line-height: 1.7;
+    max-width: var(--measure);
+}
+.cardFine a { color: var(--accent); }
+.cardFine a:hover { text-decoration: underline; }
+.inlineCode {
+    font-family: var(--mono);
+    font-size: 0.86em;
+    color: var(--text-primary);
+    background: rgba(255,255,255,0.045);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 2px 6px;
+    /* nowrap by default: a short command fragment must not split across lines,
+       and replacing its spaces with non-breaking ones would poison what the
+       reader copies out of it. */
+    white-space: nowrap;
+    /* Both halves keep their border and radius if a wrapping variant breaks. */
+    -webkit-box-decoration-break: clone;
+    box-decoration-break: clone;
+}
+/* The one inline code that has to wrap: a 40-character path with no spaces in
+   it, which overflows a 360px card on its own. Declared after .inlineCode so it
+   wins the tie when both classes are applied. */
+.inlinePath {
+    white-space: normal;
+    word-break: break-all;
+}
+.rule {
+    height: 1px;
+    background: var(--hairline);
+    margin: 24px 0;
+}
+
+/* File facts */
+.facts {
+    display: grid;
+    gap: 14px;
+    margin: 18px 0;
+}
+.fact {
+    display: grid;
+    grid-template-columns: 96px minmax(0, 1fr);
+    gap: 16px;
+    align-items: baseline;
+}
+.fact dt {
+    font-size: var(--text-micro);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-wide);
+    color: var(--text-muted);
+}
+.fact dd {
+    font-family: var(--mono);
+    font-size: var(--text-sm);
+    color: var(--text-primary);
+    line-height: 1.7;
+}
+/* Holds the two lines a 64-character hash needs at every width this page has,
+   so the skeleton, the real value and the unavailable state all settle into one
+   box and the fetch landing never moves the card. */
+.hashCell { min-height: calc(var(--text-sm) * 1.7 * 2); }
+.hashRow {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: 10px;
+}
+.hash {
+    flex: 1 1 20rem;
+    min-width: 0;
+    /* The one string on the site with no break opportunities in it. */
+    word-break: break-all;
+}
+/* Skeleton that occupies the exact box the value will need — same font, same
+   character count — with a single sweep across it so the wait reads as pending
+   rather than as a rendering fault. */
+.pending {
+    position: relative;
+    display: inline-block;
+    max-width: 100%;
+    overflow: hidden;
+    vertical-align: top;
+    word-break: break-all;
+    color: transparent;
+    background: var(--border);
+    border-radius: 4px;
+    user-select: none;
+}
+/* Reuses the global shineSweep keyframe. Base state is off-screen and
+   transparent, which is also where reduced motion parks it — the bar stays,
+   the sweep does not. */
+.pending::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.10), transparent);
+    transform: translateX(-120%) skewX(-20deg);
+    opacity: 0;
+    animation: global(shineSweep) 1.9s var(--ease-out-quart) infinite;
+}
+/* Resolved, but the value is not there. A dashed hairline reads as "an empty
+   slot" where plain text read as a rendering bug. Scoped under .fact so it
+   outranks the `.fact dd` mono family above. */
+.fact .absent {
+    display: inline-block;
+    font-family: var(--sans);
+    font-size: var(--text-sm);
+    color: var(--text-muted);
+    padding: 2px 12px;
+    border: 1px dashed var(--border-light);
+    border-radius: 100px;
+}
+/* Something the reader needs to know about the state of the page itself. */
+.notice {
+    margin-top: 16px;
+    padding: 14px 16px;
+    background: var(--orange-glow);
+    border: 1px solid rgba(245, 158, 11, 0.18);
+    border-radius: var(--radius-md);
+    font-size: var(--text-sm);
+    color: var(--text-secondary);
+    line-height: 1.7;
+}
+
+/* Copyable command */
+.command {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 16px;
+    padding: 10px 10px 10px 16px;
+    background: rgba(255,255,255,0.025);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+}
+.command code {
+    flex: 1;
+    min-width: 0;
+    /* Wraps at the spaces a shell command already has rather than making the
+       reader scroll a 56-character line sideways on a phone. overflow-x is the
+       backstop for a future command with no spaces in it. */
+    white-space: pre-wrap;
+    overflow-wrap: break-word;
+    overflow-x: auto;
+    padding: 4px 0;
+    font-family: var(--mono);
+    font-size: var(--text-sm);
+    line-height: 1.6;
+    color: var(--text-primary);
+}
+/* 44px both ways: at 7px/14px padding and --text-label this button measured
+   ~36 x 62px, and it is the most-used control on the page (three command rows
+   plus the one beside the SHA-256). .command absorbs the extra height, and the
+   button is already flex-shrink: 0. */
+.copy {
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+    min-width: 44px;
+    padding: 7px 14px;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid var(--border-light);
+    border-radius: 8px;
+    /* Explicit, not inherit: this button also sits inside the mono <dd>. */
+    font-family: var(--sans);
+    font-size: var(--text-label);
+    font-weight: 600;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: color 0.3s var(--ease-out-quart), border-color 0.3s var(--ease-out-quart), background 0.3s var(--ease-out-quart), transform 0.3s var(--ease-out-quart);
+}
+.copy:hover {
+    color: var(--text-primary);
+    border-color: rgba(74,158,255,0.4);
+    background: rgba(74,158,255,0.08);
+}
+.copy:active {
+    transform: scale(0.96);
+    transition-duration: 0.08s;
+}
+
+/* Requirements */
+.reqs {
+    list-style: none;
+    display: grid;
+    gap: 18px;
+}
+.reqs li {
+    position: relative;
+    padding-left: 26px;
+}
+/* Machined tick — drawn, not an icon font */
+.reqs li::before {
+    content: '';
+    position: absolute;
+    left: 2px;
+    top: 6px;
+    width: 9px;
+    height: 5px;
+    border-left: 2px solid var(--green);
+    border-bottom: 2px solid var(--green);
+    transform: rotate(-45deg);
+}
+.reqs strong {
+    display: block;
+    font-size: var(--text-body);
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 4px;
+}
+.reqs span {
+    display: block;
+    font-size: var(--text-sm);
+    color: var(--text-secondary);
+    line-height: 1.75;
+    max-width: var(--measure);
+}
+.reqs a { color: var(--accent); }
+.reqs a:hover { text-decoration: underline; }
+
+/* Numbered procedure */
+.steps {
+    list-style: none;
+    counter-reset: step;
+    display: grid;
+    gap: 14px;
+    margin-top: 18px;
+}
+.steps li {
+    counter-increment: step;
+    position: relative;
+    padding-left: 38px;
+    font-size: var(--text-sm);
+    color: var(--text-secondary);
+    line-height: 1.75;
+    max-width: var(--measure);
+}
+.steps li::before {
+    content: counter(step);
+    position: absolute;
+    left: 0;
+    top: 1px;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: var(--accent-glow);
+    border: 1px solid rgba(74,158,255,0.2);
+    color: var(--accent);
+    font-size: var(--text-micro);
+    font-weight: var(--weight-max);
+}
+.steps strong { color: var(--text-primary); font-weight: 700; }
+
+/* Outro */
+.outro { text-align: center; }
+.outro p {
+    font-size: var(--text-sm);
+    color: var(--text-secondary);
+    line-height: 1.8;
+    max-width: var(--measure);
+    margin: 0 auto 14px;
+}
+.outro a { color: var(--accent); }
+.outro p a:hover { text-decoration: underline; }
+
+@media (max-width: 600px) {
+    .inner { padding: 0 16px; }
+    .top { padding-top: 100px; }
+    /* Stacked, separators off: the three conditions measure ~321px side by side,
+       which clears a 360px viewport by 3px — one wrap and a divider would be
+       left dangling at the start of the second line. */
+    .ctaFacts { flex-direction: column; gap: 5px; }
+    .ctaFacts li + li::before { content: none; }
+    /* One column: a 96px label column left ~200px for a 64-character hash. */
+    .fact { grid-template-columns: minmax(0, 1fr); gap: 4px; }
+    .command { flex-wrap: wrap; }
+    .command code { flex-basis: 100%; }
+    .copy { margin-left: auto; }
+}
+
+/* Touch targets — the same 44px floor Footer's .col a, FAQ's .question,
+   WhatsNew's .more and Compatibility's .limitLink already got. .plainLink is
+   bare text, so it needs the box rather than just a min-height. */
+@media (pointer: coarse) {
+    .plainLink {
+        display: inline-flex;
+        align-items: center;
+        min-height: 44px;
+    }
+}

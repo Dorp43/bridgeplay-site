@@ -3,5 +3,12 @@
   "references": [
     { "path": "./tsconfig.app.json" },
     { "path": "./tsconfig.node.json" }
-  ]
+  ],
+  /* Unused by the build — tsconfig.app.json carries the real config. This is
+     here because the shadcn CLI reads the root tsconfig to resolve the `@/`
+     alias, and without it `shadcn add` writes components into a literal `@/`
+     directory at the repo root instead of src/components/shadcn. */
+  "compilerOptions": {
+    "paths": { "@/*": ["./src/*"] }
+  }
 }

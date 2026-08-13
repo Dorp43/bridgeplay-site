@@ -55,6 +55,17 @@
 @keyframes auroraSpin {
     to { transform: rotate(360deg); }
 }
+/* Raking light across .bg-glow. Opacity is zero for ~60% of the cycle, so the
+   band crosses, leaves, and the surface sits still before it returns — the
+   pause is the effect. Ends at 0 so the reduced-motion duration flatten below
+   (0.01ms, one iteration) lands on an invisible frame rather than a flash. */
+@keyframes rakeLight {
+    0%   { transform: translate3d(-60%, 0, 0) skewX(-14deg); opacity: 0; }
+    8%   { opacity: 0.55; }
+    46%  { opacity: 0.55; }
+    54%  { transform: translate3d(320%, 0, 0) skewX(-14deg); opacity: 0; }
+    100% { transform: translate3d(320%, 0, 0) skewX(-14deg); opacity: 0; }
+}
 @keyframes ctaBreath {
     from { opacity: 0.6; }
     to { opacity: 1; }
@@ -132,4 +143,7 @@
        global.css and would otherwise win the tie. */
     [data-nav-progress] { animation: none !important; opacity: 0 !important; }
     [data-band-seam]::before { animation: none !important; opacity: 1 !important; }
+    /* Ambient loop — killed outright rather than left to the duration flatten,
+       which would still run one 0.01ms pass and could land a single lit frame. */
+    .bg-glow::after { animation: none !important; opacity: 0 !important; }
 }

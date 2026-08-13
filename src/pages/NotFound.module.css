@@ -1,4 +1,8 @@
+/* 404 — a full-viewport route with no nav and no footer, so the card is the
+   whole page. Type and spacing come from the shared scale in variables.css. */
 .page {
+    position: relative;
+    z-index: 1;
     min-height: 100dvh;
     display: flex;
     align-items: center;
@@ -7,40 +11,140 @@
 }
 .card {
     text-align: center;
-    animation: global(fadeInUp) 0.5s ease-out;
+    max-width: 560px;
+    animation: global(fadeInUp) 0.7s var(--ease-out-expo) both;
 }
-.code {
-    font-size: 6rem;
-    font-weight: 900;
-    background: linear-gradient(135deg, var(--accent), var(--green));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    line-height: 1;
-    display: block;
-    margin-bottom: 16px;
-}
-.card h1 {
-    font-size: 1.5rem;
-    font-weight: 700;
+
+/* The numeral sits in the display serif rather than a gradient-clipped sans:
+   the serif is the site's own accent voice, and it keeps the glyphs at full
+   --text-primary contrast (about 16:1) instead of fading them into a gradient.
+   The accent shows up as light behind it instead. */
+.codeWrap {
+    position: relative;
+    display: inline-block;
     margin-bottom: 8px;
 }
-.card p {
-    color: var(--text-muted);
-    font-size: 0.95rem;
-    margin-bottom: 32px;
+.codeWrap::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 320px;
+    height: 220px;
+    margin: -110px 0 0 -160px;
+    border-radius: 50%;
+    background: radial-gradient(closest-side, var(--accent-glow), transparent 70%);
+    pointer-events: none;
 }
+.code {
+    position: relative;
+    display: block;
+    font-family: var(--font-display);
+    font-size: clamp(5rem, 18vw, 8rem);
+    font-weight: 400;
+    letter-spacing: var(--tracking-tight);
+    line-height: 1;
+    color: var(--text-primary);
+}
+/* Hairline under the numeral — the seam vocabulary, sized to the glyphs. */
+.codeWrap::after {
+    content: '';
+    position: absolute;
+    left: 8%;
+    right: 8%;
+    bottom: 0;
+    height: 1px;
+    background: var(--hairline-accent);
+}
+.card h1 {
+    font-size: var(--text-body-lg);
+    font-weight: 700;
+    letter-spacing: var(--tracking-tight);
+    margin-bottom: 10px;
+}
+/* Was --text-muted at 4.90:1; --text-secondary is 8.00:1 on --bg-primary. This
+   is the only paragraph on the page, so it reads as body copy, not as a note. */
+.card p {
+    color: var(--text-secondary);
+    font-size: var(--text-body);
+    line-height: 1.75;
+    max-width: var(--measure);
+    margin: 0 auto 32px;
+}
+/* The URL that failed, quoted back so the visitor can see the typo. */
+.path {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 0.9em;
+    color: var(--text-primary);
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 2px 7px;
+    word-break: break-all;
+}
+.actions {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+/* Compound selector so it outranks the `.card p` block above (which would
+   otherwise leave 32px of dead space under the last line). */
+.card p.links {
+    margin-top: 30px;
+    margin-bottom: 0;
+    padding-top: 24px;
+    background: var(--hairline) top / 100% 1px no-repeat;
+    font-size: var(--text-sm);
+    max-width: none;
+}
+.links a {
+    color: var(--accent);
+    font-weight: 600;
+    transition: color 0.3s var(--ease-out-quart);
+}
+.links a:hover { color: var(--accent-hover); }
 .btn {
     display: inline-block;
-    padding: 12px 28px;
-    background: linear-gradient(135deg, var(--accent), #3b82f6);
+    padding: 13px 28px;
+    background: var(--gradient-cta);
     color: #fff;
-    border-radius: 10px;
+    border-radius: 12px;
     font-weight: 700;
-    font-size: 0.95rem;
-    transition: all 0.25s;
-    box-shadow: 0 4px 20px rgba(74, 158, 255, 0.25);
+    font-size: var(--text-body);
+    /* Chamfer catch-light, same recipe as the hero and /download buttons. */
+    box-shadow: 0 4px 20px color-mix(in srgb, var(--accent) 25%, transparent), inset 0 1px 0 rgba(255,255,255,0.18);
+    transition: transform 0.25s var(--ease-out-expo), box-shadow 0.25s var(--ease-out-expo);
 }
 .btn:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 6px 25px rgba(74, 158, 255, 0.35);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px color-mix(in srgb, var(--accent) 35%, transparent), inset 0 1px 0 rgba(255,255,255,0.25);
+}
+/* Press seat-down — fast in; release rides the hover transition back out */
+.btn:active, .btnSecondary:active {
+    transform: translateY(0) scale(0.97);
+    transition-duration: 0.08s;
+}
+/* Quiet twin of .btn — same box, glass instead of gradient. */
+.btnSecondary {
+    display: inline-block;
+    padding: 13px 28px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid var(--border-light);
+    color: var(--text-primary);
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: var(--text-body);
+    transition: transform 0.25s var(--ease-out-expo), background 0.3s var(--ease-out-quart), border-color 0.3s var(--ease-out-quart);
+}
+.btnSecondary:hover {
+    transform: translateY(-2px);
+    background: rgba(255, 255, 255, 0.07);
+    border-color: var(--border-strong);
+}
+
+@media (max-width: 600px) {
+    .codeWrap::before { width: 240px; height: 170px; margin: -85px 0 0 -120px; }
+    .actions { gap: 10px; }
+    .btn, .btnSecondary { padding: 12px 22px; }
 }

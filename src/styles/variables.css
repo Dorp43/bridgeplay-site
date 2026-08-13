@@ -9,7 +9,12 @@
     --border-strong: #3a3a52;
     --text-primary: #f0f0f5;
     --text-secondary: #a0a0b8;
-    --text-muted: #6a6a80;
+    /* Same hue (240) as before, lightness raised 45.9% -> 55.7%: the old
+       #6a6a80 measured 3.84:1 on --bg-primary and 3.47:1 on --bg-elevated,
+       under the 4.5:1 WCAG AA floor at the 0.75-0.95rem sizes it is used at.
+       Now 5.40:1 / 4.88:1, and 4.58:1 on a rgba(255,255,255,0.04) card wash —
+       still clearly below --text-secondary (7.91:1), so hierarchy holds. */
+    --text-muted: #82829a;
     --accent: #4a9eff;
     --accent-glow: rgba(74, 158, 255, 0.15);
     --accent-hover: #5eafff;
@@ -51,13 +56,71 @@
 
     /* Typography */
     --font-display: 'Instrument Serif', Georgia, serif;
+    /* Companion face to --font-display, same family. Variable 400-700 only —
+       see the note on --weight-max before reaching for a heavier number. */
+    --font-body: 'Instrument Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    /* The heaviest weight the body face actually ships. Anything above this
+       renders as synthesized fake bold: the browser smears the 700 outline
+       rather than loading a real cut, which shows up as muddy, slightly
+       lopsided headings. Use this token instead of a literal 800/900. */
+    --weight-max: 700;
     --text-hero: clamp(2.5rem, 6vw, 4.5rem);
     --text-title: clamp(1.75rem, 3.5vw, 2.5rem);
     --text-body-lg: 1.2rem;
     --tracking-tight: -0.02em;
     --tracking-wide: 0.08em;
 
+    /* Type scale — six steps below the display sizes above. The homepage
+       sections previously carried nine ad-hoc sizes between 0.68rem and
+       1.15rem; these are the survivors, each with one job. A font-size in a
+       section body should be one of these, not a new decimal. */
+    --text-micro: 0.75rem;   /* 12px   — uppercase micro labels, badges */
+    --text-label: 0.8rem;    /* 12.8px — uppercase labels, dates, meta */
+    --text-sm: 0.875rem;     /* 14px   — dense secondary rows, nav-ish lists */
+    --text-body: 0.95rem;    /* 15.2px — body copy inside a section */
+    --text-lg: 1.05rem;      /* 16.8px — card titles, row titles, FAQ questions */
+    --text-lede: 1.1rem;     /* 17.6px — section descriptions */
+
+    /* Measure — ~68 characters at whatever size the element is set in
+       (a lowercase Inter glyph averages ~0.5em), which is the comfortable
+       end of the 65-75 range. Use on prose, never on lists of short rows. */
+    --measure: 34em;
+
+    /* Vertical rhythm — one scale for the whole page instead of per-section
+       guesses. Every band is `padding: var(--section-y) 0`, the band seam that
+       marks a background change is exactly that tall (so it covers the top
+       padding and nothing more), and --section-gap is the distance from a
+       SectionHeader to its content. Every band on the page is now on these
+       tokens. Hero is the one exception and stays hardcoded on purpose: its
+       160px/100px is asymmetric because it clears the fixed nav rather than
+       marking a seam. */
+    --section-y: 120px;
+    --section-y-first: 96px;  /* first band under the hero, which already pads 100px below itself */
+    --section-gap: 64px;
+    --card-pad: 32px;         /* every bordered card / evidence panel */
+
     /* Hairline (the signature detail — reuse everywhere a flat 1px border is replaced) */
     --hairline: linear-gradient(90deg, transparent, var(--border-light), transparent);
     --hairline-accent: linear-gradient(90deg, transparent, rgba(74, 158, 255, 0.25), transparent);
+}
+
+/* Rhythm step-downs. 120px bands and 32px card padding are desktop values; at
+   390px they spend a third of the viewport's width on empty space and squeeze
+   the copy. Stepping the tokens (rather than adding a media query per module)
+   keeps every section that uses them in agreement automatically.
+   Breakpoints match the ones already in the modules: 768 tablet, 600 phone. */
+@media (max-width: 768px) {
+    :root {
+        --section-y: 88px;
+        --section-y-first: 72px;
+        --section-gap: 48px;
+        --card-pad: 24px;
+    }
+}
+@media (max-width: 600px) {
+    :root {
+        --section-y: 72px;
+        --section-y-first: 56px;
+        --section-gap: 40px;
+    }
 }

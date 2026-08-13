@@ -15,6 +15,12 @@
     opacity: 0;
     transform: translateY(12px);
     pointer-events: none;
+    /* visibility, not just opacity: an opacity-0 button is still tabbable and
+       still announced, so keyboard users used to land on an invisible control
+       at the top of the page. `transition: all` covers visibility, and
+       visibility interpolates as visible for any progress > 0, so the fade-out
+       still plays in full before it is removed from the tab order. */
+    visibility: hidden;
     transition: all 0.3s;
     z-index: 50;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
@@ -23,6 +29,7 @@
     opacity: 1;
     transform: translateY(0);
     pointer-events: auto;
+    visibility: visible;
 }
 .btn:hover {
     color: var(--text-primary);

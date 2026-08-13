@@ -1,0 +1,193 @@
+/* Known limitations — same page shell and content width as /download, so the
+   two read as one pair. Spacing and type come from the shared scale in
+   variables.css. */
+.page {
+    --mono: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace;
+    position: relative;
+    z-index: 1;
+    /* 120px, not a rhythm token: this one clears the fixed nav (72px). */
+    padding: 120px 0 var(--section-y);
+}
+.inner {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 0 24px;
+}
+
+/* Head — the shared PageHeader component (centred, reveal-driven divider). */
+
+/* Cards — reveal sits on the wrapper so the card keeps its own hover
+   transition without resetting the entrance delay. */
+.stack {
+    display: grid;
+    gap: 20px;
+}
+.stack > :global(.reveal) { transition-delay: min(calc(var(--i, 0) * 90ms), 480ms); }
+.cardWrap { display: block; }
+.card {
+    position: relative;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: var(--card-pad);
+    transition: border-color 0.3s var(--ease-out-quart);
+}
+.card:hover { border-color: var(--border-light); }
+
+/* Machined index — the numeral, then a hairline that draws out to the card's
+   edge as the card enters, the same left-origin scaleX the homepage's step
+   connectors use. */
+.indexRow {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 12px;
+}
+.index {
+    flex-shrink: 0;
+    font-family: var(--mono);
+    font-size: var(--text-micro);
+    font-weight: 700;
+    letter-spacing: var(--tracking-wide);
+    color: var(--text-muted);
+}
+.indexRule {
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, var(--border-light), transparent);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.6s var(--ease-out-expo) 0.15s;
+}
+.cardWrap:global(.visible) .indexRule { transform: scaleX(1); }
+
+.cardTitle {
+    font-size: var(--text-lg);
+    font-weight: 700;
+    letter-spacing: var(--tracking-tight);
+    line-height: 1.4;
+    margin-bottom: 14px;
+}
+.card p {
+    font-size: var(--text-body);
+    line-height: 1.8;
+    color: var(--text-secondary);
+    max-width: var(--measure);
+}
+.card p + p { margin-top: 14px; }
+.card em { color: var(--text-primary); font-style: italic; }
+.card a { color: var(--accent); }
+.card a:hover { text-decoration: underline; }
+
+/* The one blunt sentence, in the serif register the site reserves for accents.
+   Scoped under .card so it outranks the `.card p` type selector above. */
+.card .blunt {
+    font-family: var(--font-display);
+    font-size: 1.15rem;
+    font-style: italic;
+    color: var(--text-primary);
+    line-height: 1.5;
+    padding-left: 16px;
+    border-left: 2px solid var(--accent);
+}
+.card .blunt + p { margin-top: 18px; }
+
+/* Named systems — labelled, because a bare row of product names does not tell
+   a reader what the row is asserting. */
+.chipsBlock {
+    margin: 20px 0;
+    padding: 16px 18px;
+    background: rgba(248, 113, 113, 0.05);
+    border: 1px solid rgba(248, 113, 113, 0.14);
+    border-radius: var(--radius-md);
+}
+.chipsLabel {
+    display: block;
+    font-size: var(--text-micro);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-wide);
+    /* 6.67:1 on --bg-card — the danger hue pulled toward the text ramp so it
+       reads as a label rather than as an alert. */
+    color: color-mix(in srgb, var(--danger) 70%, var(--text-secondary));
+    margin-bottom: 10px;
+}
+.chips {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+.chips li {
+    font-size: var(--text-label);
+    font-weight: 600;
+    color: var(--text-secondary);
+    background: rgba(248, 113, 113, 0.07);
+    border: 1px solid rgba(248, 113, 113, 0.18);
+    border-radius: 100px;
+    padding: 5px 12px;
+}
+
+/* Counter-position — the part that bounds the risk instead of restating it.
+   Scoped under .card to outrank the `.card p + p` margin above. */
+.card .counter {
+    margin-top: 20px;
+    padding: 16px 18px;
+    background: var(--green-glow);
+    border: 1px solid rgba(109, 213, 160, 0.16);
+    border-radius: var(--radius-md);
+    color: var(--text-secondary);
+    max-width: none;
+}
+
+/* Outro */
+.outro {
+    margin-top: var(--section-gap);
+    padding-top: 32px;
+    background: var(--hairline) top / 100% 1px no-repeat;
+    text-align: center;
+}
+.outroNote {
+    font-size: var(--text-sm);
+    color: var(--text-muted);
+    line-height: 1.8;
+    max-width: var(--measure);
+    margin: 0 auto 22px;
+}
+.outroLinks {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 22px;
+}
+.textLink {
+    font-size: var(--text-sm);
+    font-weight: 600;
+    color: var(--accent);
+    transition: opacity 0.3s var(--ease-out-quart);
+}
+.textLink:hover { opacity: 0.8; }
+.dot { color: var(--text-muted); }
+/* The back affordance is the shared .back-link utility in global.css — it was
+   declared identically here and in LegalLayout. */
+
+@media (max-width: 600px) {
+    .page { padding-top: 100px; }
+    .inner { padding: 0 16px; }
+    .card .blunt { font-size: 1.05rem; padding-left: 14px; }
+    .chipsBlock { padding: 14px 16px; }
+}
+
+/* Touch targets — the same 44px floor Footer's .col a and FAQ's .question got.
+   .textLink is bare text, so it needs the box; the gap widens with it so the
+   three adjacent links in .outroLinks do not abut once they are 44px tall. */
+@media (pointer: coarse) {
+    .textLink {
+        display: inline-flex;
+        align-items: center;
+        min-height: 44px;
+    }
+    .outroLinks { gap: 16px; }
+}

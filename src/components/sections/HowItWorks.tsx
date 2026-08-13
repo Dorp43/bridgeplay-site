@@ -4,9 +4,9 @@ import styles from './HowItWorks.module.css';
 
 const steps = [
     { num: '1', title: 'Download', desc: 'Download BridgePlay for free and drag it to your Applications folder.' },
-    { num: '2', title: 'Sign Up', desc: 'Create a free account and start your 7-day trial. No credit card required.' },
-    { num: '3', title: 'Add Games', desc: 'Point BridgePlay to your Windows game folders. It auto-detects executables.' },
-    { num: '4', title: 'Play', desc: 'Click launch and start playing. BridgePlay handles everything behind the scenes.' },
+    { num: '2', title: 'Sign Up in the App', desc: 'Open BridgePlay and create your account on first launch — that is where your 7-day trial is claimed. No credit card required.' },
+    { num: '3', title: 'Add Your Games', desc: 'Point BridgePlay at a folder you already have a Windows game in. It finds the program file to launch.' },
+    { num: '4', title: 'Play', desc: 'Press Launch. BridgePlay starts Wine with that game\'s settings, then stays out of your way.' },
 ];
 
 export default function HowItWorks() {
@@ -15,7 +15,7 @@ export default function HowItWorks() {
     return (
         <section className={styles.section} id="how-it-works" ref={ref} data-band-seam>
             <div className={styles.container}>
-                <SectionHeader label="Getting Started" title="Up and Running in Minutes" description="From download to playing your first game — it only takes a few minutes." />
+                <SectionHeader label="Getting Started" title="Up and Running in Minutes" description="Four steps from downloading BridgePlay to launching a game you already own." />
                 <div className={styles.steps}>
                     {steps.map((s, i) => (
                         <div key={i} className={`${styles.step} reveal`} style={{ ['--i' as string]: i }}>

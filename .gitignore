@@ -23,3 +23,6 @@ dist-ssr
 *.sln
 *.sw?
 .vercel
+
+# Generated at build time by scripts/stamp-download.mjs (prebuild)
+public/download-meta.json
