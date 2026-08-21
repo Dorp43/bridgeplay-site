@@ -12,7 +12,7 @@ export default function TermsAndConditions() {
     return (
         <LegalLayout title="Terms of Service" lastUpdated="August 21, 2026">
             <h2>1. Who You Are Contracting With, and Acceptance</h2>
-            <p>BridgePlay ("the Software") is provided by Dor Shemesh, a sole trader based in Israel ("we", "us", or "the developer"). You can reach us through the <a href="/#contact">contact form</a> on this website. [BUSINESS POSTAL ADDRESS — add your contact address here before public sale; EU consumer law requires a geographic address.]</p>
+            <p>BridgePlay ("the Software") is provided by Dor Shemesh, a sole trader based in Israel ("we", "us", or "the developer"). You can reach us through the <a href="/#contact">contact form</a> on this website. Purchases are sold and invoiced by our merchant of record, Paddle (see section 6), which acts as the seller of record for the transaction.</p>
             <p>By downloading, installing, or using the Software, you agree to be bound by these Terms of Service. If you do not agree, do not use the Software.</p>
 
             <h2>2. Licence</h2>
