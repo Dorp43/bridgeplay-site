@@ -1,10 +1,13 @@
+/* The single source of header-to-content spacing: sections used to add their
+   own margin-top on top of this (HowItWorks +64px, Compatibility +48px), which
+   made the same gap read 64 / 112 / 128px across the page. */
 .header {
     text-align: center;
-    margin-bottom: 64px;
+    margin-bottom: var(--section-gap);
 }
 .label {
     display: inline-block;
-    font-size: 0.8rem;
+    font-size: var(--text-label);
     font-weight: 700;
     color: var(--accent);
     text-transform: uppercase;
@@ -29,14 +32,19 @@
 }
 .title {
     font-size: var(--text-title);
-    font-weight: 800;
-    letter-spacing: -1px;
+    font-weight: var(--weight-max);
+    /* Relative, not -1px: the size is fluid, so flat-pixel tracking got
+       proportionally tighter as the title got smaller — -1px is -0.036em at
+       the 1.75rem mobile end, which crushed the small size it was applied to. */
+    letter-spacing: var(--tracking-tight);
     margin-bottom: 16px;
 }
 .desc {
-    font-size: 1.1rem;
+    font-size: var(--text-lede);
     color: var(--text-secondary);
-    max-width: 540px;
+    /* Was a flat 540px, which measured ~61 characters and pushed the longer
+       descriptions into five centred lines. --measure lands them near 68. */
+    max-width: var(--measure);
     line-height: 1.7;
     margin: 0 auto;
 }

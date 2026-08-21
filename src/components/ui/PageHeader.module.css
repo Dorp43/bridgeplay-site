@@ -1,0 +1,83 @@
+/* The single page head — see PageHeader.tsx for why it exists. Spacing and type
+   come from the shared scale in variables.css; the back link's own treatment is
+   the global .back-link utility. */
+.head {
+    margin-bottom: var(--section-gap);
+}
+.center { text-align: center; }
+.left { text-align: left; }
+
+.back { margin-bottom: 28px; }
+
+.eyebrow {
+    font-size: var(--text-label);
+    font-weight: 700;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-wide);
+    margin-bottom: 12px;
+}
+/* line-height 1.15 for every page, not just the legal ones: --text-title is
+   fluid up to 2.5rem, where body's 1.6 leaves a visible gap between two lines
+   of a wrapped title. */
+.head h1 {
+    font-size: var(--text-title);
+    font-weight: var(--weight-max);
+    letter-spacing: var(--tracking-tight);
+    line-height: 1.15;
+    margin-bottom: 16px;
+}
+
+/* Left-origin scaleX draw, +100ms behind the eyebrow — the section beat the
+   motion grammar in animations.css documents. Only transform and opacity. */
+.divider {
+    width: 60px;
+    height: 3px;
+    margin: 0 0 18px;
+    background: linear-gradient(90deg, var(--accent), var(--green));
+    border-radius: 2px;
+    transform-origin: left;
+}
+.center .divider { margin-left: auto; margin-right: auto; }
+
+/* Inside a useScrollReveal root the draw rides the header's own .visible flip.
+   ORDER MATTERS: the .visible rule sits after the base one (equal specificity,
+   later wins), and useScrollReveal unobserves, so this only ever plays forward. */
+.onReveal .divider {
+    opacity: 0;
+    transform: scaleX(0);
+    transition: opacity 0.6s var(--ease-out-expo) 0.1s, transform 0.6s var(--ease-out-expo) 0.1s;
+}
+.onReveal:global(.visible) .divider {
+    opacity: 1;
+    transform: scaleX(1);
+}
+/* A page with no reveal root draws it on load instead. `both` plus the global
+   reduced-motion flatten in animations.css lands it fully drawn either way. */
+@keyframes pageHeadDrawX {
+    from { opacity: 0; transform: scaleX(0); }
+    to { opacity: 1; transform: scaleX(1); }
+}
+.onLoad .divider {
+    animation: pageHeadDrawX 0.6s var(--ease-out-expo) 0.1s both;
+}
+
+.lede {
+    font-size: var(--text-lede);
+    color: var(--text-secondary);
+    line-height: 1.7;
+    max-width: var(--measure);
+    margin: 0;
+}
+.center .lede { margin-left: auto; margin-right: auto; }
+
+.meta {
+    margin-top: 10px;
+    font-size: var(--text-label);
+    color: var(--text-muted);
+}
+.metaDot { margin: 0 8px; }
+
+@media (max-width: 600px) {
+    .back { margin-bottom: 20px; }
+}

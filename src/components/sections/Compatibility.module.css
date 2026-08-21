@@ -1,13 +1,18 @@
-.section { padding: 144px 0; position: relative; z-index: 1; }
+/* Was 144px, the only band on the page at that value. */
+.section { padding: var(--section-y) 0; position: relative; z-index: 1; }
 .container { max-width: 1140px; margin: 0 auto; padding: 0 24px; }
-.grid { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; margin-top: 48px; }
+/* margin-top removed — SectionHeader owns the header-to-content gap. */
+.grid { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; }
 .list { list-style: none; }
 .item {
     position: relative;
-    display: flex; align-items: center; gap: 16px; padding: 16px 0;
+    /* flex-start, not center: the descriptions now explain the term rather than
+       label it, so most rows are two lines and a centred chip drifted off the
+       title it belongs to. */
+    display: flex; align-items: flex-start; gap: 16px; padding: 16px 0;
     background: var(--hairline) bottom / 100% 1px no-repeat;
 }
-/* Hover tints the row's hairline to accent */
+/* Hover tints the row's hairline to accent (see the gated block below) */
 .item::after {
     content: '';
     position: absolute;
@@ -17,16 +22,24 @@
     opacity: 0;
     transition: opacity 0.3s var(--ease-out-quart);
 }
-.item:hover::after { opacity: 1; }
 .icon {
-    width: 40px; height: 40px; border-radius: 10px;
+    width: 40px; height: 40px;
+    border-radius: var(--radius-md); /* one machined corner, shared with Features' chips */
     display: flex; align-items: center; justify-content: center; flex-shrink: 0;
     transition: transform 0.4s var(--ease-spring);
 }
-/* Checklist tick — small spring acknowledgement on row hover */
-.item:hover .icon { transform: scale(1.06); }
-.item h4 { font-size: 0.95rem; font-weight: 600; }
-.item p { font-size: 0.8rem; color: var(--text-muted); margin-top: 2px; }
+/* One row, one hover treatment: the hairline tint and the chip's spring tick
+   fire together, and both are gated on a real pointer so neither latches on a
+   phone tap (these rows are not interactive — there is nothing to tap away to). */
+@media (hover: hover) and (pointer: fine) {
+    .item:hover::after { opacity: 1; }
+    .item:hover .icon { transform: scale(1.06); }
+}
+.item h3 { font-size: var(--text-body); font-weight: 600; }
+/* Was 0.8rem --text-muted: this is a real explanation of a real limitation, and
+   it was set smaller and dimmer than any other body copy on the page. Now the
+   same size and colour as every other secondary row. */
+.item p { font-size: var(--text-sm); color: var(--text-secondary); margin-top: 3px; line-height: 1.55; }
 
 /* Spec sheet — machined evidence panel, chrome mirrors the hero frame */
 .visual {
@@ -35,7 +48,7 @@
     border: 1px solid var(--border-light);
     border-radius: var(--radius);
     box-shadow: inset 0 1px 0 rgba(255,255,255,0.07);
-    padding: 32px 36px;
+    padding: var(--card-pad); /* was 32px 36px — the 4px asymmetry had no reason */
     overflow: hidden;
 }
 .visual::before {
@@ -47,12 +60,14 @@
     pointer-events: none;
 }
 .visualLabel {
-    color: var(--text-muted); font-size: 0.85rem; margin-bottom: 20px; font-weight: 600;
+    /* 0.8rem is the site's uppercase-label step — the same size as
+       SectionHeader's own label, which this sits directly beneath. */
+    color: var(--text-muted); font-size: var(--text-label); margin-bottom: 20px; font-weight: 600;
     text-transform: uppercase; letter-spacing: var(--tracking-wide);
 }
 .group + .group { margin-top: 24px; }
 .groupLabel {
-    font-size: 0.72rem;
+    font-size: var(--text-micro);
     font-weight: 600;
     letter-spacing: var(--tracking-wide);
     color: var(--text-muted);
@@ -62,7 +77,7 @@
 .specRow {
     padding: 9px 2px;
     background: var(--hairline) bottom / 100% 1px no-repeat;
-    font-size: 0.88rem;
+    font-size: var(--text-sm);
     font-weight: 500;
     color: var(--text-secondary);
     font-variant-numeric: tabular-nums;
@@ -76,5 +91,25 @@
     transition: transform 0.35s var(--ease-out-quart), color 0.35s var(--ease-out-quart);
 }
 .specRow:hover .arrow { transform: translateX(4px); color: var(--accent-hover); }
+
+/* Quiet counterweight to the panel: same pill grammar as WhatsNew's
+   "View full changelog", one step down in weight. min-height carries the
+   44px touch target without padding the panel out. */
+.limitLink {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 44px;
+    /* 12px, not 20px: the 44px box already contributes ~11px of optical space
+       above the text. */
+    margin-top: 12px;
+    font-size: var(--text-sm);
+    font-weight: 600;
+    color: var(--text-muted);
+    transition: color 0.3s var(--ease-out-quart);
+}
+.limitLink .arrow { color: inherit; }
+.limitLink:hover { color: var(--accent); }
+.limitLink:hover .arrow { transform: translateX(4px); }
 
 @media (max-width: 900px) { .grid { grid-template-columns: 1fr; gap: 40px; } }

@@ -1,20 +1,24 @@
-.section { padding: 120px 0; background: var(--bg-secondary); position: relative; z-index: 1; }
-/* Band seam — the bg change reads as a staged lighting shift */
+.section { padding: var(--section-y) 0; background: var(--bg-secondary); position: relative; z-index: 1; }
+/* Band seam — the bg change reads as a staged lighting shift. Height tracks the
+   band's own top padding (see HowItWorks for the same rule). */
 .section::before {
     content: '';
     position: absolute;
     top: 0; left: 0; right: 0;
-    height: 120px;
+    height: var(--section-y);
     background: var(--hairline) top / 100% 1px no-repeat,
-                radial-gradient(50% 120px at 50% 0%, color-mix(in srgb, var(--accent) 4%, transparent), transparent);
+                radial-gradient(50% var(--section-y) at 50% 0%, color-mix(in srgb, var(--accent) 4%, transparent), transparent);
     pointer-events: none;
 }
 .container { max-width: 1140px; margin: 0 auto; padding: 0 24px; }
 .list { max-width: 720px; margin: 0 auto; }
+/* Vertical padding lives on the <button> below, not here: it used to sit on this
+   wrapper, which left the actual tap target the height of one line of text
+   (~27px) with 24px of dead space above and below it. Row height is unchanged. */
 .item {
     position: relative;
     isolation: isolate;
-    padding: 24px 16px;
+    padding: 0 16px;
     margin: 0 -16px;
     background: var(--hairline) bottom / 100% 1px no-repeat;
 }
@@ -46,9 +50,13 @@
 .open::after { opacity: 1; }
 .question {
     display: flex; justify-content: space-between; align-items: center; cursor: pointer;
-    font-size: 1.05rem; font-weight: 600; color: var(--text-primary);
+    font-size: var(--text-lg); font-weight: 600; color: var(--text-primary);
     transition: color 0.3s var(--ease-out-quart);
     background: none; border: none; width: 100%; text-align: left; font-family: inherit;
+    /* Full-width, full-height hit area — 24px + line + 24px = 75px, and the
+       min-height is a floor for the day someone tightens that padding. */
+    padding: 24px 0;
+    min-height: 44px;
 }
 .question:hover { color: var(--accent); }
 .qText { display: inline-block; transition: transform 0.3s var(--ease-out-quart); }
@@ -69,7 +77,13 @@
 /* Fade-through: text settles in AFTER the height reveals; fades out
    immediately on close so the collapsing edge never scissors it */
 .answer p {
-    font-size: 0.95rem; color: var(--text-secondary); line-height: 1.7; padding-top: 16px;
+    font-size: var(--text-body); color: var(--text-secondary); line-height: 1.7;
+    /* The bottom padding used to belong to .item; it moves here so the closed
+       row keeps its old height and the open row keeps its old breathing space. */
+    padding: 0 0 24px;
+    /* 688px of 0.95rem text ran ~90 characters a line — the widest measure on
+       the site. Capped at ~68. */
+    max-width: var(--measure);
     opacity: 0;
     transform: translateY(-6px);
     transition: opacity 0.3s var(--ease-out-quart), transform 0.3s var(--ease-out-quart);

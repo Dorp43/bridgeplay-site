@@ -1,4 +1,4 @@
-.section { padding: 120px 0; position: relative; z-index: 1; }
+.section { padding: var(--section-y) 0; position: relative; z-index: 1; }
 .container { max-width: 1140px; margin: 0 auto; padding: 0 24px; }
 
 /* Timeline column — rail + reserved footprint. Every entry's note list is
@@ -42,7 +42,11 @@
         linear-gradient(180deg, var(--bg-card), #0e0e16);
     border: 1px solid color-mix(in srgb, var(--accent) 20%, var(--border));
     border-radius: var(--radius);
-    padding: 26px 30px 28px;
+    /* One card padding for the whole site (was 26/30/28 — three values on one
+       box). Height-neutral against the min-height reservations below: the +10px
+       this adds on desktop is offset by the note text dropping to --text-sm,
+       and every step-down bracket ends up equal or shorter than before. */
+    padding: var(--card-pad);
     margin-bottom: 28px;
     box-shadow: inset 0 1px 0 rgba(255,255,255,0.06); /* chamfer catch-light */
     opacity: 0;
@@ -53,7 +57,8 @@
 
 .row {
     position: relative;
-    padding: 18px 4px 20px;
+    --row-pad-top: 18px; /* the dot reads this — see .row .dot */
+    padding: var(--row-pad-top) 4px 20px;
     background: var(--hairline) bottom / 100% 1px no-repeat;
     opacity: 0;
     transform: translateY(6px);
@@ -76,9 +81,12 @@
     transform: scale(0.9);
     transition: opacity 0.5s var(--ease-spring), transform 0.5s var(--ease-spring);
 }
-.featured .dot { top: 33px; }
+/* Both dots sit 7px below their entry's content edge — that was already the
+   rule (33 = 26 + 7, 25 = 18 + 7), it just wasn't written down, so the mobile
+   padding override used to leave the row dot 2px out of line. */
+.featured .dot { top: calc(var(--card-pad) + 7px); }
 .row .dot {
-    top: 25px;
+    top: calc(var(--row-pad-top) + 7px);
     transition-delay: calc(380ms + min(var(--i, 0) * 110ms, 480ms));
 }
 .dotLatest {
@@ -99,7 +107,7 @@
     align-items: center;
     padding: 3px 12px;
     border-radius: 100px;
-    font-size: 0.82rem;
+    font-size: var(--text-label);
     font-weight: 700;
     letter-spacing: 0.03em;
     font-variant-numeric: tabular-nums;
@@ -108,7 +116,7 @@
     border: 1px solid var(--border-light);
 }
 .pillLatest {
-    font-size: 0.88rem;
+    font-size: var(--text-sm);
     color: var(--accent-hover);
     background: color-mix(in srgb, var(--accent) 9%, transparent);
     border-color: color-mix(in srgb, var(--accent) 35%, transparent);
@@ -116,7 +124,10 @@
 }
 /* Mirrors the /changelog page's Latest chip for cross-page continuity */
 .latestBadge {
-    font-size: 0.68rem;
+    /* 0.68rem was 10.9px of uppercase, the smallest type on the site by a
+       clear margin; 12px is the floor the rest of the labels use. The pill
+       beside it is still taller, so the header row height doesn't move. */
+    font-size: var(--text-micro);
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.06em;
@@ -128,7 +139,7 @@
 }
 .date {
     margin-left: auto;
-    font-size: 0.8rem;
+    font-size: var(--text-label);
     font-weight: 500;
     color: var(--text-muted);
     font-variant-numeric: tabular-nums;
@@ -138,7 +149,10 @@
 .notes li {
     position: relative;
     padding: 5px 0 5px 22px;
-    font-size: 0.92rem;
+    /* Changelog bullets are dense meta content, so they sit on the small step
+       rather than between it and body (0.92rem). Featured vs condensed is
+       carried by the tick colour and the card, not by 0.04rem of size. */
+    font-size: var(--text-sm);
     color: var(--text-secondary);
     line-height: 1.65;
 }
@@ -162,7 +176,6 @@
 }
 .notesCondensed li {
     padding: 4px 0 4px 20px;
-    font-size: 0.88rem;
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
@@ -173,11 +186,23 @@
 /* "+N more" — truncation is an affordance for the full changelog, not a toggle */
 .more {
     display: inline-block;
+    position: relative;
     margin: 6px 0 0 22px;
-    font-size: 0.82rem;
+    font-size: var(--text-label);
     font-weight: 600;
     color: var(--text-muted);
     transition: color 0.3s var(--ease-out-quart);
+}
+/* Hit area grown to 44px tall without growing the box: real padding here would
+   add ~20px to each of the three entries, and the timeline's min-height
+   reservations below are measured against the current heights. */
+.more::after {
+    content: '';
+    position: absolute;
+    left: -8px; right: -8px;
+    top: 50%;
+    height: 44px;
+    transform: translateY(-50%);
 }
 .more:hover { color: var(--accent); }
 .row .more { margin-left: 20px; }
@@ -191,7 +216,7 @@
     gap: 8px;
     padding: 10px 20px;
     border-radius: 100px;
-    font-size: 0.95rem;
+    font-size: var(--text-body);
     font-weight: 600;
     color: var(--accent);
     background: color-mix(in srgb, var(--accent) 5%, transparent);
@@ -216,8 +241,9 @@
     .timeline { padding-left: 32px; min-height: 790px; }
     .timeline::before { left: 5px; }
     .dot { left: -32px; }
-    .featured { padding: 22px 20px 24px; }
-    .row { padding: 16px 0 18px; }
+    /* .featured padding now comes from --card-pad, which has already stepped
+       down to 24px by this width. */
+    .row { --row-pad-top: 16px; padding: var(--row-pad-top) 0 18px; }
 }
 
 @media (max-width: 380px) {

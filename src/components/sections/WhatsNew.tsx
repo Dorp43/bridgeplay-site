@@ -44,7 +44,9 @@ export default function WhatsNew() {
     return (
         <section className={styles.section} id="whats-new" ref={ref}>
             <div className={styles.container}>
-                <SectionHeader label="What's New" title="Better With Every Release" description="BridgePlay ships fast and documents everything. Here's what landed in the latest updates, straight from the changelog." />
+                {/* "ships fast and documents everything" was a claim about us;
+                    this says what the reader is actually looking at. */}
+                <SectionHeader label="What's New" title="Better With Every Release" description="Every release gets written up. These are the most recent ones, straight from the changelog." />
                 {/* Static wrapper owns the reveal class: the releases arrive from a
                     runtime fetch AFTER useScrollReveal has wired the observer, so a
                     global `reveal` class on the fetched children would never be seen.

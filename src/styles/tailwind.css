@@ -1,0 +1,86 @@
+/* Tailwind v4 + shadcn/ui token bridge.
+ *
+ * Deliberately NOT `@import "tailwindcss"`. The full import pulls in Preflight,
+ * which unstyles headings, lists, buttons and borders — on a site whose visual
+ * identity is entirely hand-written CSS modules that is a site-wide regression,
+ * not a reset. We take the theme + utilities layers only and hand-roll the
+ * sliver of Preflight that shadcn components actually depend on.
+ *
+ * Cascade note (load-bearing): everything below lives in a @layer. Unlayered
+ * declarations beat layered ones outright, regardless of source order, so
+ * global.css and every *.module.css still win every tie against Tailwind
+ * utilities. The same rule applies to custom properties: variables.css sets
+ * the --radius- and --shadow- scales unlayered, so it overrides Tailwind's
+ * defaults of the same name and shadcn's `rounded-md` / `shadow-lg` resolve to
+ * the Machined Glass scale for free. Do not wrap variables.css in a layer.
+ */
+@layer theme, base, components, utilities;
+
+@import 'tailwindcss/theme.css' layer(theme);
+@import 'tailwindcss/utilities.css' layer(utilities);
+
+/* shadcn's semantic tokens, mapped onto the existing palette rather than
+   duplicating it. `inline` substitutes these values directly into the
+   generated utilities, so there is no second source of truth to keep in sync —
+   editing variables.css moves the shadcn components with it. */
+@theme inline {
+    --color-background: var(--bg-primary);
+    --color-foreground: var(--text-primary);
+
+    --color-card: var(--bg-card);
+    --color-card-foreground: var(--text-primary);
+
+    --color-popover: var(--bg-elevated);
+    --color-popover-foreground: var(--text-primary);
+
+    --color-primary: var(--accent);
+    --color-primary-foreground: #06060b;
+
+    --color-secondary: var(--bg-secondary);
+    --color-secondary-foreground: var(--text-primary);
+
+    --color-muted: var(--bg-secondary);
+    --color-muted-foreground: var(--text-muted);
+
+    --color-accent: var(--bg-card-hover);
+    --color-accent-foreground: var(--text-primary);
+
+    --color-destructive: var(--danger);
+    --color-destructive-foreground: #06060b;
+
+    --color-border: var(--border);
+    --color-input: var(--border-light);
+    --color-ring: var(--accent);
+}
+
+/* The Preflight subset shadcn assumes. Layered, so it cannot reach any
+   existing component — a *.module.css rule is unlayered and always wins. */
+@layer base {
+    *,
+    ::before,
+    ::after {
+        /* Tailwind's bare `border` utility sets width only; without Preflight
+           the border-color would fall back to currentColor and every shadcn
+           surface would outline itself in text colour. */
+        border-color: var(--border);
+    }
+
+    button,
+    input,
+    optgroup,
+    select,
+    textarea {
+        font: inherit;
+        letter-spacing: inherit;
+        color: inherit;
+    }
+
+    button {
+        background-color: transparent;
+        border: 0;
+    }
+
+    :where(button, [role='button']):not(:disabled) {
+        cursor: pointer;
+    }
+}

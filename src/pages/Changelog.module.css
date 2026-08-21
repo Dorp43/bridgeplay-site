@@ -1,38 +1,26 @@
+/* Changelog — a document route (no nav, no footer chrome), so it shares the
+   legal pages' page shell and vertical rhythm rather than the homepage's bands.
+   Spacing and type come from the shared scale in variables.css. */
 .page {
+    --mono: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace;
+    position: relative;
+    z-index: 1;
+    padding: var(--section-y-first) 24px var(--section-y);
+}
+.shell {
     max-width: 680px;
     margin: 0 auto;
-    padding: 40px 24px 80px;
 }
-.back {
-    display: inline-block;
-    color: var(--accent);
-    margin-bottom: 32px;
-    font-size: 0.9rem;
-    transition: opacity 0.2s;
-}
-.back:hover { opacity: 0.8; }
-.page h1 {
-    font-size: 2.2rem;
-    font-weight: 900;
-    letter-spacing: -1px;
-    margin-bottom: 8px;
-}
-.subtitle {
-    color: var(--text-muted);
-    font-size: 0.95rem;
-    margin-bottom: 48px;
-}
-.loading {
-    color: var(--text-muted);
-    font-size: 0.9rem;
-    padding: 40px 0;
-}
+
+/* Head — the shared PageHeader component, left-aligned and drawing its divider
+   on load (this route has no scroll-reveal root). */
 
 /* Timeline */
 .timeline {
     position: relative;
     padding-left: 32px;
 }
+/* Hairline rail, fading out at both ends instead of stopping dead. */
 .timeline::before {
     content: '';
     position: absolute;
@@ -40,17 +28,23 @@
     top: 8px;
     bottom: 8px;
     width: 2px;
-    background: var(--border);
+    background: linear-gradient(180deg, transparent, var(--border-light) 6%, var(--border-light) 94%, transparent);
 }
+/* Entrance runs as an animation rather than a scroll-reveal class: the entries
+   mount after a fetch resolves, and the IntersectionObserver in useScrollReveal
+   has already queried and unobserved by then. `both` + the global reduced-motion
+   flatten means the end state (visible) is what a reduced-motion visitor gets. */
 .entry {
     position: relative;
-    margin-bottom: 32px;
+    margin-bottom: 28px;
+    animation: global(fadeInUp) 0.7s var(--ease-out-expo) both;
+    animation-delay: min(calc(var(--i, 0) * 60ms), 480ms);
 }
 .entry:last-child { margin-bottom: 0; }
 .dot {
     position: absolute;
     left: -32px;
-    top: 24px;
+    top: 26px;
     width: 16px;
     height: 16px;
     border-radius: 50%;
@@ -67,36 +61,39 @@
 .card {
     background: var(--bg-card);
     border: 1px solid var(--border);
-    border-radius: 14px;
-    padding: 24px;
-    transition: border-color 0.2s;
+    border-radius: var(--radius);
+    padding: var(--card-pad);
+    transition: border-color 0.3s var(--ease-out-quart);
 }
-.entry:first-child .card {
-    border-color: rgba(74, 158, 255, 0.2);
-}
+.card:hover { border-color: var(--border-light); }
+.entry:first-child .card { border-color: rgba(74, 158, 255, 0.2); }
 .header {
     display: flex;
     align-items: center;
     gap: 12px;
     margin-bottom: 16px;
     flex-wrap: wrap;
+    /* Hairline under the version row — the seam vocabulary, at card scale. */
+    padding-bottom: 14px;
+    background: var(--hairline) bottom left / 100% 1px no-repeat;
 }
 .version {
-    font-size: 1.1rem;
-    font-weight: 800;
+    font-family: var(--mono);
+    font-size: var(--text-lg);
+    font-weight: 700;
     color: var(--text-primary);
-    letter-spacing: -0.3px;
+    letter-spacing: var(--tracking-tight);
 }
 .date {
-    font-size: 0.8rem;
+    font-size: var(--text-label);
     color: var(--text-muted);
     font-weight: 500;
 }
 .latest {
-    font-size: 0.7rem;
+    font-size: var(--text-micro);
     font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
+    letter-spacing: var(--tracking-wide);
     color: var(--green);
     background: rgba(109, 213, 160, 0.1);
     border: 1px solid rgba(109, 213, 160, 0.15);
@@ -105,29 +102,111 @@
 }
 .notes {
     list-style: none;
-    margin: 0;
-    padding: 0;
+    display: grid;
+    gap: 8px;
 }
 .notes li {
     position: relative;
-    padding: 4px 0 4px 20px;
-    font-size: 0.9rem;
+    padding-left: 22px;
+    font-size: var(--text-body);
     color: var(--text-secondary);
-    line-height: 1.6;
+    line-height: 1.7;
+    max-width: var(--measure);
 }
+/* Machined tick, matching the legal pages' list marker. */
 .notes li::before {
     content: '';
     position: absolute;
     left: 0;
-    top: 13px;
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: var(--text-muted);
+    top: 0.8em;
+    width: 8px;
+    height: 1px;
+    background: color-mix(in srgb, var(--accent) 55%, transparent);
 }
 
+/* Loading skeleton — the timeline's real geometry with bars where the text
+   goes, so nothing jumps when the fetch lands. */
+.ghost {
+    display: block;
+    position: relative;
+    overflow: hidden;
+    height: 0.85em;
+    border-radius: 4px;
+    background: var(--border);
+}
+/* Reuses the global shineSweep keyframe. Base state is off-screen and
+   transparent, which is where reduced motion parks it: the bars stay, the
+   sweep does not. */
+.ghost::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.10), transparent);
+    transform: translateX(-120%) skewX(-20deg);
+    opacity: 0;
+    animation: global(shineSweep) 1.9s var(--ease-out-quart) infinite;
+}
+.ghostVersion { width: 62px; height: 1.05rem; }
+.ghostDate { width: 128px; height: 0.8rem; }
+.ghostNotes { display: grid; gap: 12px; }
+.ghostLine { width: 100%; }
+.ghostLineShort { width: 68%; }
+
+/* Fetch resolved to nothing, or failed. A designed panel rather than a line of
+   grey text, and it says what it means for the reader. */
+.state {
+    padding: 26px 28px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+}
+.stateTitle {
+    font-size: var(--text-lg);
+    font-weight: 700;
+    color: var(--text-primary);
+    letter-spacing: var(--tracking-tight);
+    margin-bottom: 10px;
+}
+.stateBody {
+    font-size: var(--text-body);
+    color: var(--text-secondary);
+    line-height: 1.75;
+    max-width: var(--measure);
+}
+
+/* Foot — this route renders no site footer, so the way out is built. */
+.foot {
+    margin-top: var(--section-gap);
+    padding-top: 28px;
+    background: var(--hairline) top / 100% 1px no-repeat;
+}
+.footRow {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 10px 18px;
+    margin-bottom: 22px;
+}
+.footLabel {
+    font-size: var(--text-micro);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-wide);
+    color: var(--text-muted);
+}
+.footLink {
+    font-size: var(--text-sm);
+    font-weight: 600;
+    color: var(--accent);
+    transition: opacity 0.3s var(--ease-out-quart);
+}
+.footLink:hover { opacity: 0.8; }
+/* The closing back link is the shared .back-link utility in global.css — this
+   was a fourth byte-equivalent copy of it. */
+
 @media (max-width: 600px) {
-    .page { padding: 30px 16px 60px; }
-    .timeline { padding-left: 28px; }
-    .dot { left: -28px; }
+    .page { padding-left: 16px; padding-right: 16px; }
+    .timeline { padding-left: 26px; }
+    .dot { left: -26px; top: 22px; }
+    .state { padding: 22px 20px; }
 }

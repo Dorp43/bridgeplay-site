@@ -15,7 +15,9 @@
 .topline {
     height: 1px;
     background: var(--hairline);
-    margin-bottom: 60px;
+    /* Was a lone 60px; this is the same major-break gap the section headers
+       use, so it tightens with them on a phone. */
+    margin-bottom: var(--section-gap);
 }
 .topline:global(.reveal) {
     opacity: 0;
@@ -36,19 +38,19 @@
 .grid > :global(.reveal) { transition-delay: min(calc(var(--i, 0) * 80ms), 480ms); }
 .brand .logo {
     font-size: 1.2rem;
-    font-weight: 800;
+    font-weight: var(--weight-max);
     background: linear-gradient(135deg, var(--accent), var(--green));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }
 .brand p {
-    font-size: 0.85rem;
+    font-size: var(--text-sm);
     color: var(--text-muted);
     margin-top: 12px;
     line-height: 1.6;
 }
-.col h4 {
-    font-size: 0.8rem;
+.col h3 {
+    font-size: var(--text-label);
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: var(--tracking-wide);
@@ -58,26 +60,47 @@
 .col a {
     display: block;
     color: var(--text-muted);
-    font-size: 0.9rem;
+    font-size: var(--text-sm);
     padding: 4px 0;
     transition: color 0.25s var(--ease-out-quart), transform 0.25s var(--ease-out-quart);
 }
-.col a:hover { color: var(--text-primary); transform: translateX(2px); }
+/* 4px, matching the FAQ question nudge and the two arrow nudges — this was the
+   only 2px hover travel on the site. */
+.col a:hover { color: var(--text-primary); transform: translateX(4px); }
 .bottom {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    /* wrap + gap: the two strings are ~450px of text and had nothing but
+       space-between holding them apart, so below ~500px they collided and
+       each wrapped inside itself. */
+    flex-wrap: wrap;
+    gap: 8px 24px;
     padding-top: 32px;
     background: var(--hairline) top / 100% 1px no-repeat;
-    font-size: 0.8rem;
+    font-size: var(--text-label);
     color: var(--text-muted);
 }
 /* The site's closing whisper — serif register 4 of 4 */
 .tagline {
     font-family: var(--font-display);
     font-style: italic;
-    font-size: 0.95rem;
+    font-size: var(--text-body);
     color: var(--text-muted);
 }
 @media (max-width: 900px) { .grid { grid-template-columns: 1fr 1fr; gap: 32px; } }
-@media (max-width: 600px) { .grid { grid-template-columns: 1fr; } }
+@media (max-width: 600px) {
+    .grid { grid-template-columns: 1fr; gap: 28px; }
+    /* Stacked and left-aligned rather than a wrapped centre-ish row */
+    .bottom { flex-direction: column; align-items: flex-start; gap: 10px; }
+}
+/* Touch targets: a 14px link with 4px padding is a 30px row, under the 44px
+   minimum. Coarse-pointer only, so the desktop column stays compact. */
+@media (pointer: coarse) {
+    .col a {
+        display: flex;
+        align-items: center;
+        min-height: 44px;
+        padding: 0;
+    }
+}

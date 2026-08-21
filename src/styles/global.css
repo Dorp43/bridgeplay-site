@@ -1,9 +1,11 @@
+/* First: declares the cascade-layer order Tailwind's utilities live in. Every
+   rule below this line is unlayered and therefore outranks all of them. */
+@import './tailwind.css';
 @import './variables.css';
 @import './animations.css';
 
 * {
     margin: 0; padding: 0; box-sizing: border-box;
-    -webkit-user-drag: none;
 }
 /* Smooth only when motion is allowed — animations.css (imported above) sets
    `scroll-behavior: auto` under reduced motion, and an unconditional rule here
@@ -12,7 +14,7 @@
     html { scroll-behavior: smooth; }
 }
 body {
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-family: var(--font-body);
     background: var(--bg-primary);
     color: var(--text-primary);
     line-height: 1.6;
@@ -21,36 +23,101 @@ body {
     overflow-x: clip;
 }
 a { color: inherit; text-decoration: none; }
-img { display: block; max-width: 100%; }
+/* Every image on the site is decorative product art; killing the drag ghost
+   keeps a slow drag from detaching a translucent copy of the screenshot.
+   Scoped to <img> deliberately — the old `*` rule also blocked dragging
+   links and selected text, which are things visitors are allowed to do. */
+img { display: block; max-width: 100%; -webkit-user-drag: none; }
 
 /* Background depth stack — .bg-grid / .bg-glow drift at 2% / 4.5% of
    scroll speed via --scroll-y (written on <html> by useParallax; defaults
    to 0 for no-JS and reduced motion, so the static render is identical). */
+/* One key light, one cool fill — not the blue/green/purple trio this used to
+   be. Three evenly-weighted colour blobs is the stock landing-page backdrop;
+   a single directional source with a cold bounce reads as a lit object
+   instead of a decorated rectangle, which is the whole point of the name. */
 .bg-glow {
     position: fixed;
     top: -50%;
     left: -50%;
     width: 200%;
     height: 200%;
-    background: radial-gradient(ellipse at 30% 20%, rgba(74, 158, 255, 0.06) 0%, transparent 50%),
-                radial-gradient(ellipse at 70% 60%, rgba(109, 213, 160, 0.04) 0%, transparent 50%),
-                radial-gradient(ellipse at 50% 80%, rgba(167, 139, 250, 0.035) 0%, transparent 40%);
+    background: radial-gradient(ellipse at 32% 18%, rgba(74, 158, 255, 0.075) 0%, transparent 46%),
+                radial-gradient(ellipse at 72% 68%, rgba(126, 160, 200, 0.028) 0%, transparent 52%);
     pointer-events: none;
     z-index: 0;
+    /* Own stacking context so ::after's animated transform never promotes a
+       sibling section into a new layer. */
+    isolation: isolate;
     transform: translate3d(0, clamp(-220px, calc(var(--scroll-y, 0) * -0.045px), 0px), 0);
 }
 
-/* Dotted grid backdrop — adds quiet rhythm without visual noise */
+/* The raking sweep — the one piece of ambient motion on the site, and the
+   only thing here that loops. A narrow band of light crosses the surface
+   once every 14s and is invisible for most of that cycle (see rakeLight:
+   it only rises above zero between 8% and 46%), so the page is still at
+   rest the large majority of the time. Deliberately breaks the "nothing
+   loops for attention" rule in animations.css: it is below every section,
+   never near text, and peaks at 0.05 alpha.
+   Composited: transform + opacity only, no repaint. */
+.bg-glow::after {
+    content: '';
+    position: absolute;
+    top: -20%;
+    left: 0;
+    width: 42%;
+    height: 140%;
+    background: linear-gradient(100deg,
+                transparent 0%,
+                rgba(255, 255, 255, 0.018) 42%,
+                rgba(190, 220, 255, 0.05) 50%,
+                rgba(255, 255, 255, 0.018) 58%,
+                transparent 100%);
+    filter: blur(6px);
+    opacity: 0;
+    will-change: transform, opacity;
+    animation: rakeLight 14s linear infinite;
+}
+
+/* Engraved rules — a machined surface, not a dot screen. Two hairline
+   families at 96px cross into a technical grid; the original 32px dots stay
+   underneath at a third of their old strength so the fine texture survives
+   without competing with the rules. */
 .bg-grid {
     position: fixed;
     inset: -96px 0 0; /* headroom so the capped upward drift never exposes an edge */
     pointer-events: none;
     z-index: 0;
-    background-image: radial-gradient(rgba(255,255,255,0.035) 1px, transparent 1px);
-    background-size: 32px 32px;
+    background-image:
+        linear-gradient(to right, rgba(255,255,255,0.022) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255,255,255,0.022) 1px, transparent 1px),
+        radial-gradient(rgba(255,255,255,0.03) 1px, transparent 1px);
+    background-size: 96px 96px, 96px 96px, 32px 32px;
     mask-image: radial-gradient(ellipse at 50% 30%, #000 30%, transparent 75%);
     -webkit-mask-image: radial-gradient(ellipse at 50% 30%, #000 30%, transparent 75%);
     transform: translate3d(0, clamp(-96px, calc(var(--scroll-y, 0) * -0.02px), 0px), 0);
+}
+
+/* Calibration ticks — a measured edge down both margins, like the scale on
+   an instrument bezel. Hidden below 1100px: under that the content column
+   reaches the edge and the ticks would sit under text rather than beside it. */
+.bg-grid::before {
+    content: '';
+    position: absolute;
+    inset: 96px 0 0;
+    background-image:
+        repeating-linear-gradient(to bottom, rgba(255,255,255,0.10) 0 1px, transparent 1px 24px),
+        repeating-linear-gradient(to bottom, rgba(255,255,255,0.10) 0 1px, transparent 1px 24px);
+    background-size: 6px 100%, 6px 100%;
+    background-position: 28px 0, calc(100% - 28px) 0;
+    background-repeat: no-repeat;
+    /* Fades the run of ticks out at both ends so they read as an excerpt of a
+       longer scale rather than a border that stops. */
+    mask-image: linear-gradient(to bottom, transparent 0%, #000 18%, #000 70%, transparent 96%);
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 18%, #000 70%, transparent 96%);
+}
+@media (max-width: 1100px) {
+    .bg-grid::before { display: none; }
 }
 
 /* Film grain — static SVG noise, kills gradient banding in the blurred
@@ -102,12 +169,102 @@ img { display: block; max-width: 100%; }
     border: none;
 }
 
+/* Notice card — an informational statement, not an error: the card treatment of
+   the page, no warning colour, no icon. Shared because the hero and /download
+   both carry the unsupported-platform message and had built it twice, diverging
+   on radius, padding, background alpha and whether it had glass at all. This is
+   the hero's treatment, glass included. Module rules still own each instance's
+   flow — measure, margins, entrance animation — because that belongs to the
+   layout around the card, not to the card. */
+.notice-card {
+    padding: 16px 22px;
+    background: rgba(255, 255, 255, 0.025);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    color: var(--text-secondary);
+    line-height: 1.7;
+    text-align: left;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+}
+.notice-card strong { color: var(--text-primary); font-weight: 700; }
+
+/* Back affordance — quiet until hover, then the -3px nudge toward where it is
+   taking you. Was declared identically in three modules. */
+.back-link {
+    display: inline-block;
+    font-size: var(--text-sm);
+    color: var(--text-muted);
+    transition: color 0.3s var(--ease-out-quart), transform 0.3s var(--ease-out-quart);
+}
+.back-link:hover {
+    color: var(--text-primary);
+    transform: translateX(-3px);
+}
+/* 44px touch target, matching Footer's .col a and FAQ's .question. */
+@media (pointer: coarse) {
+    .back-link {
+        display: inline-flex;
+        align-items: center;
+        min-height: 44px;
+    }
+}
+
 /* Selection */
 ::selection { background: rgba(74,158,255,0.3); color: var(--text-primary); }
 
-/* Focus ring — accessible without being heavy */
+/* Focus ring — accessible without being heavy. --accent on --bg-primary is
+   7.34:1, well over the 3:1 WCAG 1.4.11 floor for focus indicators.
+   No `border-radius` here on purpose: browsers already follow the element's
+   own radius when drawing an outline, and forcing 4px re-shaped any focused
+   element that had no class-level radius of its own (the pill-shaped nav
+   profile chip only escaped it by winning a specificity tie). */
 :focus-visible {
     outline: 2px solid var(--accent);
     outline-offset: 3px;
-    border-radius: 4px;
+}
+
+/* Skip to content — rendered as the first focusable node by main.tsx, parked
+   off-screen until a keyboard user tabs into it. Uses :focus, not
+   :focus-visible: the link is invisible until focused, so there is no
+   pointer path to it, and programmatic focus does not match :focus-visible. */
+.skip-link {
+    position: fixed;
+    top: 12px;
+    left: 12px;
+    z-index: 300;
+    padding: 10px 18px;
+    border-radius: var(--radius-sm);
+    background: var(--bg-elevated);
+    border: 1px solid var(--border-light);
+    color: var(--text-primary);
+    font-size: 0.9rem;
+    font-weight: 600;
+    box-shadow: var(--shadow-md);
+    transform: translateY(calc(-100% - 24px));
+    transition: transform 0.2s var(--ease-out-quart);
+}
+.skip-link:focus { transform: translateY(0); }
+
+/* Route chunk placeholder — holds the viewport open while a lazily imported
+   page arrives. Opacity 0 for the first 300ms so a warm cache (or a fast
+   connection) swaps the page in with nothing having flashed on screen. */
+.route-fallback {
+    position: relative;
+    min-height: 60vh;
+    opacity: 0;
+    animation: fadeInUp 0.25s var(--ease-out-quart) 0.3s both; /* keyframe lives in animations.css */
+}
+.route-fallback::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 40%;
+    width: 28px;
+    height: 28px;
+    margin-left: -14px;
+    border-radius: 50%;
+    border: 2px solid var(--border-light);
+    border-top-color: var(--accent);
+    animation: spin 0.8s linear infinite; /* keyframe lives in animations.css */
 }

@@ -5,18 +5,29 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "stamp:download": "node scripts/stamp-download.mjs",
+    "verify:download": "node scripts/stamp-download.mjs --strict",
+    "prebuild": "npm run stamp:download",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview"
   },
   "dependencies": {
     "@paddle/paddle-node-sdk": "^3.8.0",
+    "@tailwindcss/vite": "^4.3.3",
     "@vercel/analytics": "^2.0.1",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
     "firebase": "^12.12.1",
     "firebase-admin": "^13.8.0",
+    "lucide-react": "^1.31.0",
+    "motion": "^13.1.0",
+    "radix-ui": "^1.6.7",
     "react": "^19.2.5",
     "react-dom": "^19.2.5",
-    "react-router-dom": "^7.14.2"
+    "react-router-dom": "^7.14.2",
+    "tailwind-merge": "^3.6.0",
+    "tailwindcss": "^4.3.3"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
