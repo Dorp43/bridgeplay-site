@@ -10,9 +10,10 @@ export default function TermsAndConditions() {
     });
 
     return (
-        <LegalLayout title="Terms of Service" lastUpdated="August 12, 2026">
-            <h2>1. Acceptance of Terms</h2>
-            <p>By downloading, installing, or using BridgePlay ("the Software"), you agree to be bound by these Terms of Service. If you do not agree, do not use the Software.</p>
+        <LegalLayout title="Terms of Service" lastUpdated="August 21, 2026">
+            <h2>1. Who You Are Contracting With, and Acceptance</h2>
+            <p>BridgePlay ("the Software") is provided by Dor Shemesh, a sole trader based in Israel ("we", "us", or "the developer"). You can reach us through the <a href="/#contact">contact form</a> on this website. [BUSINESS POSTAL ADDRESS — add your contact address here before public sale; EU consumer law requires a geographic address.]</p>
+            <p>By downloading, installing, or using the Software, you agree to be bound by these Terms of Service. If you do not agree, do not use the Software.</p>
 
             <h2>2. Licence</h2>
             <p>BridgePlay grants you a personal, non-exclusive, non-transferable licence to use the Software. The licence is tied to your BridgePlay account rather than to a single machine: you may sign in and use the Software on any Mac you personally own. The licence is for personal use only — you may not share your account credentials with other people or use one licence to serve other users.</p>
@@ -58,7 +59,10 @@ export default function TermsAndConditions() {
             <h2>12. Changes to Terms</h2>
             <p>We may update these terms from time to time. The date at the top of this page reflects the most recent change. Continued use of the Software after changes constitutes acceptance of the new terms.</p>
 
-            <h2>13. Contact</h2>
+            <h2>13. Governing Law and Disputes</h2>
+            <p>These terms, and any dispute arising out of or relating to them or the Software, are governed by the laws of the State of Israel, and the competent courts of Israel have jurisdiction. If you are a consumer resident in the EU, the UK, or another jurisdiction whose law grants you mandatory consumer protections, you keep the benefit of those protections and of any right to bring proceedings in your country of residence; nothing in these terms removes rights that cannot be waived under the law that applies to you.</p>
+
+            <h2>14. Contact</h2>
             <p>For questions about these terms, contact us at the <a href="/#contact">contact form</a> on our website.</p>
         </LegalLayout>
     );
