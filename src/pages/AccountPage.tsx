@@ -66,7 +66,18 @@ export default function AccountPage() {
             return;
         }
         try {
-            await sendPasswordResetEmail(auth, email);
+            // Prefer the branded sender (our domain + template via
+            // /api/password-reset — far better deliverability). Until
+            // RESEND_API_KEY is configured it answers 501 and we fall back to
+            // Firebase's own mailer.
+            const custom = await fetch('/api/password-reset', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email }),
+            }).catch(() => null);
+            if (!custom || !custom.ok) {
+                await sendPasswordResetEmail(auth, email);
+            }
             setError('');
             showToast('Password reset email sent! Check your inbox.', 'success');
         } catch (err: unknown) {
