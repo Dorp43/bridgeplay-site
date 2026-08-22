@@ -9,6 +9,7 @@ import ScrollToTop from './components/ui/ScrollToTop';
 // chunk fetched on navigation — AccountPage above all, since it (and the auth
 // provider deferred in main.tsx) is what drags Firebase in.
 const AccountPage = lazy(() => import('./pages/AccountPage'));
+const AuthAction = lazy(() => import('./pages/AuthAction'));
 const Download = lazy(() => import('./pages/Download'));
 const Limitations = lazy(() => import('./pages/Limitations'));
 const PrivacyPolicy = lazy(() => import('./pages/PrivacyPolicy'));
@@ -32,6 +33,7 @@ function RouteFallback() {
 const PAGE_TITLES: Record<string, string> = {
     '/': 'BridgePlay — Play Windows Games on Your Mac',
     '/account': 'Account — BridgePlay',
+    '/auth/action': 'Reset Password — BridgePlay',
     '/privacy-policy': 'Privacy Policy — BridgePlay',
     '/terms': 'Terms of Service — BridgePlay',
     '/refund-policy': 'Refund Policy — BridgePlay',
@@ -101,6 +103,7 @@ export default function App() {
                 </Route>
                 <Route element={<MinimalLayout />}>
                     <Route path="/account" element={<AccountPage />} />
+                    <Route path="/auth/action" element={<AuthAction />} />
                 </Route>
                 <Route element={<LegalRoute />}>
                     <Route path="/privacy-policy" element={<PrivacyPolicy />} />
