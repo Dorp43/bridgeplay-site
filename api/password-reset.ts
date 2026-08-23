@@ -140,7 +140,16 @@ export default async function handler(req: IncomingMessage & { method?: string }
         }
     } catch (err: unknown) {
         const code = (err as { code?: string }).code || '';
-        if (code !== 'auth/user-not-found' && code !== 'auth/email-not-found') {
+        // Unknown accounts must return the SAME 200 as real ones, or the
+        // status code leaks which emails are registered. firebase-admin's
+        // generatePasswordResetLink reports a missing user inconsistently:
+        // sometimes auth/user-not-found, but often the generic
+        // auth/internal-error — treat all of these as "silently succeed".
+        const unknownUser =
+            code === 'auth/user-not-found' ||
+            code === 'auth/email-not-found' ||
+            code === 'auth/internal-error';
+        if (!unknownUser) {
             console.error('password-reset error:', code || (err as Error).message);
             res.statusCode = 502;
             res.end(JSON.stringify({ error: 'Could not process reset' }));
