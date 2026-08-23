@@ -23,6 +23,9 @@ export default function AccountPage() {
     const { user, loading } = useAuth();
     const { showToast } = useToast();
     const [isSignUp, setIsSignUp] = useState(false);
+    const [isForgot, setIsForgot] = useState(false);
+    const [resetSent, setResetSent] = useState(false);
+    const [forgotPrefill, setForgotPrefill] = useState('');
     const [error, setError] = useState('');
     const [submitting, setSubmitting] = useState(false);
     const [license, setLicense] = useState<LicenseData | null>(null);
@@ -58,13 +61,23 @@ export default function AccountPage() {
         }
     };
 
-    const handleForgot = async () => {
+    /* Switch to the dedicated email-only reset form, carrying over whatever
+       was already typed in the sign-in email field. */
+    const openForgot = () => {
         const emailInput = document.getElementById('auth-email') as HTMLInputElement;
-        const email = emailInput?.value.trim();
-        if (!email) {
-            setError('Enter your email address first, then click "Forgot password?"');
-            return;
-        }
+        setForgotPrefill(emailInput?.value.trim() || '');
+        setIsForgot(true);
+        setResetSent(false);
+        setError('');
+    };
+
+    const handleForgotSubmit = async (e: FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        const form = e.currentTarget;
+        const email = (form.elements.namedItem('email') as HTMLInputElement).value.trim();
+
+        setError('');
+        setSubmitting(true);
         try {
             // Prefer the branded sender (our domain + template via
             // /api/password-reset — far better deliverability). Until
@@ -78,12 +91,12 @@ export default function AccountPage() {
             if (!custom || !custom.ok) {
                 await sendPasswordResetEmail(auth, email);
             }
-            setError('');
-            showToast('Password reset email sent! Check your inbox.', 'success');
+            setResetSent(true);
         } catch (err: unknown) {
             const code = (err as { code?: string }).code || '';
             setError(friendlyAuthError(code));
         }
+        setSubmitting(false);
     };
 
     const handleSignOut = async () => {
@@ -169,6 +182,48 @@ export default function AccountPage() {
         );
     }
 
+    if (!user && isForgot) {
+        return (
+            <main id="main-content" tabIndex={-1} className={styles.page}>
+                <div className={styles.authCard}>
+                    <h1>Reset Password</h1>
+                    <p className={styles.subtitle}>
+                        Enter your email and we'll send you a link to reset your password.
+                    </p>
+
+                    {error && <div className={styles.error}>{error}</div>}
+                    {resetSent && (
+                        <div className={styles.successBanner}>
+                            Reset link sent! Check your inbox and spam folder.
+                        </div>
+                    )}
+
+                    <form onSubmit={handleForgotSubmit}>
+                        <div className={styles.field}>
+                            <label htmlFor="forgot-email">Email</label>
+                            <input
+                                type="email"
+                                id="forgot-email"
+                                name="email"
+                                placeholder="you@example.com"
+                                defaultValue={forgotPrefill}
+                                autoFocus
+                                required
+                            />
+                        </div>
+                        <button type="submit" className={styles.authBtn} disabled={submitting}>
+                            {submitting ? 'Sending...' : 'Send Reset Link'}
+                        </button>
+                    </form>
+
+                    <p className={styles.toggle}>
+                        <a onClick={() => { setIsForgot(false); setError(''); setResetSent(false); }}>Back to Sign In</a>
+                    </p>
+                </div>
+            </main>
+        );
+    }
+
     if (!user) {
         return (
             <main id="main-content" tabIndex={-1} className={styles.page}>
@@ -190,7 +245,7 @@ export default function AccountPage() {
                             <input type="password" id="auth-password" name="password" placeholder="Your password" required />
                         </div>
                         {!isSignUp && (
-                            <button type="button" className={styles.forgotLink} onClick={handleForgot}>Forgot password?</button>
+                            <button type="button" className={styles.forgotLink} onClick={openForgot}>Forgot password?</button>
                         )}
                         <button type="submit" className={styles.authBtn} disabled={submitting}>
                             {submitting ? (isSignUp ? 'Creating account...' : 'Signing in...') : (isSignUp ? 'Create Account' : 'Sign In')}
