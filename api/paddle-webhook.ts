@@ -16,6 +16,94 @@ if (!getApps().length) {
 
 const db = getFirestore();
 
+// Price id → human plan name for the receipt. Kept in sync with
+// src/lib/paddle.ts PRICE_IDS.
+const PLAN_NAMES: Record<string, string> = {
+    pri_01kq6xc966dg5krhv67j0p3dpr: 'Monthly plan',
+    pri_01kq6xh6gvfwr8csqbensbtkex: 'Yearly plan',
+    pri_01kq6xk25va96vnhdm03mkaa33: 'Lifetime license',
+};
+
+interface PaddleTransactionData {
+    id?: string;
+    currency_code?: string;
+    customer?: { email?: string };
+    items?: { price?: { id?: string; name?: string } }[];
+    details?: { totals?: { grand_total?: string; currency_code?: string } };
+}
+
+/// "3999" + "USD" → "$39.99". Falls back to "<code> <amount>" for currencies
+/// without a known symbol.
+function formatAmount(minorUnits: string | undefined, currency: string | undefined): string {
+    const cur = (currency || 'USD').toUpperCase();
+    const cents = Number(minorUnits);
+    if (!Number.isFinite(cents)) return '';
+    const major = (cents / 100).toFixed(2);
+    const symbol: Record<string, string> = { USD: '$', EUR: '€', GBP: '£' };
+    return symbol[cur] ? `${symbol[cur]}${major}` : `${cur} ${major}`;
+}
+
+function receiptHTML(opts: { planName: string; amount: string; dateStr: string; orderId: string }): string {
+    const { planName, amount, dateStr, orderId } = opts;
+    const row = (label: string, value: string) =>
+        `<tr><td style="padding:8px 0;color:#9aa5b8;font-size:13px">${label}</td><td style="padding:8px 0;color:#ffffff;font-size:13px;text-align:right;font-weight:600">${value}</td></tr>`;
+    return `<!doctype html><html><body style="margin:0;padding:0;background:#0b0f17;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif">
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#0b0f17;padding:40px 16px"><tr><td align="center">
+    <table role="presentation" width="460" cellpadding="0" cellspacing="0" style="max-width:460px;width:100%;background:#121826;border:1px solid #232b3d;border-radius:16px;padding:36px 32px">
+      <tr><td style="padding-bottom:8px"><span style="font-size:20px;font-weight:800;color:#ffffff;letter-spacing:-0.3px">Bridge<span style="color:#4a9eff">Play</span></span></td></tr>
+      <tr><td style="color:#6dd5a0;font-size:13px;font-weight:700;letter-spacing:0.3px;text-transform:uppercase;padding-bottom:6px">Payment received</td></tr>
+      <tr><td style="color:#ffffff;font-size:22px;font-weight:800;padding-bottom:10px;letter-spacing:-0.4px">Thank you for your purchase</td></tr>
+      <tr><td style="color:#9aa5b8;font-size:14px;line-height:1.6;padding-bottom:24px">Your BridgePlay license is active. Open the app — it unlocks automatically, no code to enter.</td></tr>
+      <tr><td style="padding:0 0 4px"><table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-top:1px solid #232b3d;border-bottom:1px solid #232b3d">
+        ${row('Item', planName)}
+        ${row('Amount paid', amount)}
+        ${row('Date', dateStr)}
+        ${row('Order ID', orderId)}
+      </table></td></tr>
+      <tr><td align="center" style="padding:28px 0 4px">
+        <a href="https://bridgeplay.app/account" style="display:inline-block;background:linear-gradient(135deg,#4a9eff,#3b82f6);color:#ffffff;text-decoration:none;font-size:14px;font-weight:700;padding:12px 32px;border-radius:12px">Manage your account</a>
+      </td></tr>
+      <tr><td style="color:#5d6a80;font-size:12px;line-height:1.6;border-top:1px solid #232b3d;padding-top:20px;margin-top:20px">
+        Paddle is our authorized reseller and merchant of record; a separate tax invoice from Paddle may also arrive. Questions? Just reply to this email.<br>7-day money-back guarantee.
+      </td></tr>
+    </table>
+    <table role="presentation" width="460" cellpadding="0" cellspacing="0" style="max-width:460px;width:100%"><tr><td style="color:#5d6a80;font-size:11px;padding:20px 8px;text-align:center">BridgePlay — Play Windows games on your Mac · <a href="https://bridgeplay.app" style="color:#5d6a80">bridgeplay.app</a></td></tr></table>
+  </td></tr></table>
+</body></html>`;
+}
+
+/// Sends a branded purchase receipt via Resend. Best-effort: a failure here
+/// must never fail the webhook (the licence is already active). Returns silently
+/// if the mailer isn't configured.
+async function sendReceiptEmail(to: string, data: PaddleTransactionData): Promise<void> {
+    const resendKey = process.env.RESEND_API_KEY;
+    if (!resendKey || !to) return;
+
+    const priceId = data.items?.[0]?.price?.id;
+    const planName = (priceId && PLAN_NAMES[priceId]) || data.items?.[0]?.price?.name || 'BridgePlay license';
+    const amount = formatAmount(data.details?.totals?.grand_total, data.details?.totals?.currency_code || data.currency_code);
+    const dateStr = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+    const orderId = data.id || '—';
+
+    try {
+        const resp = await fetch('https://api.resend.com/emails', {
+            method: 'POST',
+            headers: { Authorization: `Bearer ${resendKey}`, 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                from: 'BridgePlay <noreply@bridgeplay.app>',
+                to: [to],
+                subject: 'Your BridgePlay receipt',
+                html: receiptHTML({ planName, amount, dateStr, orderId }),
+            }),
+        });
+        if (!resp.ok) {
+            console.error('receipt email failed:', resp.status, (await resp.text()).slice(0, 200));
+        }
+    } catch (err) {
+        console.error('receipt email error:', (err as Error).message);
+    }
+}
+
 function readBody(req: IncomingMessage): Promise<string> {
     return new Promise((resolve, reject) => {
         let data = '';
@@ -109,6 +197,10 @@ export default async function handler(req: IncomingMessage, res: ServerResponse)
             const userRef = db.collection('users').doc(uid);
             const userSnap = await userRef.get();
             const currentStatus = userSnap.data()?.purchaseStatus;
+            // Guard against a duplicate receipt when Paddle retries the webhook:
+            // only a transaction id we have not seen before is a fresh purchase.
+            const seenTxnIds: string[] = userSnap.data()?.paddleTransactionIds || [];
+            const isNewTransaction = !!transactionId && !seenTxnIds.includes(transactionId);
 
             // Keep every transaction id: adjustments (refunds/chargebacks) reference
             // the specific disputed transaction, which may be an earlier renewal.
@@ -133,6 +225,18 @@ export default async function handler(req: IncomingMessage, res: ServerResponse)
 
             if (currentStatus !== 'refunded') {
                 console.log(`User ${uid} activated (transaction: ${transactionId})`);
+                // Branded receipt — but only for a genuinely new purchase, so a
+                // webhook retry doesn't email the customer twice. Prefer the
+                // email Paddle sent, else the account's own email. Best-effort.
+                if (isNewTransaction) {
+                    const data = event.data as PaddleTransactionData;
+                    const to = data.customer?.email || userSnap.data()?.email;
+                    if (to) {
+                        await sendReceiptEmail(to, data);
+                    } else {
+                        console.warn(`No email to send receipt for user ${uid}`);
+                    }
+                }
             }
         }
 
