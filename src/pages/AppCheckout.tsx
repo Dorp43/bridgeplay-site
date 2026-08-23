@@ -52,9 +52,23 @@ export default function AppCheckout() {
             return;
         }
 
-        // Late-injection channel: the app may set the user after React mounts.
-        window.__bridgeplaySetUser = (uid, email) => setAppUser({ uid, email });
-        if (!appUser && window.bridgePlayUser) setAppUser(window.bridgePlayUser);
+        // Identity arrives one of two ways, and we accept both:
+        //  - documentStart injection sets window.bridgePlayUser BEFORE React
+        //    mounts (the app's primary path; useState above already read it),
+        //  - a late __bridgeplaySetUser call after mount (fallback).
+        // A short poll on window.bridgePlayUser makes the pickup robust against
+        // any mount/injection ordering or re-render timing.
+        window.__bridgeplaySetUser = (uid, email) => {
+            window.bridgePlayUser = { uid, email };
+            setAppUser({ uid, email });
+        };
+        if (window.bridgePlayUser) setAppUser(window.bridgePlayUser);
+        const userPoll = setInterval(() => {
+            if (window.bridgePlayUser) {
+                setAppUser(window.bridgePlayUser);
+                clearInterval(userPoll);
+            }
+        }, 150);
 
         const tryInit = () => {
             if (!window.Paddle) return false;
@@ -73,6 +87,7 @@ export default function AppCheckout() {
         }
         return () => {
             if (poll) clearInterval(poll);
+            clearInterval(userPoll);
             delete window.__bridgeplaySetUser;
         };
     }, []);
