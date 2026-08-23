@@ -10,6 +10,7 @@ import ScrollToTop from './components/ui/ScrollToTop';
 // provider deferred in main.tsx) is what drags Firebase in.
 const AccountPage = lazy(() => import('./pages/AccountPage'));
 const AuthAction = lazy(() => import('./pages/AuthAction'));
+const AppCheckout = lazy(() => import('./pages/AppCheckout'));
 const Download = lazy(() => import('./pages/Download'));
 const Limitations = lazy(() => import('./pages/Limitations'));
 const PrivacyPolicy = lazy(() => import('./pages/PrivacyPolicy'));
@@ -34,6 +35,7 @@ const PAGE_TITLES: Record<string, string> = {
     '/': 'BridgePlay — Play Windows Games on Your Mac',
     '/account': 'Account — BridgePlay',
     '/auth/action': 'Reset Password — BridgePlay',
+    '/app-checkout': 'Upgrade — BridgePlay',
     '/privacy-policy': 'Privacy Policy — BridgePlay',
     '/terms': 'Terms of Service — BridgePlay',
     '/refund-policy': 'Refund Policy — BridgePlay',
@@ -111,6 +113,8 @@ export default function App() {
                     <Route path="/refund-policy" element={<RefundPolicy />} />
                     <Route path="/changelog" element={<Changelog />} />
                 </Route>
+                {/* Bare, chrome-less — it renders inside the Mac app's WKWebView. */}
+                <Route path="/app-checkout" element={<Suspense fallback={<RouteFallback />}><AppCheckout /></Suspense>} />
                 <Route path="*" element={<Suspense fallback={<RouteFallback />}><NotFound /></Suspense>} />
             </Routes>
         </>
