@@ -294,7 +294,17 @@ export default function AccountPage() {
                     <h3>Quick Actions</h3>
                     <div className={styles.actionsGrid}>
                         {license && (license.status === 'expired' || license.status === 'noTrial') && (
-                            <button onClick={() => openCheckout(PRICE_IDS.yearly, user.email || undefined, user.uid)} className={`${styles.actionBtn} ${styles.actionPrimary}`}>Upgrade Now</button>
+                            <>
+                                {/* All three plans, not just yearly — same prices
+                                    and price ids as the Pricing section. Yearly is
+                                    the primary (most popular); monthly + lifetime
+                                    are secondary. Each opens its own Paddle
+                                    checkout with the signed-in uid. */}
+                                <div className={styles.planPrompt}>Choose a plan</div>
+                                <button onClick={() => openCheckout(PRICE_IDS.yearly, user.email || undefined, user.uid)} className={`${styles.actionBtn} ${styles.actionPrimary}`}>Yearly — $39.99/yr · Save 52%</button>
+                                <button onClick={() => openCheckout(PRICE_IDS.monthly, user.email || undefined, user.uid)} className={`${styles.actionBtn} ${styles.actionSecondary}`}>Monthly — $6.99/mo</button>
+                                <button onClick={() => openCheckout(PRICE_IDS.lifetime, user.email || undefined, user.uid)} className={`${styles.actionBtn} ${styles.actionSecondary}`}>Lifetime — $59.99 once</button>
+                            </>
                         )}
                         {/* Stays a direct download — this visitor has already paid. */}
                         <a href="/BridgePlay.dmg" download className={`${styles.actionBtn} ${license && (license.status === 'expired' || license.status === 'noTrial') ? styles.actionSecondary : styles.actionPrimary}`}>Download BridgePlay</a>
