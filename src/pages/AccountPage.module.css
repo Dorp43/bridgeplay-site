@@ -54,6 +54,12 @@
 }
 .googleBtn:hover { border-color: var(--border-strong); }
 .googleBtn:disabled { opacity: 0.6; cursor: not-allowed; }
+.cardFootnote {
+    margin-top: 18px; padding-top: 14px; border-top: 1px solid var(--border);
+    font-size: 0.8rem; color: var(--text-muted); line-height: 1.5;
+}
+.cardFootnote a { color: var(--accent); font-weight: 600; }
+.cardFootnote a:hover { text-decoration: underline; }
 .toggle { text-align: center; margin-top: 20px; font-size: 0.85rem; color: var(--text-muted); }
 .toggle a { color: var(--accent); font-weight: 600; cursor: pointer; }
 .toggle a:hover { text-decoration: underline; }

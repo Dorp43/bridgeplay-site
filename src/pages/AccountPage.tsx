@@ -492,9 +492,9 @@ export default function AccountPage() {
                         <a href="/BridgePlay.dmg" download className={`${styles.actionBtn} ${license && (license.status === 'expired' || license.status === 'noTrial') ? styles.actionSecondary : styles.actionPrimary}`}>Download BridgePlay</a>
                         <button className={`${styles.actionBtn} ${styles.actionDanger}`} onClick={handleSignOut}>Sign Out</button>
                     </div>
-                    {/* Reuses the auth card's quiet-link treatment rather than adding a
-                        one-off style. */}
-                    <p className={styles.toggle}>
+                    {/* Card footer, visually separated from the action buttons
+                        instead of blending into them. */}
+                    <p className={styles.cardFootnote}>
                         Installing on a new Mac? <Link to="/download">Requirements, checksum and first-launch steps</Link>
                     </p>
                 </div>
