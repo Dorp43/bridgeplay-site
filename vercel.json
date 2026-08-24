@@ -1,6 +1,8 @@
 {
   "rewrites": [
     { "source": "/api/(.*)", "destination": "/api/$1" },
+    { "source": "/__/auth/(.*)", "destination": "https://bridgeplay-8f4f6.firebaseapp.com/__/auth/$1" },
+    { "source": "/__/firebase/(.*)", "destination": "https://bridgeplay-8f4f6.firebaseapp.com/__/firebase/$1" },
     { "source": "/(.*)", "destination": "/index.html" }
   ]
 }

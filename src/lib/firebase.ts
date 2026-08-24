@@ -4,7 +4,11 @@ import { getFirestore } from 'firebase/firestore';
 
 const firebaseConfig = {
     apiKey: "AIzaSyBTqWbkTUzQRG6xNDYAWgjzNDcaSNtvutU",
-    authDomain: "bridgeplay-8f4f6.firebaseapp.com",
+    // Our own domain, not <project>.firebaseapp.com, so Google's consent
+    // screen says "continue to bridgeplay.app". Requires the /__/auth/*
+    // rewrite in vercel.json and the bridgeplay.app redirect URI on the
+    // OAuth web client (added 2026-08-25).
+    authDomain: "bridgeplay.app",
     projectId: "bridgeplay-8f4f6",
     storageBucket: "bridgeplay-8f4f6.firebasestorage.app",
     messagingSenderId: "438760266610",
