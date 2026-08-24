@@ -17,6 +17,31 @@ interface LicenseData {
     trialColor?: string;
     planInfo: string;
     planColor?: string;
+    renewalLabel?: string;   // "Renews" / "Expires" / "Plan"
+    renewalInfo?: string;    // "August 23, 2027" / "Never expires"
+}
+
+/// Resolve when an active plan renews/expires from the user doc. Prefers the
+/// exact period end the webhook stored (currentPeriodEnd); falls back to
+/// purchaseDate + the plan interval for accounts that predate that field.
+function renewalFor(data: Record<string, unknown>): { renewalLabel: string; renewalInfo: string } | null {
+    const plan = data.plan as string | undefined;
+    const isLifetime = plan === 'lifetime' || !data.paddleSubscriptionId;
+    if (isLifetime) return { renewalLabel: 'Plan', renewalInfo: 'Lifetime — never expires' };
+
+    const fmt = (d: Date) => d.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+    const cpe = data.currentPeriodEnd as string | undefined;
+    if (cpe) return { renewalLabel: 'Renews', renewalInfo: fmt(new Date(cpe)) };
+
+    // Fallback: purchaseDate + interval.
+    const pd = data.purchaseDate as string | undefined;
+    if (pd && (plan === 'monthly' || plan === 'yearly')) {
+        const end = new Date(pd);
+        if (plan === 'monthly') end.setMonth(end.getMonth() + 1);
+        else end.setFullYear(end.getFullYear() + 1);
+        return { renewalLabel: 'Renews', renewalInfo: fmt(end) };
+    }
+    return null;
 }
 
 export default function AccountPage() {
@@ -123,7 +148,20 @@ export default function AccountPage() {
             }
 
             if (data.purchaseStatus === 'active') {
-                return { license: { status: 'licensed', label: 'Licensed', pillClass: 'licensed', planInfo: 'Active subscription', planColor: 'var(--green)' }, memberSince };
+                const planLabel = data.plan === 'lifetime' || !data.paddleSubscriptionId
+                    ? 'Lifetime license'
+                    : data.plan === 'monthly' ? 'Monthly plan'
+                    : data.plan === 'yearly' ? 'Yearly plan'
+                    : 'Active subscription';
+                const renewal = renewalFor(data);
+                return {
+                    license: {
+                        status: 'licensed', label: 'Licensed', pillClass: 'licensed',
+                        planInfo: planLabel, planColor: 'var(--green)',
+                        ...(renewal ?? {}),
+                    },
+                    memberSince,
+                };
             }
 
             if (data.trialStartDate) {
@@ -288,6 +326,12 @@ export default function AccountPage() {
                         <span className={styles.statusLabel}>Plan</span>
                         <span className={styles.statusValue} style={{ color: license?.planColor || 'var(--text-secondary)' }}>{license?.planInfo || '—'}</span>
                     </div>
+                    {license?.renewalInfo && (
+                        <div className={styles.statusRow}>
+                            <span className={styles.statusLabel}>{license.renewalLabel || 'Renews'}</span>
+                            <span className={styles.statusValue}>{license.renewalInfo}</span>
+                        </div>
+                    )}
                 </div>
 
                 <div className={styles.statusCard}>

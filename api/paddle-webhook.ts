@@ -24,12 +24,21 @@ const PLAN_NAMES: Record<string, string> = {
     pri_01kq6xk25va96vnhdm03mkaa33: 'Lifetime license',
 };
 
+// Price id → plan key stored on the user doc, so the app and website can show
+// "Renews on…" / "Never expires" (lifetime).
+const PLAN_KEYS: Record<string, 'monthly' | 'yearly' | 'lifetime'> = {
+    pri_01kq6xc966dg5krhv67j0p3dpr: 'monthly',
+    pri_01kq6xh6gvfwr8csqbensbtkex: 'yearly',
+    pri_01kq6xk25va96vnhdm03mkaa33: 'lifetime',
+};
+
 interface PaddleTransactionData {
     id?: string;
     currency_code?: string;
     customer?: { email?: string };
     items?: { price?: { id?: string; name?: string } }[];
     details?: { totals?: { grand_total?: string; currency_code?: string } };
+    billing_period?: { starts_at?: string; ends_at?: string };
 }
 
 /// "3999" + "USD" → "$39.99". Falls back to "<code> <amount>" for currencies
@@ -219,6 +228,14 @@ export default async function handler(req: IncomingMessage, res: ServerResponse)
             } else {
                 update.purchaseStatus = 'active';
                 update.purchaseDate = new Date().toISOString();
+                // Plan + renewal/expiry so the app and website can show
+                // "Renews on…" or "Never expires" (lifetime). billing_period is
+                // present for subscription charges and absent for the one-time
+                // lifetime purchase.
+                const priceId = event.data?.items?.[0]?.price?.id;
+                const planKey = priceId ? PLAN_KEYS[priceId] : undefined;
+                if (planKey) update.plan = planKey;
+                update.currentPeriodEnd = event.data?.billing_period?.ends_at || null;
             }
 
             await userRef.set(update, { merge: true });
