@@ -30,6 +30,17 @@ export const PRICE_IDS = {
     lifetime: 'pri_01kq6xk25va96vnhdm03mkaa33',
 } as const;
 
+/// A `?price=pri_…` URL override, for exercising an unlisted price (internal
+/// testing) without shipping its id. Shape-validated only — the concrete id is
+/// deliberately NOT a constant here, because everything in this module ships
+/// in the public JS bundle. Accepting any well-formed id grants nothing: the
+/// real PRICE_IDS are already public, so the only price an override can reach
+/// that a Buy button cannot is one whose opaque id the caller already knows.
+export function readPriceOverride(): string | null {
+    const raw = new URLSearchParams(window.location.search).get('price');
+    return raw && /^pri_[a-z0-9]{20,40}$/.test(raw) ? raw : null;
+}
+
 let initialized = false;
 
 /// `eventCallback` is applied only on the FIRST init (Paddle keeps the initial

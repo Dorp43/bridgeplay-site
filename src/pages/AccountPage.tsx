@@ -5,7 +5,7 @@ import { doc, getDoc } from 'firebase/firestore';
 import { auth, db, friendlyAuthError } from '../lib/firebase';
 import { useAuth } from '../context/useAuth';
 import { useToast } from '../context/useToast';
-import { openCheckout, PRICE_IDS } from '../lib/paddle';
+import { openCheckout, PRICE_IDS, readPriceOverride } from '../lib/paddle';
 import { useDocumentMeta } from '../hooks/useDocumentMeta';
 import styles from './AccountPage.module.css';
 
@@ -345,10 +345,18 @@ export default function AccountPage() {
                                     are secondary. Each opens its own Paddle
                                     checkout with the signed-in uid. */}
                                 <div className={styles.planPrompt}>Choose a plan</div>
-                                <button onClick={() => openCheckout(PRICE_IDS.yearly, user.email || undefined, user.uid)} className={`${styles.actionBtn} ${styles.actionPrimary}`}>Yearly — $39.99/yr · Save 52%</button>
-                                <button onClick={() => openCheckout(PRICE_IDS.monthly, user.email || undefined, user.uid)} className={`${styles.actionBtn} ${styles.actionSecondary}`}>Monthly — $6.99/mo</button>
-                                <button onClick={() => openCheckout(PRICE_IDS.lifetime, user.email || undefined, user.uid)} className={`${styles.actionBtn} ${styles.actionSecondary}`}>Lifetime — $59.99 once</button>
+                                {/* An unlisted ?price= override (internal testing) beats the plan the button shows. */}
+                                <button onClick={() => openCheckout(readPriceOverride() ?? PRICE_IDS.yearly, user.email || undefined, user.uid)} className={`${styles.actionBtn} ${styles.actionPrimary}`}>Yearly — $39.99/yr · Save 52%</button>
+                                <button onClick={() => openCheckout(readPriceOverride() ?? PRICE_IDS.monthly, user.email || undefined, user.uid)} className={`${styles.actionBtn} ${styles.actionSecondary}`}>Monthly — $6.99/mo</button>
+                                <button onClick={() => openCheckout(readPriceOverride() ?? PRICE_IDS.lifetime, user.email || undefined, user.uid)} className={`${styles.actionBtn} ${styles.actionSecondary}`}>Lifetime — $59.99 once</button>
                             </>
+                        )}
+                        {/* Unlisted-price checkout for accounts that already hold a
+                            licence or trial (the plan buttons above don't render for
+                            them). Only appears with a well-formed ?price= in the URL,
+                            so no ordinary visitor ever sees it. */}
+                        {license && !(license.status === 'expired' || license.status === 'noTrial') && readPriceOverride() && (
+                            <button onClick={() => openCheckout(readPriceOverride()!, user.email || undefined, user.uid)} className={`${styles.actionBtn} ${styles.actionPrimary}`}>Complete test purchase</button>
                         )}
                         {/* Stays a direct download — this visitor has already paid. */}
                         <a href="/BridgePlay.dmg" download className={`${styles.actionBtn} ${license && (license.status === 'expired' || license.status === 'noTrial') ? styles.actionSecondary : styles.actionPrimary}`}>Download BridgePlay</a>

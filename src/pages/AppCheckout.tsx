@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { PRICE_IDS, initPaddle } from '../lib/paddle';
+import { PRICE_IDS, initPaddle, readPriceOverride } from '../lib/paddle';
 import styles from './AppCheckout.module.css';
 
 /* Checkout surface for the Mac app's in-app WKWebView. It is NOT the website
@@ -95,7 +95,9 @@ export default function AppCheckout() {
     const buy = (priceId: string) => {
         if (!appUser || !ready) return;
         window.Paddle.Checkout.open({
-            items: [{ priceId, quantity: 1 }],
+            // An unlisted ?price= override (internal testing) beats the plan
+            // the button was rendered for.
+            items: [{ priceId: readPriceOverride() ?? priceId, quantity: 1 }],
             ...(appUser.email && { customer: { email: appUser.email } }),
             customData: { uid: appUser.uid },
             successUrl: 'https://bridgeplay.app/app-checkout?status=success',
