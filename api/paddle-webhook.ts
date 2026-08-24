@@ -202,6 +202,14 @@ export default async function handler(req: IncomingMessage, res: ServerResponse)
 
             const subscriptionId = event.data?.subscription_id || null;
             const transactionId = event.data?.id || null;
+            const priceId: string | undefined = event.data?.items?.[0]?.price?.id;
+            // Activation allowlist: catalog plans, plus any temporary test
+            // prices announced via env (comma-separated ids). Once a test id is
+            // removed from PADDLE_TEST_PRICE_IDS it becomes inert, so a leaked
+            // test-checkout URL never turns into a standing cheap licence.
+            const testPriceIds = (process.env.PADDLE_TEST_PRICE_IDS || '')
+                .split(',').map((s) => s.trim()).filter(Boolean);
+            const priceKnown = !!priceId && (priceId in PLAN_KEYS || testPriceIds.includes(priceId));
 
             const userRef = db.collection('users').doc(uid);
             const userSnap = await userRef.get();
@@ -225,10 +233,15 @@ export default async function handler(req: IncomingMessage, res: ServerResponse)
                 update.paddleTransactionIds = FieldValue.arrayUnion(transactionId);
             }
 
+            const activated = currentStatus !== 'refunded' && priceKnown;
             if (currentStatus === 'refunded') {
                 // Sticky revocation: a late/retried transaction.completed must not
                 // silently re-activate a refunded/charged-back user.
                 console.error(`User ${uid} has purchaseStatus 'refunded'; transaction ${transactionId} recorded but activation withheld — manual review required`);
+            } else if (!priceKnown) {
+                // The transaction ids are still recorded above (refunds may
+                // reference them), but a price we don't recognize never unlocks.
+                console.error(`User ${uid} completed transaction ${transactionId} for unrecognized price ${priceId || 'unknown'} — activation withheld, manual review required`);
             } else {
                 update.purchaseStatus = 'active';
                 update.purchaseDate = new Date().toISOString();
@@ -236,9 +249,11 @@ export default async function handler(req: IncomingMessage, res: ServerResponse)
                 // "Renews on…" or "Never expires" (lifetime). billing_period is
                 // present for subscription charges and absent for the one-time
                 // lifetime purchase.
-                const priceId = event.data?.items?.[0]?.price?.id;
+                // A lifetime licence is terminal: a residual subscription
+                // renewal (bought monthly, later bought lifetime, never
+                // cancelled the sub) must not downgrade the stored plan.
                 const planKey = priceId ? PLAN_KEYS[priceId] : undefined;
-                if (planKey) update.plan = planKey;
+                if (planKey && userSnap.data()?.plan !== 'lifetime') update.plan = planKey;
                 // Same guard as the subscription id: a one-time charge has no
                 // billing_period, and must not blank a subscriber's period end.
                 const periodEnd = event.data?.billing_period?.ends_at;
@@ -247,8 +262,11 @@ export default async function handler(req: IncomingMessage, res: ServerResponse)
 
             await userRef.set(update, { merge: true });
 
-            if (currentStatus !== 'refunded') {
-                console.log(`User ${uid} activated (transaction: ${transactionId})`);
+            if (activated) {
+                // Include the price id: an activation through an unexpected or
+                // unlisted price must be visible in the logs, not only in the
+                // Paddle dashboard.
+                console.log(`User ${uid} activated (transaction: ${transactionId}, price: ${priceId || 'unknown'})`);
                 // Branded receipt — but only for a genuinely new purchase, so a
                 // webhook retry doesn't email the customer twice. Prefer the
                 // email Paddle sent, else the account's own email. Best-effort.
