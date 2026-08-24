@@ -9,6 +9,10 @@ import { openCheckout, PRICE_IDS, readPriceOverride } from '../lib/paddle';
 import { useDocumentMeta } from '../hooks/useDocumentMeta';
 import styles from './AccountPage.module.css';
 
+/// The trial length, in days. Must match LicenseService.trialDurationDays in
+/// the Mac app — the app claims the trial, the site only reports it.
+const TRIAL_DURATION_DAYS = 7;
+
 interface LicenseData {
     status: 'licensed' | 'trial' | 'trial-warning' | 'expired' | 'noTrial' | 'pending';
     label: string;
@@ -19,6 +23,11 @@ interface LicenseData {
     planColor?: string;
     renewalLabel?: string;   // "Renews" / "Expires" / "Plan"
     renewalInfo?: string;    // "August 23, 2027" / "Never expires"
+    /// Trial only: "7-day trial · ends August 30, 2026".
+    trialLength?: string;
+    /// Set only when there is a subscription the user can actually cancel.
+    /// Absent for lifetime, trials, and already-scheduled cancellations.
+    cancellable?: boolean;
 }
 
 /// True when the doc describes a lifetime licence. An explicit monthly/yearly
@@ -73,6 +82,8 @@ export default function AccountPage() {
     const [submitting, setSubmitting] = useState(false);
     const [license, setLicense] = useState<LicenseData | null>(null);
     const [memberSince, setMemberSince] = useState('');
+    const [confirmingCancel, setConfirmingCancel] = useState(false);
+    const [cancelling, setCancelling] = useState(false);
 
     useDocumentMeta({
         title: 'Account — BridgePlay',
@@ -149,6 +160,37 @@ export default function AccountPage() {
         setMemberSince('');
     };
 
+    /// Cancels at period end. Identity is the Firebase ID token, never a uid in
+    /// the body — the endpoint reads the subscription from the caller's own doc.
+    const handleCancelSubscription = async () => {
+        if (!user || cancelling) return;
+        setCancelling(true);
+        try {
+            const resp = await fetch('/api/cancel-subscription', {
+                method: 'POST',
+                headers: {
+                    Authorization: `Bearer ${await user.getIdToken()}`,
+                    'Content-Type': 'application/json',
+                },
+                body: '{}',
+            });
+            if (resp.ok) {
+                showToast('Subscription cancelled. Access continues until the end of the period you paid for.', 'success');
+                const refreshed = await loadDashboard();
+                if (refreshed) setLicense(refreshed.license);
+            } else if (resp.status === 501) {
+                showToast('Cancellation is not available right now. Email support and we will cancel it for you.', 'error');
+            } else {
+                const body = await resp.json().catch(() => ({}));
+                showToast(body.error || 'Could not cancel the subscription. Please try again.', 'error');
+            }
+        } catch {
+            showToast('Could not reach the server. Check your connection and try again.', 'error');
+        }
+        setCancelling(false);
+        setConfirmingCancel(false);
+    };
+
     // Load dashboard data when user is available
     const loadDashboard = useCallback(async (): Promise<{ license: LicenseData; memberSince: string } | null> => {
         if (!user) return null;
@@ -171,11 +213,18 @@ export default function AccountPage() {
                     : isLifetimeDoc(data) ? 'Lifetime license'
                     : 'Active subscription';
                 const renewal = renewalFor(data);
+                // Cancellable only when a real subscription is running and a
+                // cancellation isn't already scheduled — lifetime has nothing
+                // to cancel, and cancelling twice is a confusing no-op.
+                const cancellable = !isLifetimeDoc(data)
+                    && !!data.paddleSubscriptionId
+                    && !data.cancelAtPeriodEnd;
                 return {
                     license: {
                         status: 'licensed', label: 'Licensed', pillClass: 'licensed',
                         planInfo: planLabel, planColor: 'var(--green)',
                         ...(renewal ?? {}),
+                        ...(cancellable && { cancellable: true }),
                     },
                     memberSince,
                 };
@@ -184,18 +233,24 @@ export default function AccountPage() {
             if (data.trialStartDate) {
                 const trialStart = data.trialStartDate.toDate ? data.trialStartDate.toDate() : new Date(data.trialStartDate);
                 const daysPassed = Math.floor((Date.now() - trialStart.getTime()) / (1000 * 60 * 60 * 24));
-                const daysLeft = Math.max(0, 7 - daysPassed);
+                const daysLeft = Math.max(0, TRIAL_DURATION_DAYS - daysPassed);
 
                 if (daysLeft > 0) {
                     const isWarning = daysLeft <= 2;
+                    // Trial length + the date it runs out. Shown only for
+                    // trials; paid plans use the Renews/Expires row instead.
+                    const trialEnd = new Date(trialStart);
+                    trialEnd.setDate(trialEnd.getDate() + TRIAL_DURATION_DAYS);
+                    const trialEndStr = trialEnd.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
                     return {
                         license: {
                             status: isWarning ? 'trial-warning' : 'trial',
                             label: `${daysLeft} day${daysLeft === 1 ? '' : 's'} left`,
                             pillClass: isWarning ? 'trialWarning' : 'trial',
-                            trialInfo: `${daysLeft} of 7 days remaining`,
+                            trialInfo: `${daysLeft} of ${TRIAL_DURATION_DAYS} days remaining`,
                             trialColor: isWarning ? 'var(--orange)' : 'var(--accent)',
                             planInfo: 'Free trial',
+                            trialLength: `${TRIAL_DURATION_DAYS}-day trial · ends ${trialEndStr}`,
                         },
                         memberSince,
                     };
@@ -349,6 +404,14 @@ export default function AccountPage() {
                             <span className={styles.statusValue}>{license.renewalInfo}</span>
                         </div>
                     )}
+                    {/* Trial length + end date — trials only. Paid plans use the
+                        Renews/Expires row above instead. */}
+                    {license?.trialLength && (
+                        <div className={styles.statusRow}>
+                            <span className={styles.statusLabel}>Length</span>
+                            <span className={styles.statusValue}>{license.trialLength}</span>
+                        </div>
+                    )}
                 </div>
 
                 <div className={styles.statusCard}>
@@ -376,6 +439,23 @@ export default function AccountPage() {
                             any payment. */}
                         {license && readPriceOverride() && (
                             <button onClick={() => openCheckout(readPriceOverride()!, user.email || undefined, user.uid)} className={`${styles.actionBtn} ${styles.actionPrimary}`}>Daily — $0.71/day · internal test</button>
+                        )}
+                        {/* Cancel — only with a live subscription and no cancellation
+                            already scheduled. Two-step: the first click swaps in an
+                            explicit confirm, so a stray click can't end a paid plan. */}
+                        {license?.cancellable && !confirmingCancel && (
+                            <button onClick={() => setConfirmingCancel(true)} className={`${styles.actionBtn} ${styles.actionSecondary}`}>Cancel Subscription</button>
+                        )}
+                        {license?.cancellable && confirmingCancel && (
+                            <>
+                                <div className={styles.planPrompt}>
+                                    Cancel your subscription? You keep access until {license.renewalInfo || 'the end of the period you paid for'}.
+                                </div>
+                                <button onClick={handleCancelSubscription} disabled={cancelling} className={`${styles.actionBtn} ${styles.actionDanger}`}>
+                                    {cancelling ? 'Cancelling…' : 'Yes, cancel it'}
+                                </button>
+                                <button onClick={() => setConfirmingCancel(false)} disabled={cancelling} className={`${styles.actionBtn} ${styles.actionSecondary}`}>Keep my subscription</button>
+                            </>
                         )}
                         {/* Stays a direct download — this visitor has already paid. */}
                         <a href="/BridgePlay.dmg" download className={`${styles.actionBtn} ${license && (license.status === 'expired' || license.status === 'noTrial') ? styles.actionSecondary : styles.actionPrimary}`}>Download BridgePlay</a>
