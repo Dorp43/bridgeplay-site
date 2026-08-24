@@ -113,6 +113,22 @@ async function sendReceiptEmail(to: string, data: PaddleTransactionData): Promis
     }
 }
 
+/// Applies a subscription lapse (canceled/paused) WITHOUT revoking a lifetime
+/// licence. A user who upgraded to lifetime while a subscription was still
+/// running keeps access when that residual subscription later ends — the
+/// lifetime plan was paid for outright and no subscription event may take it.
+async function applySubscriptionLapse(uid: string, status: 'canceled' | 'paused', stampField: string): Promise<void> {
+    const userRef = db.collection('users').doc(uid);
+    const isLifetime = (await userRef.get()).data()?.plan === 'lifetime';
+    const update: Record<string, unknown> = {
+        subscriptionStatus: status,
+        [stampField]: new Date().toISOString(),
+    };
+    if (!isLifetime) update.purchaseStatus = status;
+    await userRef.set(update, { merge: true });
+    console.log(`User ${uid} subscription ${status}${isLifetime ? ' — lifetime licence preserved' : ' (access revoked)'}`);
+}
+
 function readBody(req: IncomingMessage): Promise<string> {
     return new Promise((resolve, reject) => {
         let data = '';
@@ -287,13 +303,7 @@ export default async function handler(req: IncomingMessage, res: ServerResponse)
             const uid = customData?.uid;
 
             if (uid) {
-                await db.collection('users').doc(uid).set({
-                    purchaseStatus: 'canceled',
-                    subscriptionStatus: 'canceled',
-                    canceledAt: new Date().toISOString(),
-                }, { merge: true });
-
-                console.log(`User ${uid} subscription canceled`);
+                await applySubscriptionLapse(uid, 'canceled', 'canceledAt');
             } else {
                 console.log('subscription.canceled without uid in custom_data, skipped');
             }
@@ -305,13 +315,7 @@ export default async function handler(req: IncomingMessage, res: ServerResponse)
 
             if (uid) {
                 // Paddle stops billing while paused — revoke access until resumed
-                await db.collection('users').doc(uid).set({
-                    purchaseStatus: 'paused',
-                    subscriptionStatus: 'paused',
-                    pausedAt: new Date().toISOString(),
-                }, { merge: true });
-
-                console.log(`User ${uid} subscription paused (access revoked while unbilled)`);
+                await applySubscriptionLapse(uid, 'paused', 'pausedAt');
             } else {
                 console.log('subscription.paused without uid in custom_data, skipped');
             }
@@ -427,13 +431,7 @@ export default async function handler(req: IncomingMessage, res: ServerResponse)
                 }
             } else if (status === 'paused') {
                 // Paddle stops billing while paused — revoke access until resumed
-                await db.collection('users').doc(uid).set({
-                    purchaseStatus: 'paused',
-                    subscriptionStatus: 'paused',
-                    pausedAt: new Date().toISOString(),
-                }, { merge: true });
-
-                console.log(`User ${uid} subscription paused (access revoked while unbilled)`);
+                await applySubscriptionLapse(uid, 'paused', 'pausedAt');
             } else if (status === 'past_due') {
                 // Keep access while Paddle retries payment; just record the state
                 await db.collection('users').doc(uid).set({
@@ -442,13 +440,7 @@ export default async function handler(req: IncomingMessage, res: ServerResponse)
 
                 console.log(`User ${uid} subscription past_due (access kept)`);
             } else if (status === 'canceled') {
-                await db.collection('users').doc(uid).set({
-                    purchaseStatus: 'canceled',
-                    subscriptionStatus: 'canceled',
-                    canceledAt: new Date().toISOString(),
-                }, { merge: true });
-
-                console.log(`User ${uid} subscription canceled (via subscription.updated)`);
+                await applySubscriptionLapse(uid, 'canceled', 'canceledAt');
             } else {
                 console.log(`subscription.updated with status '${status}' for user ${uid}, no action taken`);
             }

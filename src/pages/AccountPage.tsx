@@ -41,8 +41,15 @@ function renewalFor(data: Record<string, unknown>): { renewalLabel: string; rene
     const renewalLabel = data.cancelAtPeriodEnd ? 'Expires' : 'Renews';
 
     const fmt = (d: Date) => d.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+    // A date clearly in the past is stale (e.g. cancel + later reactivation
+    // without a new charge yet) — showing it would be a lie either way, so
+    // show nothing. 24h of grace covers a renewal mid-processing.
+    const fresh = (d: Date) => d.getTime() > Date.now() - 24 * 60 * 60 * 1000;
     const cpe = data.currentPeriodEnd as string | undefined;
-    if (cpe) return { renewalLabel, renewalInfo: fmt(new Date(cpe)) };
+    if (cpe) {
+        const end = new Date(cpe);
+        return fresh(end) ? { renewalLabel, renewalInfo: fmt(end) } : null;
+    }
 
     // Fallback: purchaseDate + interval.
     const pd = data.purchaseDate as string | undefined;
@@ -50,7 +57,7 @@ function renewalFor(data: Record<string, unknown>): { renewalLabel: string; rene
         const end = new Date(pd);
         if (plan === 'monthly') end.setMonth(end.getMonth() + 1);
         else end.setFullYear(end.getFullYear() + 1);
-        return { renewalLabel, renewalInfo: fmt(end) };
+        if (fresh(end)) return { renewalLabel, renewalInfo: fmt(end) };
     }
     return null;
 }
