@@ -22,6 +22,11 @@ declare global {
     }
 }
 
+/* Display amount for the unlisted test plan. Must match the Paddle price the
+   ?price= override points at — Paddle shows the authoritative amount in the
+   checkout overlay before any payment. Goes away with the override. */
+const TEST_PLAN_PRICE = '$0.71';
+
 const plans = [
     { key: 'yearly', name: 'Yearly', price: '$39.99', period: '/yr', save: 'Save 52% vs monthly', popular: true, priceId: PRICE_IDS.yearly, cta: 'Subscribe' },
     { key: 'monthly', name: 'Monthly', price: '$6.99', period: '/mo', save: 'Auto-renews monthly', popular: false, priceId: PRICE_IDS.monthly, cta: 'Subscribe' },
@@ -159,10 +164,10 @@ export default function AppCheckout() {
                             onClick={() => buy(override)}
                             disabled={!ready}
                         >
-                            <span className={styles.planName}>Test purchase</span>
-                            <span className={styles.planPrice}>Unlisted<span className={styles.planPeriod}> price</span></span>
-                            <span className={styles.planSave}>Paddle shows the real amount before you pay</span>
-                            <span className={styles.planCta}>{ready ? 'Continue' : 'Loading…'}</span>
+                            <span className={styles.planName}>Daily</span>
+                            <span className={styles.planPrice}>{TEST_PLAN_PRICE}<span className={styles.planPeriod}>/day</span></span>
+                            <span className={styles.planSave}>Internal test — Paddle confirms the amount</span>
+                            <span className={styles.planCta}>{ready ? 'Subscribe' : 'Loading…'}</span>
                         </button>
                     )}
                 </div>
