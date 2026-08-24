@@ -128,32 +128,18 @@ export default function AppCheckout() {
         );
     }
 
-    // An unlisted ?price= override (internal testing) REPLACES the plan cards,
-    // so a card can never charge a price other than the one it displays.
+    // An unlisted ?price= override (internal testing) adds an EXTRA card beside
+    // the real plans — it never replaces them, and the plan cards always charge
+    // the price they display.
     const override = readPriceOverride();
 
     return (
         <main className={styles.page}>
             <div className={styles.card}>
-                <h1>{override ? 'Test purchase' : 'Choose your plan'}</h1>
-                <p className={styles.subtitle}>
-                    {override
-                        ? `Unlisted test price. Signed in as ${appUser.email || 'your account'}.`
-                        : `Every plan unlocks the full app. Signed in as ${appUser.email || 'your account'}.`}
-                </p>
+                <h1>Choose your plan</h1>
+                <p className={styles.subtitle}>Every plan unlocks the full app. Signed in as {appUser.email || 'your account'}.</p>
                 <div className={styles.plans}>
-                    {override ? (
-                        <button
-                            className={`${styles.plan} ${styles.planPopular}`}
-                            onClick={() => buy(override)}
-                            disabled={!ready}
-                        >
-                            <span className={styles.planName}>Test purchase</span>
-                            <span className={styles.planPrice}>Unlisted<span className={styles.planPeriod}> price</span></span>
-                            <span className={styles.planSave}>Paddle shows the real amount before you pay</span>
-                            <span className={styles.planCta}>{ready ? 'Continue' : 'Loading…'}</span>
-                        </button>
-                    ) : plans.map((p) => (
+                    {plans.map((p) => (
                         <button
                             key={p.key}
                             className={`${styles.plan} ${p.popular ? styles.planPopular : ''}`}
@@ -167,6 +153,18 @@ export default function AppCheckout() {
                             <span className={styles.planCta}>{ready ? p.cta : 'Loading…'}</span>
                         </button>
                     ))}
+                    {override && (
+                        <button
+                            className={styles.plan}
+                            onClick={() => buy(override)}
+                            disabled={!ready}
+                        >
+                            <span className={styles.planName}>Test purchase</span>
+                            <span className={styles.planPrice}>Unlisted<span className={styles.planPeriod}> price</span></span>
+                            <span className={styles.planSave}>Paddle shows the real amount before you pay</span>
+                            <span className={styles.planCta}>{ready ? 'Continue' : 'Loading…'}</span>
+                        </button>
+                    )}
                 </div>
                 <p className={styles.footnote}>Secure checkout by Paddle · 7-day money-back guarantee</p>
             </div>

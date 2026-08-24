@@ -354,7 +354,7 @@ export default function AccountPage() {
                 <div className={styles.statusCard}>
                     <h3>Quick Actions</h3>
                     <div className={styles.actionsGrid}>
-                        {license && (license.status === 'expired' || license.status === 'noTrial') && !readPriceOverride() && (
+                        {license && (license.status === 'expired' || license.status === 'noTrial') && (
                             <>
                                 {/* All three plans, not just yearly — same prices
                                     and price ids as the Pricing section. Yearly is
@@ -367,12 +367,13 @@ export default function AccountPage() {
                                 <button onClick={() => openCheckout(PRICE_IDS.lifetime, user.email || undefined, user.uid)} className={`${styles.actionBtn} ${styles.actionSecondary}`}>Lifetime — $59.99 once</button>
                             </>
                         )}
-                        {/* Unlisted-price checkout (internal testing). With a
-                            well-formed ?price= in the URL this REPLACES the plan
-                            buttons for every signed-in state, so a plan-labelled
-                            button can never charge a different price than it shows.
-                            The Paddle overlay displays the real amount before any
-                            payment. No ordinary visitor ever sees this. */}
+                        {/* Unlisted-price checkout (internal testing) — an EXTRA
+                            option beside the real plans, never a replacement. The
+                            plan buttons above always charge the price they show;
+                            only this button uses the override. Appears solely with
+                            a well-formed ?price= in the URL, so no ordinary visitor
+                            ever sees it, and Paddle displays the real amount before
+                            any payment. */}
                         {license && readPriceOverride() && (
                             <button onClick={() => openCheckout(readPriceOverride()!, user.email || undefined, user.uid)} className={`${styles.actionBtn} ${styles.actionPrimary}`}>Test purchase (unlisted price)</button>
                         )}
