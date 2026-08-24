@@ -214,9 +214,13 @@ export default async function handler(req: IncomingMessage, res: ServerResponse)
             // Keep every transaction id: adjustments (refunds/chargebacks) reference
             // the specific disputed transaction, which may be an earlier renewal.
             const update: Record<string, unknown> = {
-                paddleSubscriptionId: subscriptionId,
                 paddleTransactionId: transactionId,
             };
+            // A one-time purchase (lifetime, or an unlisted test price) carries
+            // no subscription_id. Its absence must never null a subscriber's
+            // stored id: the account page and the app read !paddleSubscriptionId
+            // as "lifetime", and refund/chargeback lookup falls back to it.
+            if (subscriptionId) update.paddleSubscriptionId = subscriptionId;
             if (transactionId) {
                 update.paddleTransactionIds = FieldValue.arrayUnion(transactionId);
             }
@@ -235,7 +239,10 @@ export default async function handler(req: IncomingMessage, res: ServerResponse)
                 const priceId = event.data?.items?.[0]?.price?.id;
                 const planKey = priceId ? PLAN_KEYS[priceId] : undefined;
                 if (planKey) update.plan = planKey;
-                update.currentPeriodEnd = event.data?.billing_period?.ends_at || null;
+                // Same guard as the subscription id: a one-time charge has no
+                // billing_period, and must not blank a subscriber's period end.
+                const periodEnd = event.data?.billing_period?.ends_at;
+                if (periodEnd) update.currentPeriodEnd = periodEnd;
             }
 
             await userRef.set(update, { merge: true });
