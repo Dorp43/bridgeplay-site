@@ -412,9 +412,15 @@ export default async function handler(req: IncomingMessage, res: ServerResponse)
                     // changes and must not re-activate a refunded user.
                     console.error(`subscription.updated active for user ${uid} but purchaseStatus is 'refunded' — re-activation withheld, manual review required`);
                 } else {
+                    // A cancellation scheduled for period end arrives as
+                    // status 'active' + scheduled_change; record it so the
+                    // account page can say "Expires <date>" instead of
+                    // promising a renewal that will never happen. Un-cancelling
+                    // clears scheduled_change, so this self-heals.
                     await userRef.set({
                         purchaseStatus: 'active',
                         subscriptionStatus: 'active',
+                        cancelAtPeriodEnd: event.data?.scheduled_change?.action === 'cancel',
                     }, { merge: true });
 
                     console.log(`User ${uid} subscription active (reactivated if previously canceled)`);

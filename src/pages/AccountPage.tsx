@@ -21,17 +21,28 @@ interface LicenseData {
     renewalInfo?: string;    // "August 23, 2027" / "Never expires"
 }
 
+/// True when the doc describes a lifetime licence. An explicit monthly/yearly
+/// plan always wins — a doc can lack paddleSubscriptionId for other reasons
+/// (legacy/manual docs), and that absence alone must not relabel a subscriber.
+function isLifetimeDoc(data: Record<string, unknown>): boolean {
+    const plan = data.plan as string | undefined;
+    if (plan === 'monthly' || plan === 'yearly') return false;
+    return plan === 'lifetime' || !data.paddleSubscriptionId;
+}
+
 /// Resolve when an active plan renews/expires from the user doc. Prefers the
 /// exact period end the webhook stored (currentPeriodEnd); falls back to
 /// purchaseDate + the plan interval for accounts that predate that field.
+/// Lifetime returns null — the Plan row already says "Lifetime license".
+/// A cancellation scheduled for period end shows "Expires", not "Renews".
 function renewalFor(data: Record<string, unknown>): { renewalLabel: string; renewalInfo: string } | null {
+    if (isLifetimeDoc(data)) return null;
     const plan = data.plan as string | undefined;
-    const isLifetime = plan === 'lifetime' || !data.paddleSubscriptionId;
-    if (isLifetime) return { renewalLabel: 'Plan', renewalInfo: 'Lifetime — never expires' };
+    const renewalLabel = data.cancelAtPeriodEnd ? 'Expires' : 'Renews';
 
     const fmt = (d: Date) => d.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
     const cpe = data.currentPeriodEnd as string | undefined;
-    if (cpe) return { renewalLabel: 'Renews', renewalInfo: fmt(new Date(cpe)) };
+    if (cpe) return { renewalLabel, renewalInfo: fmt(new Date(cpe)) };
 
     // Fallback: purchaseDate + interval.
     const pd = data.purchaseDate as string | undefined;
@@ -39,7 +50,7 @@ function renewalFor(data: Record<string, unknown>): { renewalLabel: string; rene
         const end = new Date(pd);
         if (plan === 'monthly') end.setMonth(end.getMonth() + 1);
         else end.setFullYear(end.getFullYear() + 1);
-        return { renewalLabel: 'Renews', renewalInfo: fmt(end) };
+        return { renewalLabel, renewalInfo: fmt(end) };
     }
     return null;
 }
@@ -148,10 +159,9 @@ export default function AccountPage() {
             }
 
             if (data.purchaseStatus === 'active') {
-                const planLabel = data.plan === 'lifetime' || !data.paddleSubscriptionId
-                    ? 'Lifetime license'
-                    : data.plan === 'monthly' ? 'Monthly plan'
+                const planLabel = data.plan === 'monthly' ? 'Monthly plan'
                     : data.plan === 'yearly' ? 'Yearly plan'
+                    : isLifetimeDoc(data) ? 'Lifetime license'
                     : 'Active subscription';
                 const renewal = renewalFor(data);
                 return {
