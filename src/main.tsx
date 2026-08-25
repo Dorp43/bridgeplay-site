@@ -73,9 +73,13 @@ function BootGate() {
     }, [ready, gone]);
     if (gone) return null;
     return (
-        <div className={`boot-gate${ready ? ' boot-gate-done' : ''}`} role="status" aria-label="Loading BridgePlay">
-            <img src="/favicon-192.png" alt="" width="64" height="64" />
-            <span>BridgePlay</span>
+        <div className={`boot-gate${ready ? ' boot-gate-done' : ''}`} role="status" aria-label="Loading">
+            <div className="boot-orb">
+                <span className="boot-ripple" />
+                <span className="boot-ripple boot-ripple2" />
+                <span className="boot-ring" />
+                <img src="/favicon-192.png" alt="" width="64" height="64" />
+            </div>
         </div>
     );
 }

@@ -19,10 +19,6 @@ export default function Hero() {
                 ))}
             </div>
             <div className={styles.container}>
-                <div className={styles.badge}>
-                    <span className={styles.dot} />
-                    Now available for macOS
-                </div>
                 <h1>
                     Windows Games.<br />
                     <span className={styles.gradient}>Your Mac.</span>
