@@ -80,6 +80,9 @@ export default function Hero() {
                 </div>
 
                 <div className={styles.appPreview} data-parallax="preview">
+                    {/* Retro stage lights rising from the screenshot, washing
+                        over the stats row above. Pure CSS, behind the text. */}
+                    <span className={styles.beams} aria-hidden="true" />
                     <div className={styles.stage}>
                         <img className={styles.ambient} src={shot1x} alt="" aria-hidden="true" />
                         <div className={styles.frame}>

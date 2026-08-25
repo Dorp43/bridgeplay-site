@@ -112,7 +112,36 @@
     <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400..700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div id="root"></div>
+    <!-- Boot splash: lives INSIDE #root, so React's first render replaces it
+         atomically - no cleanup code, no flash of empty page while the JS
+         bundle loads. Styles are inline because global.css hasn't loaded yet
+         at this point; they die with the splash. -->
+    <div id="root">
+        <div class="boot-splash" role="status" aria-label="Loading BridgePlay">
+            <style>
+                .boot-splash {
+                    position: fixed; inset: 0; z-index: 9999;
+                    display: flex; flex-direction: column; align-items: center; justify-content: center;
+                    gap: 18px; background: #06060b;
+                }
+                .boot-splash img {
+                    width: 64px; height: 64px; border-radius: 14px;
+                    animation: boot-breathe 1.5s ease-in-out infinite;
+                }
+                .boot-splash span {
+                    font: 700 15px/1 system-ui, -apple-system, sans-serif;
+                    letter-spacing: -0.3px; color: #a0a0b8;
+                }
+                @keyframes boot-breathe {
+                    0%, 100% { transform: scale(1); filter: drop-shadow(0 0 18px rgba(74, 158, 255, 0.35)); }
+                    50% { transform: scale(0.94); filter: drop-shadow(0 0 6px rgba(74, 158, 255, 0.15)); }
+                }
+                @media (prefers-reduced-motion: reduce) { .boot-splash img { animation: none; } }
+            </style>
+            <img src="/favicon-192.png" alt="">
+            <span>BridgePlay</span>
+        </div>
+    </div>
     <script src="https://cdn.paddle.com/paddle/v2/paddle.js"></script>
     <script type="module" src="/src/main.tsx"></script>
 </body>

@@ -22,8 +22,15 @@ const NotFound = lazy(() => import('./pages/NotFound'));
 /* Placeholder for a page whose chunk is still in flight. Styled in global.css
    to stay invisible for its first 300ms, so a fast fetch shows nothing at all
    instead of flashing a spinner. */
+/* Branded loader for the window while a lazy page chunk downloads — the same
+   breathing logo as the boot splash, so every load state looks like ONE
+   system. Tall enough that the footer doesn't jump to mid-screen. */
 function RouteFallback() {
-    return <div className="route-fallback" />;
+    return (
+        <div className="route-fallback" role="status" aria-label="Loading">
+            <img src="/favicon-192.png" alt="" width="56" height="56" />
+        </div>
+    );
 }
 
 /* Synchronous title for the window between a navigation committing and its lazy

@@ -252,19 +252,22 @@ img { display: block; max-width: 100%; -webkit-user-drag: none; }
 .route-fallback {
     position: relative;
     min-height: 60vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     opacity: 0;
     animation: fadeInUp 0.25s var(--ease-out-quart) 0.3s both; /* keyframe lives in animations.css */
 }
-.route-fallback::after {
-    content: '';
-    position: absolute;
-    left: 50%;
-    top: 40%;
-    width: 28px;
-    height: 28px;
-    margin-left: -14px;
-    border-radius: 50%;
-    border: 2px solid var(--border-light);
-    border-top-color: var(--accent);
-    animation: spin 0.8s linear infinite; /* keyframe lives in animations.css */
+/* The same breathing logo as the boot splash in index.html — every loading
+   state on the site is the one mark, not a zoo of spinners. */
+.route-fallback img {
+    border-radius: 13px;
+    animation: bootBreathe 1.5s ease-in-out infinite;
+}
+@keyframes bootBreathe {
+    0%, 100% { transform: scale(1); filter: drop-shadow(0 0 18px rgba(74, 158, 255, 0.35)); }
+    50% { transform: scale(0.94); filter: drop-shadow(0 0 6px rgba(74, 158, 255, 0.15)); }
+}
+@media (prefers-reduced-motion: reduce) {
+    .route-fallback img { animation: none; }
 }

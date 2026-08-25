@@ -28,6 +28,8 @@ interface LicenseData {
     /// Set only when there is a subscription the user can actually cancel.
     /// Absent for lifetime, trials, and already-scheduled cancellations.
     cancellable?: boolean;
+    /// Licensed via the one-time lifetime purchase — nothing left to buy.
+    isLifetime?: boolean;
 }
 
 /// True when the doc describes a lifetime licence. An explicit monthly/yearly
@@ -249,6 +251,7 @@ export default function AccountPage() {
                         planInfo: planLabel, planColor: 'var(--green)',
                         ...(renewal ?? {}),
                         ...(cancellable && { cancellable: true }),
+                        ...(isLifetimeDoc(data) && { isLifetime: true }),
                     },
                     memberSince,
                 };
@@ -308,12 +311,37 @@ export default function AccountPage() {
        below is this route's whole page, so each one carries it — the skip link
        is the first focusable node on /account too, and without a
        <main id="main-content"> here it was a dead control. */
-    if (loading) {
-        return (
-            <main id="main-content" tabIndex={-1} className={styles.page}>
-                <div className={styles.loading}><div className={styles.spinner} />Loading...</div>
-            </main>
-        );
+    /* Skeleton of the signed-in dashboard while auth resolves, and again while
+       the licence doc loads for a known user — the page keeps its silhouette
+       the whole time instead of popping spinner → content. */
+    const dashboardSkeleton = (
+        <main id="main-content" tabIndex={-1} className={`${styles.page} ${styles.pageWide}`} aria-busy="true">
+            <div className={styles.skelHeader}>
+                <div>
+                    <div className={styles.skel} style={{ width: 64, height: 10, marginBottom: 10 }} />
+                    <div className={styles.skel} style={{ width: 220, height: 18 }} />
+                </div>
+                <div style={{ display: 'flex', gap: 10 }}>
+                    <div className={styles.skel} style={{ width: 96, height: 28, borderRadius: 100 }} />
+                    <div className={styles.skel} style={{ width: 74, height: 28 }} />
+                </div>
+            </div>
+            {[2, 3].map((rows) => (
+                <div key={rows} className={styles.statusCard}>
+                    <div className={styles.skel} style={{ width: 80, height: 9, marginBottom: 14 }} />
+                    {Array.from({ length: rows }, (_, i) => (
+                        <div key={i} className={styles.skelCardRow}>
+                            <div className={styles.skel} style={{ width: 60, height: 12 }} />
+                            <div className={styles.skel} style={{ width: 150, height: 12 }} />
+                        </div>
+                    ))}
+                </div>
+            ))}
+        </main>
+    );
+
+    if (loading || (user && !license && !isForgot)) {
+        return dashboardSkeleton;
     }
 
     if (!user && isForgot) {
@@ -456,13 +484,12 @@ export default function AccountPage() {
                 <div className={styles.statusCard}>
                     <h3>Quick Actions</h3>
                     <div className={styles.actionsGrid}>
-                        {license && (license.status === 'expired' || license.status === 'noTrial') && (
+                        {/* Anyone WITHOUT an active licence — trial, expired,
+                            pending, no-trial — can buy from here, not only the
+                            locked-out. Same prices and price ids as the Pricing
+                            section; each opens Paddle with the signed-in uid. */}
+                        {license && license.status !== 'licensed' && (
                             <>
-                                {/* All three plans, not just yearly — same prices
-                                    and price ids as the Pricing section. Yearly is
-                                    the primary (most popular); monthly + lifetime
-                                    are secondary. Each opens its own Paddle
-                                    checkout with the signed-in uid. */}
                                 <div className={styles.planPrompt}>Choose a plan</div>
                                 <button onClick={() => openCheckout(PRICE_IDS.yearly, user.email || undefined, user.uid)} className={`${styles.actionBtn} ${styles.actionPrimary}`}>Yearly — $39.99/yr · Save 52%</button>
                                 <button onClick={() => openCheckout(PRICE_IDS.monthly, user.email || undefined, user.uid)} className={`${styles.actionBtn} ${styles.actionSecondary}`}>Monthly — $6.99/mo</button>
@@ -478,6 +505,19 @@ export default function AccountPage() {
                             any payment. */}
                         {license && readPriceOverride() && (
                             <button onClick={() => openCheckout(readPriceOverride()!, user.email || undefined, user.uid)} className={`${styles.actionBtn} ${styles.actionPrimary}`}>Daily — $0.71/day · internal test</button>
+                        )}
+                        {/* Subscribers can move up to the one-time purchase. This is
+                            a genuine upgrade path with no server work: lifetime is a
+                            separate one-time charge, the webhook flips the plan, and
+                            cancelling the old subscription afterwards keeps lifetime
+                            access (the lapse handler protects it). NOT shown for
+                            lifetime holders — nothing left to buy. */}
+                        {license?.status === 'licensed' && !license.isLifetime && (
+                            <>
+                                <div className={styles.planPrompt}>Change plan</div>
+                                <button onClick={() => openCheckout(PRICE_IDS.lifetime, user.email || undefined, user.uid)} className={`${styles.actionBtn} ${styles.actionSecondary}`}>Upgrade to Lifetime — $59.99 once</button>
+                                <p className={styles.planHint}>One payment, no more renewals. After upgrading, cancel your subscription below — your lifetime access stays.</p>
+                            </>
                         )}
                         {/* Cancel — only with a live subscription and no cancellation
                             already scheduled. Two-step: the first click swaps in an
