@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
-import { PRICE_IDS, initPaddle, readPriceOverride } from '../lib/paddle';
+import { initPaddle, readPriceOverride } from '../lib/paddle';
+import { APP_PLAN_ORDER, PLANS } from '../lib/plans';
+import { useI18n } from '../i18n/useI18n';
 import styles from './AppCheckout.module.css';
 
 /* Checkout surface for the Mac app's in-app WKWebView. It is NOT the website
@@ -27,12 +29,6 @@ declare global {
    checkout overlay before any payment. Goes away with the override. */
 const TEST_PLAN_PRICE = '$0.71';
 
-const plans = [
-    { key: 'yearly', name: 'Yearly', price: '$39.99', period: '/yr', save: 'Save 52% vs monthly', popular: true, priceId: PRICE_IDS.yearly, cta: 'Subscribe' },
-    { key: 'monthly', name: 'Monthly', price: '$6.99', period: '/mo', save: 'Auto-renews monthly', popular: false, priceId: PRICE_IDS.monthly, cta: 'Subscribe' },
-    { key: 'lifetime', name: 'Lifetime', price: '$59.99', period: '', save: 'Pay once — no renewals', popular: false, priceId: PRICE_IDS.lifetime, cta: 'Buy' },
-];
-
 function notifyNativeSuccess() {
     try {
         window.webkit?.messageHandlers?.bridgePlay?.postMessage({ event: 'purchaseComplete' });
@@ -46,10 +42,15 @@ export default function AppCheckout() {
     const [appUser, setAppUser] = useState<AppUser | null>(window.bridgePlayUser ?? null);
     const [ready, setReady] = useState(false);
     const [done, setDone] = useState(alreadyDone);
+    const { t } = useI18n();
+
+    /* Its own effect, keyed on the dictionary: the init effect below must run
+       once and only once, so the title cannot share its empty dep array. */
+    useEffect(() => {
+        document.title = t.appCheckout.documentTitle;
+    }, [t]);
 
     useEffect(() => {
-        document.title = 'Upgrade BridgePlay';
-
         // If we landed on the Paddle successUrl, the purchase is complete even
         // if the JS event callback never fired — tell the app and stop here.
         if (alreadyDone) {
@@ -95,6 +96,7 @@ export default function AppCheckout() {
             clearInterval(userPoll);
             delete window.__bridgeplaySetUser;
         };
+        // eslint-disable-next-line react-hooks/exhaustive-deps -- one-shot Paddle + identity bootstrap; alreadyDone is fixed for the life of the page
     }, []);
 
     const buy = (priceId: string) => {
@@ -115,8 +117,8 @@ export default function AppCheckout() {
             <main className={styles.page}>
                 <div className={styles.card}>
                     <div className={styles.successIcon}>✓</div>
-                    <h1>Purchase complete</h1>
-                    <p className={styles.subtitle}>Your BridgePlay license is active. You can close this window and start playing.</p>
+                    <h1>{t.appCheckout.doneTitle}</h1>
+                    <p className={styles.subtitle}>{t.appCheckout.doneBody}</p>
                 </div>
             </main>
         );
@@ -127,7 +129,7 @@ export default function AppCheckout() {
             <main className={styles.page}>
                 <div className={styles.card}>
                     <div className={styles.spinner} />
-                    <p className={styles.subtitle}>Preparing your checkout…</p>
+                    <p className={styles.subtitle}>{t.appCheckout.preparing}</p>
                 </div>
             </main>
         );
@@ -141,37 +143,41 @@ export default function AppCheckout() {
     return (
         <main className={styles.page}>
             <div className={styles.card}>
-                <h1>Choose your plan</h1>
-                <p className={styles.subtitle}>Every plan unlocks the full app. Signed in as {appUser.email || 'your account'}.</p>
+                <h1>{t.appCheckout.title}</h1>
+                <p className={styles.subtitle}>{t.appCheckout.subtitle(appUser.email || t.appCheckout.yourAccount)}</p>
                 <div className={styles.plans}>
-                    {plans.map((p) => (
-                        <button
-                            key={p.key}
-                            className={`${styles.plan} ${p.popular ? styles.planPopular : ''}`}
-                            onClick={() => buy(p.priceId)}
-                            disabled={!ready}
-                        >
-                            {p.popular && <span className={styles.badge}>Most Popular</span>}
-                            <span className={styles.planName}>{p.name}</span>
-                            <span className={styles.planPrice}>{p.price}<span className={styles.planPeriod}>{p.period}</span></span>
-                            <span className={styles.planSave}>{p.save}</span>
-                            <span className={styles.planCta}>{ready ? p.cta : 'Loading…'}</span>
-                        </button>
-                    ))}
+                    {APP_PLAN_ORDER.map((key) => {
+                        const p = PLANS[key];
+                        const copy = t.plans[key];
+                        return (
+                            <button
+                                key={key}
+                                className={`${styles.plan} ${p.popular ? styles.planPopular : ''}`}
+                                onClick={() => buy(p.priceId)}
+                                disabled={!ready}
+                            >
+                                {p.popular && <span className={styles.badge}>{t.pricing.mostPopular}</span>}
+                                <span className={styles.planName}>{copy.name}</span>
+                                <span className={styles.planPrice}>{p.price}<span className={styles.planPeriod}>{p.period}</span></span>
+                                <span className={styles.planSave}>{copy.save}</span>
+                                <span className={styles.planCta}>{ready ? copy.cta : t.appCheckout.loading}</span>
+                            </button>
+                        );
+                    })}
                     {override && (
                         <button
                             className={styles.plan}
                             onClick={() => buy(override)}
                             disabled={!ready}
                         >
-                            <span className={styles.planName}>Daily</span>
+                            <span className={styles.planName}>{t.appCheckout.testPlanName}</span>
                             <span className={styles.planPrice}>{TEST_PLAN_PRICE}<span className={styles.planPeriod}>/day</span></span>
-                            <span className={styles.planSave}>Internal test — Paddle confirms the amount</span>
-                            <span className={styles.planCta}>{ready ? 'Subscribe' : 'Loading…'}</span>
+                            <span className={styles.planSave}>{t.appCheckout.testPlanNote}</span>
+                            <span className={styles.planCta}>{ready ? t.plans.monthly.cta : t.appCheckout.loading}</span>
                         </button>
                     )}
                 </div>
-                <p className={styles.footnote}>Secure checkout by Paddle · 7-day money-back guarantee</p>
+                <p className={styles.footnote}>{t.appCheckout.footnote}</p>
             </div>
         </main>
     );

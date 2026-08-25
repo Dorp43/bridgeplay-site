@@ -67,6 +67,27 @@
 /* 4px, matching the FAQ question nudge and the two arrow nudges — this was the
    only 2px hover travel on the site. */
 .col a:hover { color: var(--text-primary); transform: translateX(4px); }
+/* Trademark + non-affiliation notice. Deliberately the quietest type on the
+   page — it has to be present and legible, not read. It takes over the
+   hairline that used to sit on .bottom, so the rule still lands directly under
+   the link columns. */
+.disclaimer {
+    max-width: 82ch;
+    padding-top: 32px;
+    background: var(--hairline) top / 100% 1px no-repeat;
+    font-size: var(--text-label);
+    line-height: 1.75;
+    color: var(--text-muted);
+    opacity: 0.75;
+}
+.disclaimer a {
+    color: inherit;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    text-decoration-color: rgba(130, 130, 154, 0.45);
+    transition: color 0.25s var(--ease-out-quart);
+}
+.disclaimer a:hover { color: var(--text-primary); }
 .bottom {
     display: flex;
     justify-content: space-between;
@@ -76,8 +97,7 @@
        each wrapped inside itself. */
     flex-wrap: wrap;
     gap: 8px 24px;
-    padding-top: 32px;
-    background: var(--hairline) top / 100% 1px no-repeat;
+    padding-top: 20px;
     font-size: var(--text-label);
     color: var(--text-muted);
 }

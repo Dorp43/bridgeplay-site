@@ -1,0 +1,131 @@
+/* Machined Glass, quiet register: the selector sits between the nav links and
+   the account chip, so it borrows the chip's pill treatment rather than the
+   links' underline — it is a control with a state, not a destination. */
+.root {
+    position: relative;
+    display: inline-flex;
+}
+
+.trigger {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 10px 6px 9px;
+    border-radius: 100px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    color: var(--text-secondary);
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    cursor: pointer;
+    transition: background 0.2s, border-color 0.2s, color 0.2s, transform 0.08s;
+}
+.trigger:hover {
+    background: rgba(255, 255, 255, 0.07);
+    border-color: rgba(255, 255, 255, 0.12);
+    color: var(--text-primary);
+}
+.trigger:active { transform: scale(0.97); }
+.trigger[aria-expanded='true'] {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(74, 158, 255, 0.35);
+    color: var(--text-primary);
+}
+
+.globe {
+    flex-shrink: 0;
+    opacity: 0.75;
+}
+.trigger:hover .globe { opacity: 1; }
+.code { font-variant-numeric: tabular-nums; }
+.chevron {
+    flex-shrink: 0;
+    opacity: 0.6;
+    transition: transform 0.22s var(--ease-out-expo), opacity 0.2s;
+}
+.chevronOpen { transform: rotate(180deg); opacity: 1; }
+
+.panel {
+    position: absolute;
+    top: calc(100% + 10px);
+    right: 0;
+    z-index: 200;
+    min-width: 190px;
+    padding: 6px;
+    margin: 0;
+    list-style: none;
+    border-radius: 14px;
+    background: rgba(12, 12, 20, 0.94);
+    backdrop-filter: blur(24px) saturate(180%);
+    -webkit-backdrop-filter: blur(24px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 18px 48px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    animation: langPanelIn 0.18s var(--ease-out-expo) both;
+}
+@keyframes langPanelIn {
+    from { opacity: 0; transform: translateY(-6px) scale(0.97); }
+    to   { opacity: 1; transform: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+    .panel { animation: none; }
+    .chevron { transition: none; }
+}
+
+.option {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 10px;
+    border-radius: 9px;
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+    cursor: pointer;
+    /* Focus is moved onto the option itself as you arrow through, so the ring
+       would otherwise draw on every keystroke; the row highlight is the
+       affordance and it reads in both input modes. */
+    outline: none;
+    transition: background 0.15s, color 0.15s;
+}
+.option:hover,
+.option:focus-visible,
+.option:focus {
+    background: rgba(255, 255, 255, 0.07);
+    color: var(--text-primary);
+}
+.optionSelected { color: var(--text-primary); }
+
+.optionCode {
+    flex-shrink: 0;
+    width: 26px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    color: var(--text-muted);
+}
+.optionSelected .optionCode { color: var(--accent); }
+.optionName { flex: 1; }
+.check {
+    flex-shrink: 0;
+    color: var(--accent);
+}
+
+/* In the mobile drawer the trigger is a full-width row like the links around
+   it, and the panel drops in flow rather than floating over a scrim. */
+.drawer { display: block; width: 100%; }
+.drawer .trigger {
+    width: 100%;
+    justify-content: flex-start;
+    border-radius: 12px;
+    padding: 11px 14px;
+    font-size: 0.95rem;
+}
+.drawer .chevron { margin-left: auto; }
+.drawer .panel {
+    position: static;
+    width: 100%;
+    min-width: 0;
+    margin-top: 8px;
+    box-shadow: none;
+    background: rgba(255, 255, 255, 0.03);
+}

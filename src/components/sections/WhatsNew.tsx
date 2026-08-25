@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import SectionHeader from '../ui/SectionHeader';
 import { useScrollReveal } from '../../hooks/useScrollReveal';
+import { useI18n } from '../../i18n/useI18n';
 import styles from './WhatsNew.module.css';
 
 interface ChangelogEntry {
@@ -14,12 +15,15 @@ const MAX_RELEASES = 3;
 const MAX_FEATURED_NOTES = 4;
 const MAX_CONDENSED_NOTES = 2;
 
-function formatDate(date: string, month: 'long' | 'short') {
-    return new Date(date + 'T00:00:00').toLocaleDateString('en-US', { month, day: 'numeric', year: 'numeric' });
+/* Formatted in the active locale, not always en-US — a German visitor reading
+   a German page should not get "August 21, 2026". */
+function formatDate(date: string, month: 'long' | 'short', bcp47: string) {
+    return new Date(date + 'T00:00:00').toLocaleDateString(bcp47, { month, day: 'numeric', year: 'numeric' });
 }
 
 export default function WhatsNew() {
     const ref = useScrollReveal<HTMLElement>();
+    const { t, bcp47 } = useI18n();
     const [entries, setEntries] = useState<ChangelogEntry[]>([]);
 
     useEffect(() => {
@@ -46,7 +50,7 @@ export default function WhatsNew() {
             <div className={styles.container}>
                 {/* "ships fast and documents everything" was a claim about us;
                     this says what the reader is actually looking at. */}
-                <SectionHeader label="What's New" title="Better With Every Release" description="Every release gets written up. These are the most recent ones, straight from the changelog." />
+                <SectionHeader label={t.whatsNew.label} title={t.whatsNew.title} description={t.whatsNew.description} />
                 {/* Static wrapper owns the reveal class: the releases arrive from a
                     runtime fetch AFTER useScrollReveal has wired the observer, so a
                     global `reveal` class on the fetched children would never be seen.
@@ -59,15 +63,15 @@ export default function WhatsNew() {
                             <span className={`${styles.dot} ${styles.dotLatest}`} />
                             <div className={styles.releaseHeader}>
                                 <h3 className={`${styles.pill} ${styles.pillLatest}`}>v{latest.version}</h3>
-                                <span className={styles.latestBadge}>Latest</span>
-                                <span className={styles.date}>{formatDate(latest.date, 'long')}</span>
+                                <span className={styles.latestBadge}>{t.common.latest}</span>
+                                <span className={styles.date}>{formatDate(latest.date, 'long', bcp47)}</span>
                             </div>
                             <ul className={styles.notes}>
                                 {latest.notes.slice(0, MAX_FEATURED_NOTES).map((note, i) => (
                                     <li key={i}>{note}</li>
                                 ))}
                             </ul>
-                            {latestHidden > 0 && <Link to="/changelog" className={styles.more}>+{latestHidden} more</Link>}
+                            {latestHidden > 0 && <Link to="/changelog" className={styles.more}>{t.whatsNew.more(latestHidden)}</Link>}
                         </article>
                     )}
                     {previous.map((entry, i) => {
@@ -77,21 +81,21 @@ export default function WhatsNew() {
                                 <span className={styles.dot} />
                                 <div className={styles.releaseHeader}>
                                     <h3 className={styles.pill}>v{entry.version}</h3>
-                                    <span className={styles.date}>{formatDate(entry.date, 'short')}</span>
+                                    <span className={styles.date}>{formatDate(entry.date, 'short', bcp47)}</span>
                                 </div>
                                 <ul className={`${styles.notes} ${styles.notesCondensed}`}>
                                     {entry.notes.slice(0, MAX_CONDENSED_NOTES).map((note, j) => (
                                         <li key={j}>{note}</li>
                                     ))}
                                 </ul>
-                                {hidden > 0 && <Link to="/changelog" className={styles.more}>+{hidden} more</Link>}
+                                {hidden > 0 && <Link to="/changelog" className={styles.more}>{t.whatsNew.more(hidden)}</Link>}
                             </article>
                         );
                     })}
                 </div>
                 <div className={`${styles.linkRow} reveal`}>
                     <Link to="/changelog" className={styles.allLink}>
-                        View full changelog <span className={styles.arrow}>&rarr;</span>
+                        {t.whatsNew.viewAll} <span className={styles.arrow}>&rarr;</span>
                     </Link>
                 </div>
             </div>

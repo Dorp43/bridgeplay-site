@@ -7,6 +7,8 @@ import { useAuth } from '../context/useAuth';
 import { useToast } from '../context/useToast';
 import { openCheckout, readPriceOverride } from '../lib/paddle';
 import { useDocumentMeta } from '../hooks/useDocumentMeta';
+import { useI18n } from '../i18n/useI18n';
+import type { Dictionary } from '../i18n/types';
 import styles from './AccountPage.module.css';
 
 /// The trial length, in days. Must match LicenseService.trialDurationDays in
@@ -46,12 +48,12 @@ function isLifetimeDoc(data: Record<string, unknown>): boolean {
 /// purchaseDate + the plan interval for accounts that predate that field.
 /// Lifetime returns null — the Plan row already says "Lifetime license".
 /// A cancellation scheduled for period end shows "Expires", not "Renews".
-function renewalFor(data: Record<string, unknown>): { renewalLabel: string; renewalInfo: string } | null {
+function renewalFor(data: Record<string, unknown>, t: Dictionary, bcp47: string): { renewalLabel: string; renewalInfo: string } | null {
     if (isLifetimeDoc(data)) return null;
     const plan = data.plan as string | undefined;
-    const renewalLabel = data.cancelAtPeriodEnd ? 'Expires' : 'Renews';
+    const renewalLabel = data.cancelAtPeriodEnd ? t.account.rowExpires : t.account.rowRenews;
 
-    const fmt = (d: Date) => d.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+    const fmt = (d: Date) => d.toLocaleDateString(bcp47, { year: 'numeric', month: 'long', day: 'numeric' });
     // A date clearly in the past is stale (e.g. cancel + later reactivation
     // without a new charge yet) — showing it would be a lie either way, so
     // show nothing. 24h of grace covers a renewal mid-processing.
@@ -86,10 +88,11 @@ export default function AccountPage() {
     const [memberSince, setMemberSince] = useState('');
     const [confirmingCancel, setConfirmingCancel] = useState(false);
     const [cancelling, setCancelling] = useState(false);
+    const { t, bcp47 } = useI18n();
 
     useDocumentMeta({
-        title: 'Account — BridgePlay',
-        description: 'Sign in to your BridgePlay account to check your license status and manage your plan.',
+        title: t.meta.account.title,
+        description: t.meta.account.description,
         canonicalPath: '/account',
     });
 
@@ -105,14 +108,14 @@ export default function AccountPage() {
         try {
             if (isSignUp) {
                 await createUserWithEmailAndPassword(auth, email, password);
-                showToast('Account created! Welcome to BridgePlay.', 'success');
+                showToast(t.account.toastAccountCreated, 'success');
             } else {
                 await signInWithEmailAndPassword(auth, email, password);
-                showToast('Signed in successfully!', 'success');
+                showToast(t.account.toastSignedIn, 'success');
             }
         } catch (err: unknown) {
             const code = (err as { code?: string }).code || '';
-            setError(friendlyAuthError(code));
+            setError(friendlyAuthError(code, t));
             setSubmitting(false);
         }
     };
@@ -126,11 +129,11 @@ export default function AccountPage() {
         setSubmitting(true);
         try {
             await signInWithPopup(auth, new GoogleAuthProvider());
-            showToast('Signed in with Google!', 'success');
+            showToast(t.account.toastSignedInGoogle, 'success');
         } catch (err: unknown) {
             const code = (err as { code?: string }).code || '';
             if (code !== 'auth/popup-closed-by-user' && code !== 'auth/cancelled-popup-request') {
-                setError(friendlyAuthError(code));
+                setError(friendlyAuthError(code, t));
             }
             setSubmitting(false);
         }
@@ -169,14 +172,14 @@ export default function AccountPage() {
             setResetSent(true);
         } catch (err: unknown) {
             const code = (err as { code?: string }).code || '';
-            setError(friendlyAuthError(code));
+            setError(friendlyAuthError(code, t));
         }
         setSubmitting(false);
     };
 
     const handleSignOut = async () => {
         await signOut(auth);
-        showToast('Signed out.', 'success');
+        showToast(t.account.toastSignedOut, 'success');
         setLicense(null);
         setMemberSince('');
     };
@@ -196,17 +199,17 @@ export default function AccountPage() {
                 body: '{}',
             });
             if (resp.ok) {
-                showToast('Subscription cancelled. Access continues until the end of the period you paid for.', 'success');
+                showToast(t.account.toastCancelled, 'success');
                 const refreshed = await loadDashboard();
                 if (refreshed) setLicense(refreshed.license);
             } else if (resp.status === 501) {
-                showToast('Cancellation is not available right now. Email support and we will cancel it for you.', 'error');
+                showToast(t.account.toastCancelUnavailable, 'error');
             } else {
                 const body = await resp.json().catch(() => ({}));
-                showToast(body.error || 'Could not cancel the subscription. Please try again.', 'error');
+                showToast(body.error || t.account.toastCancelFailed, 'error');
             }
         } catch {
-            showToast('Could not reach the server. Check your connection and try again.', 'error');
+            showToast(t.account.toastNetwork, 'error');
         }
         setCancelling(false);
         setConfirmingCancel(false);
@@ -223,22 +226,22 @@ export default function AccountPage() {
                 // (one trial per device), which this page cannot know. Say "no
                 // plan" plainly and frame the trial as conditional, never as a
                 // promise.
-                return { license: { status: 'pending', label: 'New Account', pillClass: 'trial', planInfo: 'No active plan', trialInfo: 'Not started — sign in from the app to activate it. New Macs get 7 days free.', trialColor: 'var(--text-muted)' }, memberSince: '' };
+                return { license: { status: 'pending', label: t.account.statusNewAccount, pillClass: 'trial', planInfo: t.account.planNone, trialInfo: t.account.trialNotStartedNew, trialColor: 'var(--text-muted)' }, memberSince: '' };
             }
             const data = snap.data();
 
             let memberSince = '';
             if (data.createdAt) {
                 const date = data.createdAt.toDate ? data.createdAt.toDate() : new Date(data.createdAt);
-                memberSince = 'Member since ' + date.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+                memberSince = t.account.memberSince(date.toLocaleDateString(bcp47, { month: 'long', year: 'numeric' }));
             }
 
             if (data.purchaseStatus === 'active') {
-                const planLabel = data.plan === 'monthly' ? 'Monthly plan'
-                    : data.plan === 'yearly' ? 'Yearly plan'
-                    : isLifetimeDoc(data) ? 'Lifetime license'
-                    : 'Active subscription';
-                const renewal = renewalFor(data);
+                const planLabel = data.plan === 'monthly' ? t.account.planMonthly
+                    : data.plan === 'yearly' ? t.account.planYearly
+                    : isLifetimeDoc(data) ? t.account.planLifetime
+                    : t.account.planActive;
+                const renewal = renewalFor(data, t, bcp47);
                 // Cancellable only when a real subscription is running and a
                 // cancellation isn't already scheduled — lifetime has nothing
                 // to cancel, and cancelling twice is a confusing no-op.
@@ -247,7 +250,7 @@ export default function AccountPage() {
                     && !data.cancelAtPeriodEnd;
                 return {
                     license: {
-                        status: 'licensed', label: 'Licensed', pillClass: 'licensed',
+                        status: 'licensed', label: t.account.statusLicensed, pillClass: 'licensed',
                         planInfo: planLabel, planColor: 'var(--green)',
                         ...(renewal ?? {}),
                         ...(cancellable && { cancellable: true }),
@@ -268,32 +271,32 @@ export default function AccountPage() {
                     // trials; paid plans use the Renews/Expires row instead.
                     const trialEnd = new Date(trialStart);
                     trialEnd.setDate(trialEnd.getDate() + TRIAL_DURATION_DAYS);
-                    const trialEndStr = trialEnd.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+                    const trialEndStr = trialEnd.toLocaleDateString(bcp47, { year: 'numeric', month: 'long', day: 'numeric' });
                     return {
                         license: {
                             status: isWarning ? 'trial-warning' : 'trial',
-                            label: `${daysLeft} day${daysLeft === 1 ? '' : 's'} left`,
+                            label: t.account.daysLeft(daysLeft),
                             pillClass: isWarning ? 'trialWarning' : 'trial',
-                            trialInfo: `${daysLeft} of ${TRIAL_DURATION_DAYS} days remaining`,
+                            trialInfo: t.account.daysRemaining(daysLeft, TRIAL_DURATION_DAYS),
                             trialColor: isWarning ? 'var(--orange)' : 'var(--accent)',
-                            planInfo: 'Free trial',
-                            trialLength: `${TRIAL_DURATION_DAYS}-day trial · ends ${trialEndStr}`,
+                            planInfo: t.account.planFreeTrial,
+                            trialLength: t.account.trialLength(TRIAL_DURATION_DAYS, trialEndStr),
                         },
                         memberSince,
                     };
                 }
-                return { license: { status: 'expired', label: 'Trial Expired', pillClass: 'expired', trialInfo: 'Expired', trialColor: 'var(--danger)', planInfo: 'No active plan' }, memberSince };
+                return { license: { status: 'expired', label: t.account.statusTrialExpired, pillClass: 'expired', trialInfo: t.account.trialExpired, trialColor: 'var(--danger)', planInfo: t.account.planNone }, memberSince };
             }
 
             if (data.trialEligible === false) {
-                return { license: { status: 'noTrial', label: 'No Trial', pillClass: 'expired', planInfo: 'No active plan' }, memberSince };
+                return { license: { status: 'noTrial', label: t.account.statusNoTrial, pillClass: 'expired', planInfo: t.account.planNone }, memberSince };
             }
-            return { license: { status: 'pending', label: 'Pending', pillClass: 'trial', planInfo: 'No active plan', trialInfo: 'Not started — sign in from the app to activate it', trialColor: 'var(--text-muted)' }, memberSince };
+            return { license: { status: 'pending', label: t.account.statusPending, pillClass: 'trial', planInfo: t.account.planNone, trialInfo: t.account.trialNotStarted, trialColor: 'var(--text-muted)' }, memberSince };
         } catch (err) {
             console.error('Failed to load user data:', err);
-            return { license: { status: 'noTrial', label: 'Error loading', pillClass: 'expired', planInfo: '—' }, memberSince: '' };
+            return { license: { status: 'noTrial', label: t.account.statusErrorLoading, pillClass: 'expired', planInfo: '—' }, memberSince: '' };
         }
-    }, [user]);
+    }, [user, t, bcp47]);
 
     // Trigger dashboard load when user changes
     useEffect(() => {
@@ -348,38 +351,36 @@ export default function AccountPage() {
         return (
             <main id="main-content" tabIndex={-1} className={styles.page}>
                 <div className={styles.authCard}>
-                    <h1>Reset Password</h1>
-                    <p className={styles.subtitle}>
-                        Enter your email and we'll send you a link to reset your password.
-                    </p>
+                    <h1>{t.account.resetTitle}</h1>
+                    <p className={styles.subtitle}>{t.account.resetSubtitle}</p>
 
                     {error && <div className={styles.error}>{error}</div>}
                     {resetSent && (
                         <div className={styles.successBanner}>
-                            Reset link sent! Check your inbox and spam folder.
+                            {t.account.resetSent}
                         </div>
                     )}
 
                     <form onSubmit={handleForgotSubmit}>
                         <div className={styles.field}>
-                            <label htmlFor="forgot-email">Email</label>
+                            <label htmlFor="forgot-email">{t.account.email}</label>
                             <input
                                 type="email"
                                 id="forgot-email"
                                 name="email"
-                                placeholder="you@example.com"
+                                placeholder={t.account.emailPlaceholder}
                                 defaultValue={forgotPrefill}
                                 autoFocus
                                 required
                             />
                         </div>
                         <button type="submit" className={styles.authBtn} disabled={submitting}>
-                            {submitting ? 'Sending...' : 'Send Reset Link'}
+                            {submitting ? t.account.sendingResetLink : t.account.sendResetLink}
                         </button>
                     </form>
 
                     <p className={styles.toggle}>
-                        <a onClick={() => { setIsForgot(false); setError(''); setResetSent(false); }}>Back to Sign In</a>
+                        <a onClick={() => { setIsForgot(false); setError(''); setResetSent(false); }}>{t.account.backToSignIn}</a>
                     </p>
                 </div>
             </main>
@@ -390,31 +391,31 @@ export default function AccountPage() {
         return (
             <main id="main-content" tabIndex={-1} className={styles.page}>
                 <div className={styles.authCard}>
-                    <h1>{isSignUp ? 'Create Account' : 'Sign In'}</h1>
+                    <h1>{isSignUp ? t.account.createAccount : t.account.signIn}</h1>
                     <p className={styles.subtitle}>
-                        {isSignUp ? 'Sign up to start your 7-day free trial.' : 'Sign in to view your account details.'}
+                        {isSignUp ? t.account.signUpSubtitle : t.account.signInSubtitle}
                     </p>
 
                     {error && <div className={styles.error}>{error}</div>}
 
                     <form onSubmit={handleSubmit}>
                         <div className={styles.field}>
-                            <label htmlFor="auth-email">Email</label>
-                            <input type="email" id="auth-email" name="email" placeholder="you@example.com" required />
+                            <label htmlFor="auth-email">{t.account.email}</label>
+                            <input type="email" id="auth-email" name="email" placeholder={t.account.emailPlaceholder} required />
                         </div>
                         <div className={styles.field}>
-                            <label htmlFor="auth-password">Password</label>
-                            <input type="password" id="auth-password" name="password" placeholder="Your password" required />
+                            <label htmlFor="auth-password">{t.account.password}</label>
+                            <input type="password" id="auth-password" name="password" placeholder={t.account.passwordPlaceholder} required />
                         </div>
                         {!isSignUp && (
-                            <button type="button" className={styles.forgotLink} onClick={openForgot}>Forgot password?</button>
+                            <button type="button" className={styles.forgotLink} onClick={openForgot}>{t.account.forgotPassword}</button>
                         )}
                         <button type="submit" className={styles.authBtn} disabled={submitting}>
-                            {submitting ? (isSignUp ? 'Creating account...' : 'Signing in...') : (isSignUp ? 'Create Account' : 'Sign In')}
+                            {submitting ? (isSignUp ? t.account.creatingAccount : t.account.signingIn) : (isSignUp ? t.account.createAccount : t.account.signIn)}
                         </button>
                     </form>
 
-                    <div className={styles.authDivider}><span>or</span></div>
+                    <div className={styles.authDivider}><span>{t.account.or}</span></div>
 
                     <button type="button" className={styles.googleBtn} onClick={handleGoogleSignIn} disabled={submitting}>
                         <svg width="18" height="18" viewBox="0 0 48 48" aria-hidden="true">
@@ -423,12 +424,12 @@ export default function AccountPage() {
                             <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
                             <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
                         </svg>
-                        Continue with Google
+                        {t.account.continueWithGoogle}
                     </button>
 
                     <p className={styles.toggle}>
-                        {isSignUp ? 'Already have an account? ' : "Don't have an account? "}
-                        <a onClick={() => { setIsSignUp(!isSignUp); setError(''); }}>{isSignUp ? 'Sign In' : 'Sign Up'}</a>
+                        {isSignUp ? t.account.haveAccount : t.account.noAccount}
+                        <a onClick={() => { setIsSignUp(!isSignUp); setError(''); }}>{isSignUp ? t.account.signIn : t.account.signUp}</a>
                     </p>
                 </div>
             </main>
@@ -443,31 +444,31 @@ export default function AccountPage() {
                     licence card can be pure facts. */}
                 <div className={styles.dashHeader}>
                     <div>
-                        <span className={styles.dashEyebrow}>Account</span>
+                        <span className={styles.dashEyebrow}>{t.account.eyebrow}</span>
                         <h2 className={styles.profileEmail}>{user.email}</h2>
                         {memberSince && <div className={styles.memberSince}>{memberSince}</div>}
                     </div>
                     <div className={styles.dashHeaderActions}>
                         {license && <span className={`${styles.pill} ${styles[license.pillClass]}`}>{license.label}</span>}
-                        <button className={styles.signOutGhost} onClick={handleSignOut}>Sign out</button>
+                        <button className={styles.signOutGhost} onClick={handleSignOut}>{t.account.signOut}</button>
                     </div>
                 </div>
 
                 <div className={styles.statusCard}>
-                    <h3>License</h3>
+                    <h3>{t.account.licenseCard}</h3>
                     {license?.trialInfo && (
                         <div className={styles.statusRow}>
-                            <span className={styles.statusLabel}>Trial</span>
+                            <span className={styles.statusLabel}>{t.account.rowTrial}</span>
                             <span className={styles.statusValue} style={{ color: license.trialColor }}>{license.trialInfo}</span>
                         </div>
                     )}
                     <div className={styles.statusRow}>
-                        <span className={styles.statusLabel}>Plan</span>
+                        <span className={styles.statusLabel}>{t.account.rowPlan}</span>
                         <span className={styles.statusValue} style={{ color: license?.planColor || 'var(--text-secondary)' }}>{license?.planInfo || '—'}</span>
                     </div>
                     {license?.renewalInfo && (
                         <div className={styles.statusRow}>
-                            <span className={styles.statusLabel}>{license.renewalLabel || 'Renews'}</span>
+                            <span className={styles.statusLabel}>{license.renewalLabel || t.account.rowRenews}</span>
                             <span className={styles.statusValue}>{license.renewalInfo}</span>
                         </div>
                     )}
@@ -475,14 +476,14 @@ export default function AccountPage() {
                         Renews/Expires row above instead. */}
                     {license?.trialLength && (
                         <div className={styles.statusRow}>
-                            <span className={styles.statusLabel}>Length</span>
+                            <span className={styles.statusLabel}>{t.account.rowLength}</span>
                             <span className={styles.statusValue}>{license.trialLength}</span>
                         </div>
                     )}
                 </div>
 
                 <div className={styles.statusCard}>
-                    <h3>Quick Actions</h3>
+                    <h3>{t.account.quickActions}</h3>
                     <div className={styles.actionsGrid}>
                         {/* Anyone WITHOUT an active licence — trial, expired,
                             pending, no-trial — gets one clear door to the plans
@@ -490,7 +491,7 @@ export default function AccountPage() {
                             The pricing section knows the signed-in uid, so
                             checkout still licenses the right account. */}
                         {license && license.status !== 'licensed' && (
-                            <Link to="/plans" className={`${styles.actionBtn} ${styles.actionPrimary}`}>Choose a Plan</Link>
+                            <Link to="/plans" className={`${styles.actionBtn} ${styles.actionPrimary}`}>{t.account.choosePlan}</Link>
                         )}
                         {/* Unlisted-price checkout (internal testing) — an EXTRA
                             option beside the real plans, never a replacement. The
@@ -500,38 +501,38 @@ export default function AccountPage() {
                             ever sees it, and Paddle displays the real amount before
                             any payment. */}
                         {license && readPriceOverride() && (
-                            <button onClick={() => openCheckout(readPriceOverride()!, user.email || undefined, user.uid)} className={`${styles.actionBtn} ${styles.actionPrimary}`}>Daily — $0.71/day · internal test</button>
+                            <button onClick={() => openCheckout(readPriceOverride()!, user.email || undefined, user.uid)} className={`${styles.actionBtn} ${styles.actionPrimary}`}>{t.appCheckout.testPlanAccount('$0.71')}</button>
                         )}
                         {/* Subscribers can switch or move up to lifetime on the
                             plans page. NOT shown for lifetime holders — nothing
                             left to buy. */}
                         {license?.status === 'licensed' && !license.isLifetime && (
-                            <Link to="/plans" className={`${styles.actionBtn} ${styles.actionSecondary}`}>Change Plan</Link>
+                            <Link to="/plans" className={`${styles.actionBtn} ${styles.actionSecondary}`}>{t.account.changePlan}</Link>
                         )}
                         {/* Cancel — only with a live subscription and no cancellation
                             already scheduled. Two-step: the first click swaps in an
                             explicit confirm, so a stray click can't end a paid plan. */}
                         {license?.cancellable && !confirmingCancel && (
-                            <button onClick={() => setConfirmingCancel(true)} className={`${styles.actionBtn} ${styles.actionSecondary}`}>Cancel Subscription</button>
+                            <button onClick={() => setConfirmingCancel(true)} className={`${styles.actionBtn} ${styles.actionSecondary}`}>{t.account.cancelSubscription}</button>
                         )}
                         {license?.cancellable && confirmingCancel && (
                             <>
                                 <div className={styles.planPrompt}>
-                                    Cancel your subscription? You keep access until {license.renewalInfo || 'the end of the period you paid for'}.
+                                    {t.account.cancelPrompt(license.renewalInfo || t.account.cancelPromptFallback)}
                                 </div>
                                 <button onClick={handleCancelSubscription} disabled={cancelling} className={`${styles.actionBtn} ${styles.actionDanger}`}>
-                                    {cancelling ? 'Cancelling…' : 'Yes, cancel it'}
+                                    {cancelling ? t.account.cancelling : t.account.yesCancel}
                                 </button>
-                                <button onClick={() => setConfirmingCancel(false)} disabled={cancelling} className={`${styles.actionBtn} ${styles.actionSecondary}`}>Keep my subscription</button>
+                                <button onClick={() => setConfirmingCancel(false)} disabled={cancelling} className={`${styles.actionBtn} ${styles.actionSecondary}`}>{t.account.keepSubscription}</button>
                             </>
                         )}
                         {/* Stays a direct download — this visitor has already paid. */}
-                        <a href="/BridgePlay.dmg" download className={`${styles.actionBtn} ${license && (license.status === 'expired' || license.status === 'noTrial') ? styles.actionSecondary : styles.actionPrimary}`}>Download BridgePlay</a>
+                        <a href="/BridgePlay.dmg" download className={`${styles.actionBtn} ${license && (license.status === 'expired' || license.status === 'noTrial') ? styles.actionSecondary : styles.actionPrimary}`}>{t.account.downloadApp}</a>
                     </div>
                     {/* Card footer, visually separated from the action buttons
                         instead of blending into them. */}
                     <p className={styles.cardFootnote}>
-                        Installing on a new Mac? <Link to="/download">Requirements, checksum and first-launch steps</Link>
+                        {t.account.footnoteBefore} <Link to="/download">{t.account.footnoteLink}</Link>
                     </p>
                 </div>
             </div>

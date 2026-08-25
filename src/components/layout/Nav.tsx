@@ -3,6 +3,8 @@ import { Link, useLocation } from 'react-router-dom';
 import { track } from '@vercel/analytics';
 import { useAuth } from '../../context/useAuth';
 import { usePlatform } from '../../hooks/usePlatform';
+import { useI18n } from '../../i18n/useI18n';
+import LanguageSelector from './LanguageSelector';
 import styles from './Nav.module.css';
 
 interface Props {
@@ -13,13 +15,14 @@ const MENU_ID = 'nav-mobile-menu';
 
 export default function Nav({ variant = 'full' }: Props) {
     const { user, loading } = useAuth();
+    const { t } = useI18n();
     const location = useLocation();
     /* Both nav CTAs lead to /download either way — the platform only decides
        what the button is allowed to promise. Settled before first paint, so the
        label never swaps under the visitor. */
     const { isUnsupported } = usePlatform();
-    const ctaLabel = isUnsupported ? 'Requirements' : 'Download';
-    const ctaTitle = isUnsupported ? 'BridgePlay is a macOS app — see what it needs to run' : undefined;
+    const ctaLabel = isUnsupported ? t.nav.requirements : t.nav.download;
+    const ctaTitle = isUnsupported ? t.nav.unsupportedCtaTitle : undefined;
     // Track which history entry the menu was opened on; navigating away
     // changes location.key, so the menu closes automatically without an effect.
     const [menuOpenAt, setMenuOpenAt] = useState<string | null>(null);
@@ -91,7 +94,7 @@ export default function Nav({ variant = 'full' }: Props) {
         return (
             <nav ref={navRef} className={styles.nav}>
                 <Link to="/" className={styles.logo}><img src="/favicon-192.png" alt="" className={styles.logoMark} width={26} height={26} />BridgePlay</Link>
-                <Link to="/" className={styles.backLink}>&larr; Back to home</Link>
+                <Link to="/" className={styles.backLink}>{t.common.backToHome}</Link>
                 <span aria-hidden="true" data-nav-progress className={styles.progress} />
             </nav>
         );
@@ -102,11 +105,12 @@ export default function Nav({ variant = 'full' }: Props) {
             <nav ref={navRef} className={styles.nav}>
                 <Link to="/" className={styles.logo}><img src="/favicon-192.png" alt="" className={styles.logoMark} width={26} height={26} />BridgePlay</Link>
                 <div className={styles.links}>
-                    <a href="/#features" onClick={e => handleAnchor(e, '#features')}>Features</a>
-                    <a href="/#how-it-works" onClick={e => handleAnchor(e, '#how-it-works')}>How It Works</a>
-                    <a href="/#pricing" onClick={e => handleAnchor(e, '#pricing')}>Pricing</a>
-                    <a href="/#faq" onClick={e => handleAnchor(e, '#faq')}>FAQ</a>
-                    <Link to="/changelog">Changelog</Link>
+                    <a href="/#features" onClick={e => handleAnchor(e, '#features')}>{t.nav.features}</a>
+                    <a href="/#how-it-works" onClick={e => handleAnchor(e, '#how-it-works')}>{t.nav.howItWorks}</a>
+                    <a href="/#pricing" onClick={e => handleAnchor(e, '#pricing')}>{t.nav.pricing}</a>
+                    <a href="/#faq" onClick={e => handleAnchor(e, '#faq')}>{t.nav.faq}</a>
+                    <Link to="/changelog">{t.nav.changelog}</Link>
+                    <LanguageSelector />
                     <span className={`${styles.authSlot} ${!loading ? styles.ready : ''}`}>
                         {!loading && (
                             user ? (
@@ -121,7 +125,7 @@ export default function Nav({ variant = 'full' }: Props) {
                                     </span>
                                 </Link>
                             ) : (
-                                <Link to="/account">Login</Link>
+                                <Link to="/account">{t.nav.login}</Link>
                             )
                         )}
                     </span>
@@ -139,7 +143,7 @@ export default function Nav({ variant = 'full' }: Props) {
                     ref={burgerRef}
                     className={`${styles.burger} ${menuOpen ? styles.burgerOpen : ''}`}
                     onClick={() => setMenuOpen(!menuOpen)}
-                    aria-label={menuOpen ? 'Close menu' : 'Open menu'}
+                    aria-label={menuOpen ? t.nav.closeMenu : t.nav.openMenu}
                     aria-expanded={menuOpen}
                     aria-controls={MENU_ID}
                 >
@@ -160,11 +164,11 @@ export default function Nav({ variant = 'full' }: Props) {
                 inert={!menuOpen}
                 className={`${styles.mobileMenu} ${menuOpen ? styles.mobileMenuOpen : ''}`}
             >
-                <a href="/#features" onClick={e => handleAnchor(e, '#features')}>Features</a>
-                <a href="/#how-it-works" onClick={e => handleAnchor(e, '#how-it-works')}>How It Works</a>
-                <a href="/#pricing" onClick={e => handleAnchor(e, '#pricing')}>Pricing</a>
-                <a href="/#faq" onClick={e => handleAnchor(e, '#faq')}>FAQ</a>
-                <Link to="/changelog" onClick={() => setMenuOpen(false)}>Changelog</Link>
+                <a href="/#features" onClick={e => handleAnchor(e, '#features')}>{t.nav.features}</a>
+                <a href="/#how-it-works" onClick={e => handleAnchor(e, '#how-it-works')}>{t.nav.howItWorks}</a>
+                <a href="/#pricing" onClick={e => handleAnchor(e, '#pricing')}>{t.nav.pricing}</a>
+                <a href="/#faq" onClick={e => handleAnchor(e, '#faq')}>{t.nav.faq}</a>
+                <Link to="/changelog" onClick={() => setMenuOpen(false)}>{t.nav.changelog}</Link>
                 <span className={`${styles.authSlot} ${!loading ? styles.ready : ''}`}>
                     {!loading && (
                         user ? (
@@ -183,6 +187,7 @@ export default function Nav({ variant = 'full' }: Props) {
                         )
                     )}
                 </span>
+                <LanguageSelector variant="drawer" onPick={() => setMenuOpen(false)} />
                 {/* Stays a single element in every state: the drawer's cascade-in
                     delays are nth-child based, so the child count must not move. */}
                 <Link

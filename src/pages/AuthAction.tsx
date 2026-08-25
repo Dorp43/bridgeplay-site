@@ -4,6 +4,8 @@ import { verifyPasswordResetCode, confirmPasswordReset, applyActionCode } from '
 import { CheckCircle2, XCircle } from 'lucide-react';
 import { auth, friendlyAuthError } from '../lib/firebase';
 import { useDocumentMeta } from '../hooks/useDocumentMeta';
+import { useI18n } from '../i18n/useI18n';
+import type { Dictionary } from '../i18n/types';
 import styles from './AuthAction.module.css';
 
 /* Landing page for Firebase auth action links (the project's action URL points
@@ -20,18 +22,20 @@ type Phase =
     | { kind: 'done'; title: string; body: string }
     | { kind: 'invalid'; body: string };
 
-function actionCodeError(code: string): string {
+/* Takes the dictionary rather than reading context: it is called from an effect
+   and from a submit handler, neither of which is a component. */
+function actionCodeError(code: string, t: Dictionary): string {
     switch (code) {
         case 'auth/expired-action-code':
-            return 'This link has expired. Request a new one and use it within an hour.';
+            return t.authAction.errExpired;
         case 'auth/invalid-action-code':
-            return 'This link is invalid or has already been used.';
+            return t.authAction.errInvalid;
         case 'auth/user-disabled':
-            return 'This account has been disabled.';
+            return t.authAction.errDisabled;
         case 'auth/user-not-found':
-            return 'This account no longer exists.';
+            return t.authAction.errNotFound;
         default:
-            return friendlyAuthError(code);
+            return friendlyAuthError(code, t);
     }
 }
 
@@ -43,10 +47,11 @@ export default function AuthAction() {
     const [phase, setPhase] = useState<Phase>({ kind: 'checking' });
     const [error, setError] = useState('');
     const [submitting, setSubmitting] = useState(false);
+    const { t } = useI18n();
 
     useDocumentMeta({
-        title: 'Reset Password — BridgePlay',
-        description: 'Set a new password for your BridgePlay account.',
+        title: t.meta.authAction.title,
+        description: t.meta.authAction.description,
         canonicalPath: '/auth/action',
     });
 
@@ -54,7 +59,7 @@ export default function AuthAction() {
         let cancelled = false;
         (async () => {
             if (!oobCode) {
-                setPhase({ kind: 'invalid', body: 'This link is incomplete. Open the most recent email and use its button, or request a new link.' });
+                setPhase({ kind: 'invalid', body: t.authAction.errIncomplete });
                 return;
             }
             try {
@@ -69,8 +74,8 @@ export default function AuthAction() {
                         if (!cancelled) {
                             setPhase({
                                 kind: 'done',
-                                title: 'Email verified',
-                                body: 'Your email address has been verified. You can close this page.',
+                                title: t.authAction.doneVerifiedTitle,
+                                body: t.authAction.doneVerifiedBody,
                             });
                         }
                         break;
@@ -80,22 +85,22 @@ export default function AuthAction() {
                         if (!cancelled) {
                             setPhase({
                                 kind: 'done',
-                                title: 'Email change reverted',
-                                body: 'Your account email has been restored. If you did not request the change, reset your password now.',
+                                title: t.authAction.doneRevertedTitle,
+                                body: t.authAction.doneRevertedBody,
                             });
                         }
                         break;
                     }
                     default:
-                        setPhase({ kind: 'invalid', body: 'This link is not recognized. Request a new one from the sign-in page.' });
+                        setPhase({ kind: 'invalid', body: t.authAction.errUnrecognized });
                 }
             } catch (err: unknown) {
                 const code = (err as { code?: string }).code || '';
-                if (!cancelled) setPhase({ kind: 'invalid', body: actionCodeError(code) });
+                if (!cancelled) setPhase({ kind: 'invalid', body: actionCodeError(code, t) });
             }
         })();
         return () => { cancelled = true; };
-    }, [mode, oobCode]);
+    }, [mode, oobCode, t]);
 
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -104,11 +109,11 @@ export default function AuthAction() {
         const confirm = (form.elements.namedItem('confirm-password') as HTMLInputElement).value;
 
         if (password.length < 6) {
-            setError('Password must be at least 6 characters.');
+            setError(t.authAction.passwordTooShort);
             return;
         }
         if (password !== confirm) {
-            setError('Passwords do not match.');
+            setError(t.authAction.passwordsDoNotMatch);
             return;
         }
 
@@ -118,12 +123,12 @@ export default function AuthAction() {
             await confirmPasswordReset(auth, oobCode, password);
             setPhase({
                 kind: 'done',
-                title: 'Password updated',
-                body: 'Your new password is active. Sign in with it in the BridgePlay app — or below to check your account.',
+                title: t.authAction.doneUpdatedTitle,
+                body: t.authAction.doneUpdatedBody,
             });
         } catch (err: unknown) {
             const code = (err as { code?: string }).code || '';
-            setError(actionCodeError(code));
+            setError(actionCodeError(code, t));
             setSubmitting(false);
         }
     };
@@ -131,44 +136,44 @@ export default function AuthAction() {
     return (
         <main id="main-content" tabIndex={-1} className={styles.page}>
             {phase.kind === 'checking' && (
-                <div className={styles.loading}><div className={styles.spinner} />Checking your link…</div>
+                <div className={styles.loading}><div className={styles.spinner} />{t.authAction.checking}</div>
             )}
 
             {phase.kind === 'reset-form' && (
                 <div className={styles.card}>
-                    <h1>Set a new password</h1>
+                    <h1>{t.authAction.setNewPassword}</h1>
                     <p className={styles.subtitle}>
-                        for <strong>{phase.email}</strong>
+                        {t.authAction.forEmail} <strong>{phase.email}</strong>
                     </p>
 
                     {error && <div className={styles.error}>{error}</div>}
 
                     <form onSubmit={handleSubmit}>
                         <div className={styles.field}>
-                            <label htmlFor="new-password">New password</label>
+                            <label htmlFor="new-password">{t.authAction.newPassword}</label>
                             <input
                                 type="password"
                                 id="new-password"
                                 name="new-password"
-                                placeholder="At least 6 characters"
+                                placeholder={t.authAction.newPasswordPlaceholder}
                                 autoComplete="new-password"
                                 autoFocus
                                 required
                             />
                         </div>
                         <div className={styles.field}>
-                            <label htmlFor="confirm-password">Confirm password</label>
+                            <label htmlFor="confirm-password">{t.authAction.confirmPassword}</label>
                             <input
                                 type="password"
                                 id="confirm-password"
                                 name="confirm-password"
-                                placeholder="Repeat the password"
+                                placeholder={t.authAction.confirmPasswordPlaceholder}
                                 autoComplete="new-password"
                                 required
                             />
                         </div>
                         <button type="submit" className={styles.primaryBtn} disabled={submitting}>
-                            {submitting ? 'Updating…' : 'Update Password'}
+                            {submitting ? t.authAction.updating : t.authAction.updatePassword}
                         </button>
                     </form>
                 </div>
@@ -179,22 +184,20 @@ export default function AuthAction() {
                     <div className={styles.successIcon}><CheckCircle2 size={28} /></div>
                     <h1>{phase.title}</h1>
                     <p className={styles.subtitle}>{phase.body}</p>
-                    <Link to="/account" className={styles.primaryBtn}>Go to Sign In</Link>
-                    <p className={styles.hint}>
-                        Using the Mac app? Open BridgePlay and sign in there with your new password.
-                    </p>
+                    <Link to="/account" className={styles.primaryBtn}>{t.authAction.goToSignIn}</Link>
+                    <p className={styles.hint}>{t.authAction.doneHint}</p>
                 </div>
             )}
 
             {phase.kind === 'invalid' && (
                 <div className={styles.card}>
                     <div className={styles.failIcon}><XCircle size={28} /></div>
-                    <h1>Link not valid</h1>
+                    <h1>{t.authAction.invalidTitle}</h1>
                     <p className={styles.subtitle}>{phase.body}</p>
-                    <Link to="/account" className={styles.primaryBtn}>Request a New Link</Link>
+                    <Link to="/account" className={styles.primaryBtn}>{t.authAction.requestNewLink}</Link>
                     <p className={styles.hint}>
-                        On the sign-in page, enter your email and click <em>Forgot password?</em> to
-                        get a fresh link. Links are single-use and expire after a short time.
+                        {t.authAction.invalidHintBefore} <em>{t.authAction.invalidHintForgot}</em>{' '}
+                        {t.authAction.invalidHintAfter}
                     </p>
                 </div>
             )}

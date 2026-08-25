@@ -8,6 +8,8 @@ import { createRoot } from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import { AuthContext, useAuth, type AuthState } from './context/useAuth';
 import { ToastProvider } from './context/ToastContext';
+import I18nProvider from './i18n/I18nProvider';
+import { useI18n } from './i18n/useI18n';
 import { inject } from '@vercel/analytics';
 // global.css must be imported BEFORE App so global styles are emitted first
 // and *.module.css rules win specificity ties (button sizing, card transforms).
@@ -57,6 +59,10 @@ function DeferredAuthProvider({ children }: { children: ReactNode }) {
    the site behind a loader; 400ms fade out. */
 function BootGate() {
     const { loading } = useAuth();
+    /* Also gated on the dictionary: for a visitor whose language is not English
+       the words arrive in a lazy chunk, and without this the page painted in
+       English and then swapped under them a moment later. */
+    const { ready: localeReady, t } = useI18n();
     const [minElapsed, setMinElapsed] = useState(false);
     const [maxElapsed, setMaxElapsed] = useState(false);
     const [gone, setGone] = useState(false);
@@ -65,7 +71,7 @@ function BootGate() {
         const max = setTimeout(() => setMaxElapsed(true), 4000);
         return () => { clearTimeout(min); clearTimeout(max); };
     }, []);
-    const ready = (minElapsed && !loading) || maxElapsed;
+    const ready = (minElapsed && !loading && localeReady) || maxElapsed;
     useEffect(() => {
         if (!ready || gone) return;
         const t = setTimeout(() => setGone(true), 400);
@@ -73,7 +79,7 @@ function BootGate() {
     }, [ready, gone]);
     if (gone) return null;
     return (
-        <div className={`boot-gate${ready ? ' boot-gate-done' : ''}`} role="status" aria-label="Loading">
+        <div className={`boot-gate${ready ? ' boot-gate-done' : ''}`} role="status" aria-label={t.common.loading}>
             <div className="boot-orb">
                 <span className="boot-ripple" />
                 <span className="boot-ripple boot-ripple2" />
@@ -82,6 +88,14 @@ function BootGate() {
             </div>
         </div>
     );
+}
+
+/* Split out of the tree below only so it can read the dictionary — it has to
+   sit inside I18nProvider, and it is still the first focusable node on the
+   page, ahead of Nav. */
+function SkipLink() {
+    const { t } = useI18n();
+    return <a href="#main-content" className="skip-link">{t.common.skipToContent}</a>;
 }
 
 createRoot(document.getElementById('root')!).render(
@@ -95,13 +109,17 @@ createRoot(document.getElementById('root')!).render(
                 On the routes with little or no nav (MinimalLayout has two links;
                 the legal/changelog routes render none) the hop is short, but the
                 landmark is what screen-reader users navigate by. */}
-            <a href="#main-content" className="skip-link">Skip to content</a>
-            <DeferredAuthProvider>
-                <ToastProvider>
-                    <App />
-                </ToastProvider>
-                <BootGate />
-            </DeferredAuthProvider>
+            {/* Outermost provider: the skip link, the boot splash and every
+                route below it read their words from here. */}
+            <I18nProvider>
+                <SkipLink />
+                <DeferredAuthProvider>
+                    <ToastProvider>
+                        <App />
+                    </ToastProvider>
+                    <BootGate />
+                </DeferredAuthProvider>
+            </I18nProvider>
         </BrowserRouter>
     </StrictMode>
 );

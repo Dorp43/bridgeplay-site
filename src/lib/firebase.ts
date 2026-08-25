@@ -1,6 +1,7 @@
 import { initializeApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
+import type { Dictionary } from '../i18n/types';
 
 const firebaseConfig = {
     apiKey: "AIzaSyBTqWbkTUzQRG6xNDYAWgjzNDcaSNtvutU",
@@ -19,17 +20,20 @@ const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
 export const db = getFirestore(app);
 
-export function friendlyAuthError(code: string): string {
+/* Takes the dictionary explicitly: this is a plain module, not a component, so
+   it cannot read the i18n context itself. Callers pass the `t` they already
+   hold. */
+export function friendlyAuthError(code: string, t: Dictionary): string {
     const map: Record<string, string> = {
-        'auth/invalid-email': 'Please enter a valid email address.',
-        'auth/user-disabled': 'This account has been disabled.',
-        'auth/user-not-found': 'No account found with this email.',
-        'auth/wrong-password': 'Incorrect password. Try again.',
-        'auth/invalid-credential': 'Invalid email or password.',
-        'auth/email-already-in-use': 'An account with this email already exists.',
-        'auth/weak-password': 'Password must be at least 6 characters.',
-        'auth/too-many-requests': 'Too many attempts. Please try again later.',
-        'auth/network-request-failed': 'Network error. Check your connection.',
+        'auth/invalid-email': t.authErrors.invalidEmail,
+        'auth/user-disabled': t.authErrors.userDisabled,
+        'auth/user-not-found': t.authErrors.userNotFound,
+        'auth/wrong-password': t.authErrors.wrongPassword,
+        'auth/invalid-credential': t.authErrors.invalidCredential,
+        'auth/email-already-in-use': t.authErrors.emailInUse,
+        'auth/weak-password': t.authErrors.weakPassword,
+        'auth/too-many-requests': t.authErrors.tooManyRequests,
+        'auth/network-request-failed': t.authErrors.networkFailed,
     };
-    return map[code] || 'Something went wrong. Please try again.';
+    return map[code] || t.authErrors.generic;
 }

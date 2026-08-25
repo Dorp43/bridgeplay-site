@@ -1,10 +1,13 @@
 import { Link } from 'react-router-dom';
 import LegalLayout from '../components/layout/LegalLayout';
 import { useDocumentMeta } from '../hooks/useDocumentMeta';
+import { useI18n } from '../i18n/useI18n';
 
 export default function TermsAndConditions() {
+    const { t } = useI18n();
+
     useDocumentMeta({
-        title: 'Terms of Service — BridgePlay',
+        title: t.meta.terms.title,
         description: 'The terms that govern your use of the BridgePlay software and licence, including subscription pricing, automatic renewal, cancellation, intellectual property and disclaimers.',
         canonicalPath: '/terms',
     });
