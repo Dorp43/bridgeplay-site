@@ -24,9 +24,9 @@ const plans = [
 export default function PlansPage() {
     const { user, loading } = useAuth();
     const navigate = useNavigate();
-    /* null = no active plan; 'monthly' | 'yearly' | 'lifetime' otherwise.
-       undefined = still resolving. */
-    const [currentPlan, setCurrentPlan] = useState<string | null | undefined>(undefined);
+    /* The held plan, keyed by uid so a stale fetch never labels the wrong
+       account. Every setState below happens AFTER the awaited fetch. */
+    const [fetched, setFetched] = useState<{ uid: string; plan: string | null } | null>(null);
 
     useDocumentMeta({
         title: 'Plans — BridgePlay',
@@ -35,26 +35,27 @@ export default function PlansPage() {
     });
 
     useEffect(() => {
-        if (loading) return;
-        if (!user) { setCurrentPlan(null); return; }
+        if (!user || fetched?.uid === user.uid) return;
         let cancelled = false;
         (async () => {
+            let plan: string | null = null;
             try {
                 const snap = await getDoc(doc(db, 'users', user.uid));
                 const data = snap.exists() ? snap.data() : null;
-                if (cancelled) return;
-                if (data?.purchaseStatus !== 'active') { setCurrentPlan(null); return; }
-                const plan = data.plan as string | undefined;
-                if (plan === 'monthly' || plan === 'yearly') setCurrentPlan(plan);
-                else if (plan === 'lifetime' || !data.paddleSubscriptionId) setCurrentPlan('lifetime');
-                else setCurrentPlan(null);
-            } catch {
-                if (!cancelled) setCurrentPlan(null);
-            }
+                if (data?.purchaseStatus === 'active') {
+                    const p = data.plan as string | undefined;
+                    if (p === 'monthly' || p === 'yearly') plan = p;
+                    else if (p === 'lifetime' || !data.paddleSubscriptionId) plan = 'lifetime';
+                }
+            } catch { /* treated as no active plan */ }
+            if (!cancelled) setFetched({ uid: user.uid, plan });
         })();
         return () => { cancelled = true; };
-    }, [user, loading]);
+    }, [user, fetched]);
 
+    /* null = no active plan; undefined = still resolving. */
+    const currentPlan: string | null | undefined =
+        user ? (fetched?.uid === user.uid ? fetched.plan : undefined) : null;
     const resolving = loading || currentPlan === undefined;
 
     return (
