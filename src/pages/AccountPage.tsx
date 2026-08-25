@@ -216,7 +216,12 @@ export default function AccountPage() {
         try {
             const snap = await getDoc(doc(db, 'users', user.uid));
             if (!snap.exists()) {
-                return { license: { status: 'pending', label: 'New Account', pillClass: 'trial', planInfo: 'Open the app to activate your trial' }, memberSince: '' };
+                // No user doc yet: the trial hasn't STARTED — and whether one
+                // is even available depends on the Mac the app first runs on
+                // (one trial per device), which this page cannot know. Say "no
+                // plan" plainly and frame the trial as conditional, never as a
+                // promise.
+                return { license: { status: 'pending', label: 'New Account', pillClass: 'trial', planInfo: 'No active plan', trialInfo: 'Not started — sign in from the app to activate it. New Macs get 7 days free.' }, memberSince: '' };
             }
             const data = snap.data();
 
@@ -280,7 +285,7 @@ export default function AccountPage() {
             if (data.trialEligible === false) {
                 return { license: { status: 'noTrial', label: 'No Trial', pillClass: 'expired', planInfo: 'No active plan' }, memberSince };
             }
-            return { license: { status: 'pending', label: 'Pending', pillClass: 'trial', planInfo: 'Sign in from the app to activate' }, memberSince };
+            return { license: { status: 'pending', label: 'Pending', pillClass: 'trial', planInfo: 'No active plan', trialInfo: 'Not started — sign in from the app to activate it' }, memberSince };
         } catch (err) {
             console.error('Failed to load user data:', err);
             return { license: { status: 'noTrial', label: 'Error loading', pillClass: 'expired', planInfo: '—' }, memberSince: '' };
