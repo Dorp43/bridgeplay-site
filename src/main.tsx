@@ -49,6 +49,37 @@ function DeferredAuthProvider({ children }: { children: ReactNode }) {
     );
 }
 
+/* Takes over from the static splash in index.html (same look, so the handoff
+   is invisible) and holds until the deferred auth chunk has RESOLVED the
+   session — before this, the page rendered signed-out and the nav's account
+   chip popped in ~half a second later. Minimum 900ms on screen so the reveal
+   never strobes on a warm cache; hard cap 4s so a hung network can't brick
+   the site behind a loader; 400ms fade out. */
+function BootGate() {
+    const { loading } = useAuth();
+    const [minElapsed, setMinElapsed] = useState(false);
+    const [maxElapsed, setMaxElapsed] = useState(false);
+    const [gone, setGone] = useState(false);
+    useEffect(() => {
+        const min = setTimeout(() => setMinElapsed(true), 900);
+        const max = setTimeout(() => setMaxElapsed(true), 4000);
+        return () => { clearTimeout(min); clearTimeout(max); };
+    }, []);
+    const ready = (minElapsed && !loading) || maxElapsed;
+    useEffect(() => {
+        if (!ready || gone) return;
+        const t = setTimeout(() => setGone(true), 400);
+        return () => clearTimeout(t);
+    }, [ready, gone]);
+    if (gone) return null;
+    return (
+        <div className={`boot-gate${ready ? ' boot-gate-done' : ''}`} role="status" aria-label="Loading BridgePlay">
+            <img src="/favicon-192.png" alt="" width="64" height="64" />
+            <span>BridgePlay</span>
+        </div>
+    );
+}
+
 createRoot(document.getElementById('root')!).render(
     <StrictMode>
         <BrowserRouter>
@@ -65,6 +96,7 @@ createRoot(document.getElementById('root')!).render(
                 <ToastProvider>
                     <App />
                 </ToastProvider>
+                <BootGate />
             </DeferredAuthProvider>
         </BrowserRouter>
     </StrictMode>

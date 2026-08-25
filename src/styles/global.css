@@ -271,3 +271,18 @@ img { display: block; max-width: 100%; -webkit-user-drag: none; }
 @media (prefers-reduced-motion: reduce) {
     .route-fallback img { animation: none; }
 }
+
+/* React-side boot overlay — must render pixel-identical to the static splash
+   in index.html so the handoff between them is invisible. */
+.boot-gate {
+    position: fixed; inset: 0; z-index: 9999;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 18px; background: var(--bg-primary);
+    transition: opacity 0.4s ease;
+}
+.boot-gate img { width: 64px; height: 64px; border-radius: 14px; animation: bootBreathe 1.5s ease-in-out infinite; }
+.boot-gate span { font-size: 15px; font-weight: 700; letter-spacing: -0.3px; color: var(--text-secondary); }
+.boot-gate-done { opacity: 0; pointer-events: none; }
+@media (prefers-reduced-motion: reduce) {
+    .boot-gate img { animation: none; }
+}

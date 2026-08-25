@@ -5,7 +5,7 @@ import { doc, getDoc } from 'firebase/firestore';
 import { auth, db, friendlyAuthError } from '../lib/firebase';
 import { useAuth } from '../context/useAuth';
 import { useToast } from '../context/useToast';
-import { openCheckout, PRICE_IDS, readPriceOverride } from '../lib/paddle';
+import { openCheckout, readPriceOverride } from '../lib/paddle';
 import { useDocumentMeta } from '../hooks/useDocumentMeta';
 import styles from './AccountPage.module.css';
 
@@ -485,16 +485,12 @@ export default function AccountPage() {
                     <h3>Quick Actions</h3>
                     <div className={styles.actionsGrid}>
                         {/* Anyone WITHOUT an active licence — trial, expired,
-                            pending, no-trial — can buy from here, not only the
-                            locked-out. Same prices and price ids as the Pricing
-                            section; each opens Paddle with the signed-in uid. */}
+                            pending, no-trial — gets one clear door to the plans
+                            page rather than an inline wall of price buttons.
+                            The pricing section knows the signed-in uid, so
+                            checkout still licenses the right account. */}
                         {license && license.status !== 'licensed' && (
-                            <>
-                                <div className={styles.planPrompt}>Choose a plan</div>
-                                <button onClick={() => openCheckout(PRICE_IDS.yearly, user.email || undefined, user.uid)} className={`${styles.actionBtn} ${styles.actionPrimary}`}>Yearly — $39.99/yr · Save 52%</button>
-                                <button onClick={() => openCheckout(PRICE_IDS.monthly, user.email || undefined, user.uid)} className={`${styles.actionBtn} ${styles.actionSecondary}`}>Monthly — $6.99/mo</button>
-                                <button onClick={() => openCheckout(PRICE_IDS.lifetime, user.email || undefined, user.uid)} className={`${styles.actionBtn} ${styles.actionSecondary}`}>Lifetime — $59.99 once</button>
-                            </>
+                            <Link to="/#pricing" className={`${styles.actionBtn} ${styles.actionPrimary}`}>Choose a Plan</Link>
                         )}
                         {/* Unlisted-price checkout (internal testing) — an EXTRA
                             option beside the real plans, never a replacement. The
@@ -506,18 +502,11 @@ export default function AccountPage() {
                         {license && readPriceOverride() && (
                             <button onClick={() => openCheckout(readPriceOverride()!, user.email || undefined, user.uid)} className={`${styles.actionBtn} ${styles.actionPrimary}`}>Daily — $0.71/day · internal test</button>
                         )}
-                        {/* Subscribers can move up to the one-time purchase. This is
-                            a genuine upgrade path with no server work: lifetime is a
-                            separate one-time charge, the webhook flips the plan, and
-                            cancelling the old subscription afterwards keeps lifetime
-                            access (the lapse handler protects it). NOT shown for
-                            lifetime holders — nothing left to buy. */}
+                        {/* Subscribers can switch or move up to lifetime on the
+                            plans page. NOT shown for lifetime holders — nothing
+                            left to buy. */}
                         {license?.status === 'licensed' && !license.isLifetime && (
-                            <>
-                                <div className={styles.planPrompt}>Change plan</div>
-                                <button onClick={() => openCheckout(PRICE_IDS.lifetime, user.email || undefined, user.uid)} className={`${styles.actionBtn} ${styles.actionSecondary}`}>Upgrade to Lifetime — $59.99 once</button>
-                                <p className={styles.planHint}>One payment, no more renewals. After upgrading, cancel your subscription below — your lifetime access stays.</p>
-                            </>
+                            <Link to="/#pricing" className={`${styles.actionBtn} ${styles.actionSecondary}`}>Change Plan</Link>
                         )}
                         {/* Cancel — only with a live subscription and no cancellation
                             already scheduled. Two-step: the first click swaps in an
