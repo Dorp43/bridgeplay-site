@@ -17,6 +17,7 @@ const PrivacyPolicy = lazy(() => import('./pages/PrivacyPolicy'));
 const TermsAndConditions = lazy(() => import('./pages/TermsAndConditions'));
 const RefundPolicy = lazy(() => import('./pages/RefundPolicy'));
 const Changelog = lazy(() => import('./pages/Changelog'));
+const PlansPage = lazy(() => import('./pages/PlansPage'));
 const NotFound = lazy(() => import('./pages/NotFound'));
 
 /* Placeholder for a page whose chunk is still in flight. Styled in global.css
@@ -41,6 +42,7 @@ function RouteFallback() {
 const PAGE_TITLES: Record<string, string> = {
     '/': 'BridgePlay — Play Windows Games on Your Mac',
     '/account': 'Account — BridgePlay',
+    '/plans': 'Plans — BridgePlay',
     '/auth/action': 'Reset Password — BridgePlay',
     '/app-checkout': 'Upgrade — BridgePlay',
     '/privacy-policy': 'Privacy Policy — BridgePlay',
@@ -112,6 +114,7 @@ export default function App() {
                 </Route>
                 <Route element={<MinimalLayout />}>
                     <Route path="/account" element={<AccountPage />} />
+                    <Route path="/plans" element={<PlansPage />} />
                     <Route path="/auth/action" element={<AuthAction />} />
                 </Route>
                 <Route element={<LegalRoute />}>

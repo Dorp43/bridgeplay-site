@@ -1,0 +1,44 @@
+/* The "swipe left" the account page's Choose a Plan promises: this page
+   enters from the right and settles, like a sheet sliding in. */
+.page {
+    max-width: 1140px; margin: 0 auto; padding: 128px 24px 80px;
+    animation: plansSlideIn 0.45s var(--ease-out-expo, cubic-bezier(0.16, 1, 0.3, 1)) both;
+}
+@keyframes plansSlideIn {
+    from { opacity: 0; transform: translateX(56px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+@media (prefers-reduced-motion: reduce) {
+    .page { animation: none; }
+}
+
+.head { text-align: center; margin-bottom: 44px; }
+.backLink {
+    display: inline-block; font-size: 0.85rem; color: var(--text-muted);
+    margin-bottom: 22px; transition: color 0.15s;
+}
+.backLink:hover { color: var(--text-primary); }
+.head h1 { font-size: 2.2rem; font-weight: var(--weight-max); letter-spacing: -0.8px; margin-bottom: 12px; }
+.sub { font-size: 0.95rem; color: var(--text-secondary); max-width: 520px; margin: 0 auto; line-height: 1.6; }
+
+/* The pricing grid is shared; only page-specific spacing lives here. */
+.grid { margin-top: 0; }
+
+/* A held (current / already-covered) plan: dimmed but readable, no hover lift. */
+.held { opacity: 0.55; }
+.held:hover { transform: none !important; box-shadow: none !important; }
+.held button { cursor: not-allowed; }
+
+.currentBadge {
+    position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
+    background: var(--green); color: #06060b;
+    font-size: 0.72rem; font-weight: 700; letter-spacing: 0.4px;
+    padding: 5px 14px; border-radius: 100px; text-transform: uppercase;
+}
+
+.footnote {
+    text-align: center; font-size: 0.8rem; color: var(--text-muted);
+    margin-top: 40px; line-height: 1.6;
+}
+.footnote a { color: var(--accent); font-weight: 600; }
+.footnote a:hover { text-decoration: underline; }

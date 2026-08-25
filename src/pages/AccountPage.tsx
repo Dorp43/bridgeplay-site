@@ -490,7 +490,7 @@ export default function AccountPage() {
                             The pricing section knows the signed-in uid, so
                             checkout still licenses the right account. */}
                         {license && license.status !== 'licensed' && (
-                            <Link to="/#pricing" className={`${styles.actionBtn} ${styles.actionPrimary}`}>Choose a Plan</Link>
+                            <Link to="/plans" className={`${styles.actionBtn} ${styles.actionPrimary}`}>Choose a Plan</Link>
                         )}
                         {/* Unlisted-price checkout (internal testing) — an EXTRA
                             option beside the real plans, never a replacement. The
@@ -506,7 +506,7 @@ export default function AccountPage() {
                             plans page. NOT shown for lifetime holders — nothing
                             left to buy. */}
                         {license?.status === 'licensed' && !license.isLifetime && (
-                            <Link to="/#pricing" className={`${styles.actionBtn} ${styles.actionSecondary}`}>Change Plan</Link>
+                            <Link to="/plans" className={`${styles.actionBtn} ${styles.actionSecondary}`}>Change Plan</Link>
                         )}
                         {/* Cancel — only with a live subscription and no cancellation
                             already scheduled. Two-step: the first click swaps in an
