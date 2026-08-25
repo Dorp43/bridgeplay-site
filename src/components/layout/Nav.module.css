@@ -255,12 +255,14 @@
 /* Drawer items cascade in behind the panel slide; instant on close.
    Placed AFTER `.mobileMenu a` so this transition wins the equal-
    specificity tie (delays live only on the open state below). */
-.mobileMenu > a, .mobileMenu > span, .mobileMenu > button {
+/* `> div` is the language selector, which is the only non-a/span/button child;
+   without it the selector would sit at opacity 0 for the life of the drawer. */
+.mobileMenu > a, .mobileMenu > span, .mobileMenu > button, .mobileMenu > div {
     opacity: 0;
     transform: translateX(16px);
     transition: opacity 0.4s var(--ease-out-quart), transform 0.4s var(--ease-out-quart);
 }
-.mobileMenuOpen > a, .mobileMenuOpen > span, .mobileMenuOpen > button {
+.mobileMenuOpen > a, .mobileMenuOpen > span, .mobileMenuOpen > button, .mobileMenuOpen > div {
     opacity: 1;
     transform: none;
 }
@@ -271,6 +273,9 @@
 .mobileMenuOpen > :nth-child(5) { transition-delay: 220ms; }
 .mobileMenuOpen > :nth-child(6) { transition-delay: 260ms; }
 .mobileMenuOpen > :nth-child(7) { transition-delay: 300ms; }
+/* 8 since the language selector joined the drawer, between the auth slot and
+   the CTA. Keep this list one longer than the drawer's child count. */
+.mobileMenuOpen > :nth-child(8) { transition-delay: 340ms; }
 /* Mobile download CTA — the drawer's launch button. Compound selector outranks
    the `.mobileMenu a` link treatment (color/border/hover) above. Deliberately
    declares NO `transition:` — the drawer cascade (opacity/transform + the

@@ -1,9 +1,11 @@
 import { Link } from 'react-router-dom';
 import { useScrollReveal } from '../../hooks/useScrollReveal';
+import { useI18n } from '../../i18n/useI18n';
 import styles from './Footer.module.css';
 
 export default function Footer() {
     const ref = useScrollReveal<HTMLElement>();
+    const { t } = useI18n();
 
     return (
         <footer className={styles.footer} ref={ref}>
@@ -12,38 +14,49 @@ export default function Footer() {
                 <div className={styles.grid}>
                     <div className={`${styles.brand} reveal`} style={{ ['--i' as string]: 0 }}>
                         <div className={styles.logo}>BridgePlay</div>
-                        <p>Play Windows games on your Mac. Built on stock, open-source Wine, for Apple Silicon.</p>
+                        <p>{t.footer.tagline}</p>
                     </div>
                     {/* h3, not h4: the last heading before the footer is a
                         section h2, so h4 skipped a level. Styling is unchanged. */}
                     <div className={`${styles.col} reveal`} style={{ ['--i' as string]: 1 }}>
-                        <h3>Product</h3>
-                        <a href="/#features">Features</a>
-                        <a href="/#pricing">Pricing</a>
+                        <h3>{t.footer.product}</h3>
+                        <a href="/#features">{t.nav.features}</a>
+                        <a href="/#pricing">{t.nav.pricing}</a>
                         {/* The real page, not the home CTA anchor: it carries the
                             requirements, the checksum and the first-launch steps. */}
-                        <Link to="/download">Download</Link>
-                        <a href="/#faq">FAQ</a>
-                        <Link to="/changelog">Changelog</Link>
+                        <Link to="/download">{t.nav.download}</Link>
+                        <a href="/#faq">{t.nav.faq}</a>
+                        <Link to="/changelog">{t.nav.changelog}</Link>
                     </div>
                     <div className={`${styles.col} reveal`} style={{ ['--i' as string]: 2 }}>
-                        <h3>Legal</h3>
-                        <Link to="/terms">Terms of Service</Link>
-                        <Link to="/privacy-policy">Privacy Policy</Link>
-                        <Link to="/refund-policy">Refund Policy</Link>
+                        <h3>{t.footer.legal}</h3>
+                        <Link to="/terms">{t.footer.terms}</Link>
+                        <Link to="/privacy-policy">{t.footer.privacy}</Link>
+                        <Link to="/refund-policy">{t.footer.refund}</Link>
+                        {/* The LGPL notices shipped inside the disk image, and
+                            nowhere a visitor could read them before downloading
+                            it. This is that page. */}
+                        <Link to="/notices">{t.footer.notices}</Link>
                     </div>
                     <div className={`${styles.col} reveal`} style={{ ['--i' as string]: 3 }}>
-                        <h3>Support</h3>
+                        <h3>{t.footer.support}</h3>
                         {/* "Account", not "Login": the same link is where an
                             already-signed-in visitor manages their licence. */}
-                        <Link to="/account">Account</Link>
-                        <Link to="/limitations">Known limitations</Link>
-                        <a href="/#contact">Contact</a>
+                        <Link to="/account">{t.footer.account}</Link>
+                        <Link to="/limitations">{t.footer.limitations}</Link>
+                        <a href="/#contact">{t.footer.contact}</a>
                     </div>
                 </div>
+                {/* Names are used descriptively, to say what BridgePlay is
+                    compatible with. Saying so is the cheapest way to keep that
+                    unambiguous; the full attribution list is on /notices. */}
+                <p className={styles.disclaimer}>
+                    {t.footer.disclaimerBody}{' '}
+                    <Link to="/notices">{t.footer.disclaimerLink}</Link>.
+                </p>
                 <div className={styles.bottom}>
-                    <span>&copy; 2026 BridgePlay. All rights reserved.</span>
-                    <span className={styles.tagline}>Made for Mac gamers everywhere</span>
+                    <span>{t.footer.copyright}</span>
+                    <span className={styles.tagline}>{t.footer.madeFor}</span>
                 </div>
             </div>
         </footer>

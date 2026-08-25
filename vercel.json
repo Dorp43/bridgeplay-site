@@ -1,4 +1,12 @@
 {
+  "headers": [
+    {
+      "source": "/third-party-notices.md",
+      "headers": [
+        { "key": "Content-Type", "value": "text/plain; charset=utf-8" }
+      ]
+    }
+  ],
   "rewrites": [
     { "source": "/api/(.*)", "destination": "/api/$1" },
     { "source": "/__/auth/(.*)", "destination": "https://bridgeplay-8f4f6.firebaseapp.com/__/auth/$1" },

@@ -2,13 +2,14 @@ import { Children, cloneElement, isValidElement, useEffect, useMemo, useState, t
 import { Link, useLocation } from 'react-router-dom';
 import PageHeader from '../ui/PageHeader';
 import { useScrollReveal } from '../../hooks/useScrollReveal';
+import { useI18n } from '../../i18n/useI18n';
 import styles from './LegalLayout.module.css';
 
 interface Props {
     title: string;
     lastUpdated: string;
     /* All three documents sit under one label today; overridable so a fourth
-       one does not have to. */
+       one does not have to. Defaults to the translated "Legal" eyebrow. */
     eyebrow?: string;
     children: ReactNode;
 }
@@ -16,10 +17,11 @@ interface Props {
 /* The other two legal documents, for the footer rail. The current page is
    filtered out of it by pathname. */
 const LEGAL_DOCS = [
-    { to: '/terms', label: 'Terms of Service' },
-    { to: '/privacy-policy', label: 'Privacy Policy' },
-    { to: '/refund-policy', label: 'Refund Policy' },
-];
+    { to: '/terms', key: 'terms' },
+    { to: '/privacy-policy', key: 'privacy' },
+    { to: '/refund-policy', key: 'refund' },
+    { to: '/notices', key: 'notices' },
+] as const;
 
 interface Section {
     id: string;
@@ -61,9 +63,10 @@ function tagRunInTerms(nodes: ReactNode[], className: string): ReactNode[] {
     });
 }
 
-export default function LegalLayout({ title, lastUpdated, eyebrow = 'Legal', children }: Props) {
+export default function LegalLayout({ title, lastUpdated, eyebrow, children }: Props) {
     const { pathname } = useLocation();
     const ref = useScrollReveal<HTMLElement>();
+    const { t } = useI18n();
     const [activeId, setActiveId] = useState<string | null>(null);
 
     /* Each document is a flat run of <h2> headings followed by their prose.
@@ -87,7 +90,7 @@ export default function LegalLayout({ title, lastUpdated, eyebrow = 'Legal', chi
         for (const node of Children.toArray(children)) {
             if (isValidElement(node) && node.type === 'h2') {
                 const position = collected.length + 1;
-                const label = plainText(node).replace(/^\s*\d+\.\s*/, '').trim() || `Section ${position}`;
+                const label = plainText(node).replace(/^\s*\d+\.\s*/, '').trim() || t.legal.sectionFallback(position);
                 const base = slugify(label) || `section-${position}`;
                 const id = usedIds.has(base) ? `${base}-${position}` : base;
                 usedIds.add(id);
@@ -104,7 +107,7 @@ export default function LegalLayout({ title, lastUpdated, eyebrow = 'Legal', chi
             sections: collected.map(section => ({ ...section, body: tagRunInTerms(section.body, styles.runIn) })),
             minutes: Math.max(1, Math.round(words / 220)),
         };
-    }, [children]);
+    }, [children, t]);
 
     const ids = useMemo(() => sections.map(s => s.id), [sections]);
 
@@ -145,25 +148,30 @@ export default function LegalLayout({ title, lastUpdated, eyebrow = 'Legal', chi
             <main id="main-content" tabIndex={-1} className={styles.page} ref={ref}>
                 <div className={styles.shell}>
                     <PageHeader
-                        eyebrow={eyebrow}
+                        eyebrow={eyebrow ?? t.legal.eyebrow}
                         title={title}
                         align="left"
                         backTo="/"
+                        backLabel={t.common.backToBridgePlay}
                         reveal
                         /* Spans both tracks once .shell becomes a grid at 1080px. */
                         className={styles.head}
                         meta={[
-                            <>Last updated {lastUpdated}</>,
-                            sections.length > 0
-                                ? <>{sections.length} {sections.length === 1 ? 'section' : 'sections'}</>
-                                : null,
-                            <>about {minutes} min to read</>,
+                            t.legal.lastUpdated(lastUpdated),
+                            sections.length > 0 ? t.legal.sectionCount(sections.length) : null,
+                            t.legal.readingTime(minutes),
                         ]}
                     />
 
+                    {/* These documents are binding and are published in English
+                        only — a translated contract that disagrees with the
+                        original is worse than no translation. Shown to everyone
+                        so the choice is visible rather than silent. */}
+                    <p className={`${styles.englishOnly} reveal`}>{t.legal.englishOnlyNotice}</p>
+
                     {sections.length > 1 && (
                         <nav className={`${styles.toc} reveal`} aria-labelledby="toc-label">
-                            <p className={styles.tocLabel} id="toc-label">On this page</p>
+                            <p className={styles.tocLabel} id="toc-label">{t.legal.onThisPage}</p>
                             <ol className={styles.tocList}>
                                 {sections.map(section => (
                                     <li key={section.id}>
@@ -196,13 +204,13 @@ export default function LegalLayout({ title, lastUpdated, eyebrow = 'Legal', chi
 
                     <footer className={`${styles.foot} reveal`}>
                         <div className={styles.footRow}>
-                            <span className={styles.footLabel}>Also</span>
+                            <span className={styles.footLabel}>{t.common.also}</span>
                             {others.map(doc => (
-                                <Link key={doc.to} to={doc.to} className={styles.footLink}>{doc.label}</Link>
+                                <Link key={doc.to} to={doc.to} className={styles.footLink}>{t.footer[doc.key]}</Link>
                             ))}
-                            <a href="/#contact" className={styles.footLink}>Contact</a>
+                            <a href="/#contact" className={styles.footLink}>{t.footer.contact}</a>
                         </div>
-                        <Link to="/" className="back-link">&larr; Back to BridgePlay</Link>
+                        <Link to="/" className="back-link">{t.common.backToBridgePlay}</Link>
                     </footer>
                 </div>
             </main>

@@ -1,9 +1,12 @@
 import LegalLayout from '../components/layout/LegalLayout';
 import { useDocumentMeta } from '../hooks/useDocumentMeta';
+import { useI18n } from '../i18n/useI18n';
 
 export default function PrivacyPolicy() {
+    const { t } = useI18n();
+
     useDocumentMeta({
-        title: 'Privacy Policy — BridgePlay',
+        title: t.meta.privacy.title,
         description: 'How BridgePlay handles your data: the app collects no telemetry, this website uses cookieless aggregate analytics, and every processor we use is listed here.',
         canonicalPath: '/privacy-policy',
     });

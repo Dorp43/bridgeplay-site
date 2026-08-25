@@ -4,6 +4,8 @@ import Nav from './components/layout/Nav';
 import Footer from './components/layout/Footer';
 import HomePage from './pages/HomePage';
 import ScrollToTop from './components/ui/ScrollToTop';
+import { useI18n } from './i18n/useI18n';
+import type { Dictionary } from './i18n/types';
 
 // Only the home page ships in the entry chunk. Everything below is a separate
 // chunk fetched on navigation — AccountPage above all, since it (and the auth
@@ -16,6 +18,7 @@ const Limitations = lazy(() => import('./pages/Limitations'));
 const PrivacyPolicy = lazy(() => import('./pages/PrivacyPolicy'));
 const TermsAndConditions = lazy(() => import('./pages/TermsAndConditions'));
 const RefundPolicy = lazy(() => import('./pages/RefundPolicy'));
+const Notices = lazy(() => import('./pages/Notices'));
 const Changelog = lazy(() => import('./pages/Changelog'));
 const PlansPage = lazy(() => import('./pages/PlansPage'));
 const NotFound = lazy(() => import('./pages/NotFound'));
@@ -27,8 +30,9 @@ const NotFound = lazy(() => import('./pages/NotFound'));
    breathing logo as the boot splash, so every load state looks like ONE
    system. Tall enough that the footer doesn't jump to mid-screen. */
 function RouteFallback() {
+    const { t } = useI18n();
     return (
-        <div className="route-fallback" role="status" aria-label="Loading">
+        <div className="route-fallback" role="status" aria-label={t.common.loading}>
             <img src="/favicon-192.png" alt="" width="56" height="56" />
         </div>
     );
@@ -39,28 +43,32 @@ function RouteFallback() {
    which then takes ownership of the title plus description/canonical/OG/Twitter;
    these strings must stay identical to that hook's `title` or the tab visibly
    flips once the chunk resolves. '/' is eager and owns its title here alone. */
-const PAGE_TITLES: Record<string, string> = {
-    '/': 'BridgePlay — Play Windows Games on Your Mac',
-    '/account': 'Account — BridgePlay',
-    '/plans': 'Plans — BridgePlay',
-    '/auth/action': 'Reset Password — BridgePlay',
-    '/app-checkout': 'Upgrade — BridgePlay',
-    '/privacy-policy': 'Privacy Policy — BridgePlay',
-    '/terms': 'Terms of Service — BridgePlay',
-    '/refund-policy': 'Refund Policy — BridgePlay',
-    '/changelog': 'Changelog — BridgePlay',
-    '/download': 'Download BridgePlay for macOS — Apple Silicon',
-    '/limitations': 'Known Limitations — BridgePlay',
-};
+const pageTitles = (t: Dictionary): Record<string, string> => ({
+    '/': t.meta.home.title,
+    '/account': t.meta.account.title,
+    '/plans': t.meta.plans.title,
+    '/auth/action': t.meta.authAction.title,
+    '/app-checkout': t.meta.checkout.title,
+    '/privacy-policy': t.meta.privacy.title,
+    '/terms': t.meta.terms.title,
+    '/refund-policy': t.meta.refund.title,
+    '/notices': t.meta.notices.title,
+    '/changelog': t.meta.changelog.title,
+    '/download': t.meta.download.title,
+    '/limitations': t.meta.limitations.title,
+});
 
 function PageTitle() {
     const { pathname } = useLocation();
+    const { t } = useI18n();
     useEffect(() => {
         /* Unmatched paths render the wildcard NotFound route, so its title is
            the right fallback — a generic one would flip when the chunk lands. */
-        document.title = PAGE_TITLES[pathname] || 'Page Not Found — BridgePlay';
-        window.scrollTo(0, 0);
-    }, [pathname]);
+        document.title = pageTitles(t)[pathname] || t.meta.notFound.title;
+    }, [pathname, t]);
+    /* Scroll reset stays keyed on pathname alone: re-running it when the
+       language changes would yank a reader back to the top mid-page. */
+    useEffect(() => { window.scrollTo(0, 0); }, [pathname]);
     return null;
 }
 
@@ -121,6 +129,7 @@ export default function App() {
                     <Route path="/privacy-policy" element={<PrivacyPolicy />} />
                     <Route path="/terms" element={<TermsAndConditions />} />
                     <Route path="/refund-policy" element={<RefundPolicy />} />
+                    <Route path="/notices" element={<Notices />} />
                     <Route path="/changelog" element={<Changelog />} />
                 </Route>
                 {/* Bare, chrome-less — it renders inside the Mac app's WKWebView. */}

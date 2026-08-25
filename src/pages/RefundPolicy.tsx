@@ -1,10 +1,13 @@
 import { Link } from 'react-router-dom';
 import LegalLayout from '../components/layout/LegalLayout';
 import { useDocumentMeta } from '../hooks/useDocumentMeta';
+import { useI18n } from '../i18n/useI18n';
 
 export default function RefundPolicy() {
+    const { t } = useI18n();
+
     useDocumentMeta({
-        title: 'Refund Policy — BridgePlay',
+        title: t.meta.refund.title,
         description: "BridgePlay's refund policy: a 7-day money-back guarantee on every plan, how the window applies to renewal charges, and what to include in a request.",
         canonicalPath: '/refund-policy',
     });
