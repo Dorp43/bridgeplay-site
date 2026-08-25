@@ -1,4 +1,14 @@
-.page { max-width: 480px; margin: 0 auto; padding: 60px 24px; }
+.page { max-width: 480px; margin: 0 auto; padding: 60px 24px; position: relative; }
+/* The signed-in dashboard breathes better a little wider than the auth card. */
+.pageWide { max-width: 580px; }
+/* Quiet backdrop: one cool glow up top, a fainter warm one low-right. Fixed so
+   it doesn't scroll, behind everything, and never louder than the content. */
+.page::before {
+    content: ''; position: fixed; inset: 0; z-index: -1; pointer-events: none;
+    background:
+        radial-gradient(640px 340px at 50% -100px, rgba(74, 158, 255, 0.08), transparent 70%),
+        radial-gradient(900px 520px at 88% 112%, rgba(167, 139, 250, 0.05), transparent 70%);
+}
 
 /* Loading */
 .loading { display: flex; align-items: center; justify-content: center; padding: 80px 0; color: var(--text-muted); font-size: 0.9rem; }
@@ -66,32 +76,48 @@
 
 /* Dashboard */
 .dashboard { animation: global(fadeInUp) 0.5s ease-out; }
-.profileHeader { display: flex; align-items: center; gap: 16px; margin-bottom: 32px; }
-.profileAvatar {
-    width: 56px; height: 56px; border-radius: 50%;
-    background: linear-gradient(135deg, var(--accent), var(--green));
-    display: flex; align-items: center; justify-content: center;
-    font-size: 1.4rem; font-weight: var(--weight-max); color: #fff; flex-shrink: 0;
+
+/* Header: identity left, state + session right — no avatar bubble. */
+.dashHeader {
+    display: flex; align-items: flex-start; justify-content: space-between;
+    gap: 16px; margin-bottom: 28px; padding-bottom: 22px;
+    border-bottom: 1px solid var(--border);
 }
-.profileEmail { font-size: 1.1rem; font-weight: 700; word-break: break-all; }
-.memberSince { font-size: 0.8rem; color: var(--text-muted); }
+.dashEyebrow {
+    display: block; font-size: 0.68rem; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 1.4px;
+    color: var(--text-muted); margin-bottom: 7px;
+}
+.dashHeaderActions { display: flex; align-items: center; gap: 10px; flex-shrink: 0; padding-top: 18px; }
+.signOutGhost {
+    font-size: 0.8rem; font-weight: 600; font-family: var(--font-body);
+    color: var(--text-muted); background: none; border: 1px solid var(--border);
+    padding: 6px 13px; border-radius: 8px; cursor: pointer;
+    transition: color 0.15s, border-color 0.15s;
+}
+.signOutGhost:hover { color: var(--danger); border-color: rgba(248, 113, 113, 0.35); }
+.profileEmail { font-size: 1.15rem; font-weight: 700; letter-spacing: -0.2px; word-break: break-all; }
+.memberSince { font-size: 0.8rem; color: var(--text-muted); margin-top: 3px; }
 
 /* Status cards */
 .statusCard {
-    background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px;
-    padding: 24px; margin-bottom: 16px;
+    background: var(--bg-card); border: 1px solid var(--border); border-radius: 14px;
+    padding: 20px 22px; margin-bottom: 14px;
 }
 .statusCard h3 {
-    font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1.2px;
-    color: var(--text-muted); margin-bottom: 16px;
+    font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1.4px;
+    color: var(--text-muted); margin-bottom: 12px;
 }
+/* flex-start + a right-aligned, width-capped value column: long values wrap
+   cleanly on their own side instead of colliding with the label. */
 .statusRow {
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 12px 0; border-bottom: 1px solid var(--border);
+    display: flex; align-items: flex-start; justify-content: space-between;
+    gap: 24px; padding: 13px 0; border-bottom: 1px solid var(--border);
 }
-.statusRow:last-child { border-bottom: none; }
-.statusLabel { font-size: 0.9rem; font-weight: 500; color: var(--text-secondary); }
-.statusValue { font-size: 0.9rem; font-weight: 600; }
+.statusRow:last-child { border-bottom: none; padding-bottom: 2px; }
+.statusRow:first-of-type { padding-top: 2px; }
+.statusLabel { font-size: 0.88rem; font-weight: 500; color: var(--text-secondary); line-height: 1.5; flex-shrink: 0; }
+.statusValue { font-size: 0.88rem; font-weight: 600; line-height: 1.5; text-align: right; max-width: 70%; }
 .pill {
     display: inline-flex; align-items: center; gap: 6px; padding: 5px 14px;
     border-radius: 100px; font-size: 0.8rem; font-weight: 700;
@@ -101,22 +127,20 @@
 .trialWarning { background: rgba(245,158,11,0.12); color: var(--orange); border: 1px solid rgba(245,158,11,0.2); }
 .expired { background: rgba(248,113,113,0.12); color: var(--danger); border: 1px solid rgba(248,113,113,0.2); }
 
-/* Actions */
-.actionsGrid { display: flex; flex-direction: column; gap: 10px; }
+/* Actions — flat and quiet: no gradients, no glow, no hover lift. */
+.actionsGrid { display: flex; flex-direction: column; gap: 8px; }
 .actionBtn {
-    display: flex; align-items: center; justify-content: center; width: 100%; padding: 12px;
-    border-radius: 10px; font-size: 0.9rem; font-weight: 600; font-family: var(--font-body);
-    cursor: pointer; transition: all 0.2s; border: none;
+    display: flex; align-items: center; justify-content: center; width: 100%;
+    padding: 11px 16px; border-radius: 8px; font-size: 0.88rem; font-weight: 600;
+    font-family: var(--font-body); cursor: pointer;
+    transition: background 0.15s, border-color 0.15s; border: 1px solid transparent;
 }
-.actionPrimary {
-    background: linear-gradient(135deg, var(--accent), #3b82f6); color: #fff;
-    box-shadow: 0 4px 15px rgba(74, 158, 255, 0.2);
-}
-.actionPrimary:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(74, 158, 255, 0.3); }
-.actionSecondary { background: rgba(255,255,255,0.05); color: var(--text-primary); border: 1px solid var(--border-light); }
-.actionSecondary:hover { background: rgba(255,255,255,0.08); }
-.actionDanger { background: transparent; color: var(--danger); border: 1px solid rgba(248,113,113,0.2); }
-.actionDanger:hover { background: rgba(248,113,113,0.08); }
+.actionPrimary { background: var(--accent-deep); color: #fff; }
+.actionPrimary:hover { background: var(--accent); }
+.actionSecondary { background: transparent; color: var(--text-primary); border-color: var(--border-light); }
+.actionSecondary:hover { background: rgba(255, 255, 255, 0.04); border-color: var(--border-strong); }
+.actionDanger { background: transparent; color: var(--danger); border-color: rgba(248, 113, 113, 0.25); }
+.actionDanger:hover { background: rgba(248, 113, 113, 0.07); }
 
 @media (max-width: 600px) { .page { padding: 30px 16px; } }
 

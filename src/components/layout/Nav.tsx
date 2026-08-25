@@ -90,7 +90,7 @@ export default function Nav({ variant = 'full' }: Props) {
     if (variant === 'minimal') {
         return (
             <nav ref={navRef} className={styles.nav}>
-                <Link to="/" className={styles.logo}>BridgePlay</Link>
+                <Link to="/" className={styles.logo}><img src="/favicon-192.png" alt="" className={styles.logoMark} width={26} height={26} />BridgePlay</Link>
                 <Link to="/" className={styles.backLink}>&larr; Back to home</Link>
                 <span aria-hidden="true" data-nav-progress className={styles.progress} />
             </nav>
@@ -100,7 +100,7 @@ export default function Nav({ variant = 'full' }: Props) {
     return (
         <>
             <nav ref={navRef} className={styles.nav}>
-                <Link to="/" className={styles.logo}>BridgePlay</Link>
+                <Link to="/" className={styles.logo}><img src="/favicon-192.png" alt="" className={styles.logoMark} width={26} height={26} />BridgePlay</Link>
                 <div className={styles.links}>
                     <a href="/#features" onClick={e => handleAnchor(e, '#features')}>Features</a>
                     <a href="/#how-it-works" onClick={e => handleAnchor(e, '#how-it-works')}>How It Works</a>

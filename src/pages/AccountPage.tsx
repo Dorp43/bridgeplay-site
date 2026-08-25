@@ -221,7 +221,7 @@ export default function AccountPage() {
                 // (one trial per device), which this page cannot know. Say "no
                 // plan" plainly and frame the trial as conditional, never as a
                 // promise.
-                return { license: { status: 'pending', label: 'New Account', pillClass: 'trial', planInfo: 'No active plan', trialInfo: 'Not started — sign in from the app to activate it. New Macs get 7 days free.' }, memberSince: '' };
+                return { license: { status: 'pending', label: 'New Account', pillClass: 'trial', planInfo: 'No active plan', trialInfo: 'Not started — sign in from the app to activate it. New Macs get 7 days free.', trialColor: 'var(--text-muted)' }, memberSince: '' };
             }
             const data = snap.data();
 
@@ -285,7 +285,7 @@ export default function AccountPage() {
             if (data.trialEligible === false) {
                 return { license: { status: 'noTrial', label: 'No Trial', pillClass: 'expired', planInfo: 'No active plan' }, memberSince };
             }
-            return { license: { status: 'pending', label: 'Pending', pillClass: 'trial', planInfo: 'No active plan', trialInfo: 'Not started — sign in from the app to activate it' }, memberSince };
+            return { license: { status: 'pending', label: 'Pending', pillClass: 'trial', planInfo: 'No active plan', trialInfo: 'Not started — sign in from the app to activate it', trialColor: 'var(--text-muted)' }, memberSince };
         } catch (err) {
             console.error('Failed to load user data:', err);
             return { license: { status: 'noTrial', label: 'Error loading', pillClass: 'expired', planInfo: '—' }, memberSince: '' };
@@ -408,22 +408,25 @@ export default function AccountPage() {
     }
 
     return (
-        <main id="main-content" tabIndex={-1} className={styles.page}>
+        <main id="main-content" tabIndex={-1} className={`${styles.page} ${styles.pageWide}`}>
             <div className={styles.dashboard}>
-                <div className={styles.profileHeader}>
-                    <div className={styles.profileAvatar}>{(user.email || '?')[0].toUpperCase()}</div>
+                {/* Settings-style header: identity left, state + session right.
+                    The status pill lives HERE (not as a card row), so the
+                    licence card can be pure facts. */}
+                <div className={styles.dashHeader}>
                     <div>
+                        <span className={styles.dashEyebrow}>Account</span>
                         <h2 className={styles.profileEmail}>{user.email}</h2>
                         {memberSince && <div className={styles.memberSince}>{memberSince}</div>}
+                    </div>
+                    <div className={styles.dashHeaderActions}>
+                        {license && <span className={`${styles.pill} ${styles[license.pillClass]}`}>{license.label}</span>}
+                        <button className={styles.signOutGhost} onClick={handleSignOut}>Sign out</button>
                     </div>
                 </div>
 
                 <div className={styles.statusCard}>
                     <h3>License</h3>
-                    <div className={styles.statusRow}>
-                        <span className={styles.statusLabel}>Status</span>
-                        {license && <span className={`${styles.pill} ${styles[license.pillClass]}`}>{license.label}</span>}
-                    </div>
                     {license?.trialInfo && (
                         <div className={styles.statusRow}>
                             <span className={styles.statusLabel}>Trial</span>
@@ -495,7 +498,6 @@ export default function AccountPage() {
                         )}
                         {/* Stays a direct download — this visitor has already paid. */}
                         <a href="/BridgePlay.dmg" download className={`${styles.actionBtn} ${license && (license.status === 'expired' || license.status === 'noTrial') ? styles.actionSecondary : styles.actionPrimary}`}>Download BridgePlay</a>
-                        <button className={`${styles.actionBtn} ${styles.actionDanger}`} onClick={handleSignOut}>Sign Out</button>
                     </div>
                     {/* Card footer, visually separated from the action buttons
                         instead of blending into them. */}

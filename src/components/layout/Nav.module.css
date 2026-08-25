@@ -54,12 +54,22 @@
     }
 }
 .logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
     font-size: 1.3rem;
     font-weight: var(--weight-max);
     background: linear-gradient(135deg, var(--accent), var(--green));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     letter-spacing: -0.5px;
+}
+.logoMark {
+    width: 26px;
+    height: 26px;
+    border-radius: 6px;
+    display: block;
+    flex-shrink: 0;
 }
 .links {
     display: flex;
