@@ -1,13 +1,22 @@
-.page { max-width: 480px; margin: 0 auto; padding: 60px 24px; position: relative; }
+/* 112px top clears the fixed nav (~64px) with room to breathe — 60px sat the
+   first line underneath it. */
+.page { max-width: 480px; margin: 0 auto; padding: 112px 24px 60px; position: relative; }
 /* The signed-in dashboard breathes better a little wider than the auth card. */
 .pageWide { max-width: 580px; }
-/* Quiet backdrop: one cool glow up top, a fainter warm one low-right. Fixed so
-   it doesn't scroll, behind everything, and never louder than the content. */
+/* Backdrop, two layers: colour glows plus a faint dot grid that fades out
+   toward the bottom — texture without noise. */
 .page::before {
     content: ''; position: fixed; inset: 0; z-index: -1; pointer-events: none;
     background:
-        radial-gradient(640px 340px at 50% -100px, rgba(74, 158, 255, 0.08), transparent 70%),
-        radial-gradient(900px 520px at 88% 112%, rgba(167, 139, 250, 0.05), transparent 70%);
+        radial-gradient(640px 340px at 50% -100px, rgba(74, 158, 255, 0.10), transparent 70%),
+        radial-gradient(900px 520px at 88% 112%, rgba(167, 139, 250, 0.06), transparent 70%);
+}
+.page::after {
+    content: ''; position: fixed; inset: 0; z-index: -1; pointer-events: none;
+    background-image: radial-gradient(rgba(240, 240, 245, 0.055) 1px, transparent 1px);
+    background-size: 26px 26px;
+    mask-image: linear-gradient(to bottom, rgba(0,0,0,0.9), transparent 55%);
+    -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,0.9), transparent 55%);
 }
 
 /* Loading */
@@ -75,7 +84,17 @@
 .toggle a:hover { text-decoration: underline; }
 
 /* Dashboard */
-.dashboard { animation: global(fadeInUp) 0.5s ease-out; }
+.dashboard { animation: global(fadeInUp) 0.5s ease-out; position: relative; }
+/* The twist: an aurora ribbon glowing behind the header — brand colours,
+   heavily blurred, unmistakably BridgePlay without a single gradient button. */
+.dashboard::before {
+    content: ''; position: absolute; top: -48px; left: -8%; right: -8%; height: 170px;
+    background: linear-gradient(100deg,
+        rgba(74, 158, 255, 0.22),
+        rgba(167, 139, 250, 0.16) 45%,
+        rgba(109, 213, 160, 0.14) 85%);
+    filter: blur(64px); z-index: -1; pointer-events: none;
+}
 
 /* Header: identity left, state + session right — no avatar bubble. */
 .dashHeader {
@@ -99,10 +118,15 @@
 .profileEmail { font-size: 1.15rem; font-weight: 700; letter-spacing: -0.2px; word-break: break-all; }
 .memberSince { font-size: 0.8rem; color: var(--text-muted); margin-top: 3px; }
 
-/* Status cards */
+/* Status cards — 1px gradient edge, brightest at the top-left, so the cards
+   catch the aurora's light instead of sitting flat on it. */
 .statusCard {
-    background: var(--bg-card); border: 1px solid var(--border); border-radius: 14px;
+    border: 1px solid transparent; border-radius: 14px;
+    background:
+        linear-gradient(var(--bg-card), var(--bg-card)) padding-box,
+        linear-gradient(160deg, rgba(74, 158, 255, 0.35), var(--border) 38%, var(--border)) border-box;
     padding: 20px 22px; margin-bottom: 14px;
+    transition: background 0.25s;
 }
 .statusCard h3 {
     font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1.4px;
@@ -119,8 +143,22 @@
 .statusLabel { font-size: 0.88rem; font-weight: 500; color: var(--text-secondary); line-height: 1.5; flex-shrink: 0; }
 .statusValue { font-size: 0.88rem; font-weight: 600; line-height: 1.5; text-align: right; max-width: 70%; }
 .pill {
-    display: inline-flex; align-items: center; gap: 6px; padding: 5px 14px;
+    display: inline-flex; align-items: center; gap: 7px; padding: 5px 14px;
     border-radius: 100px; font-size: 0.8rem; font-weight: 700;
+}
+/* A slow-breathing dot in the status colour — the one piece of motion on the
+   page, and it means "this state is live". */
+.pill::before {
+    content: ''; width: 6px; height: 6px; border-radius: 50%;
+    background: currentColor; flex-shrink: 0;
+    animation: pillPulse 2.6s ease-in-out infinite;
+}
+@keyframes pillPulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.45; transform: scale(0.8); }
+}
+@media (prefers-reduced-motion: reduce) {
+    .pill::before { animation: none; }
 }
 .licensed { background: rgba(109,213,160,0.12); color: var(--green); border: 1px solid rgba(109,213,160,0.2); }
 .trial { background: rgba(74,158,255,0.12); color: var(--accent); border: 1px solid rgba(74,158,255,0.2); }
