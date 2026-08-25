@@ -171,24 +171,24 @@
 .beams {
     position: absolute;
     left: 50%;
-    top: -218px;
+    top: -248px;
     transform: translateX(-50%);
     width: min(860px, 96vw);
-    height: 290px;
+    height: 320px;
     pointer-events: none;
     z-index: 0;
     background: conic-gradient(from -40deg at 50% 100%,
         transparent 0deg,
-        rgba(74, 158, 255, 0.20) 7deg,   transparent 14deg,
+        rgba(74, 158, 255, 0.34) 7deg,   transparent 14deg,
         transparent 17deg,
-        rgba(167, 139, 250, 0.17) 24deg, transparent 31deg,
+        rgba(167, 139, 250, 0.28) 24deg, transparent 31deg,
         transparent 34deg,
-        rgba(109, 213, 160, 0.18) 40deg, transparent 46deg,
+        rgba(109, 213, 160, 0.30) 40deg, transparent 46deg,
         transparent 49deg,
-        rgba(167, 139, 250, 0.17) 56deg, transparent 63deg,
+        rgba(167, 139, 250, 0.28) 56deg, transparent 63deg,
         transparent 66deg,
-        rgba(74, 158, 255, 0.20) 73deg,  transparent 80deg);
-    filter: blur(13px);
+        rgba(74, 158, 255, 0.34) 73deg,  transparent 80deg);
+    filter: blur(16px);
     mask-image: linear-gradient(to top, rgba(0, 0, 0, 0.95) 12%, transparent 96%);
     -webkit-mask-image: linear-gradient(to top, rgba(0, 0, 0, 0.95) 12%, transparent 96%);
     animation: beamsBreath 6.5s ease-in-out infinite;
