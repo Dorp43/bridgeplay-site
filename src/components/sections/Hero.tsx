@@ -58,6 +58,14 @@ export default function Hero() {
                         page with the Control-click instructions, and "System
                         requirements and checksum" did not read as the fix for a Mac
                         that has just refused to open the app. */}
+                    {/* Cost and commitment, attached to the button rather than
+                        left to the stats row below — this is the moment the
+                        hesitation happens. Says what the stats row does not:
+                        that the download itself costs nothing and that trying
+                        it needs no card. */}
+                    {!isUnsupported && (
+                        <span className={styles.ctaNote}>{t.hero.ctaNote}</span>
+                    )}
                     {!isUnsupported && (
                         <span className={styles.fineLink}>
                             <Link to="/download">{t.hero.fineLink}</Link>

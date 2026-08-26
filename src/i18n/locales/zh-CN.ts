@@ -38,7 +38,7 @@ const zhCN: Dictionary = {
     },
 
     footer: {
-        tagline: '在你的 Mac 上玩 Windows 游戏。基于未经修改的开源 Wine，为 Apple 芯片打造。',
+        tagline: '在你的 Mac 上玩你已经拥有的 Windows 游戏。为 Apple 芯片打造。',
         product: '产品',
         legal: '法律',
         support: '支持',
@@ -58,20 +58,21 @@ const zhCN: Dictionary = {
     hero: {
         titleLine1: 'Windows 游戏。',
         titleLine2: '你的 Mac。',
-        lede: 'BridgePlay 通过一套从源码编译、并由它自动管理的 Wine 11.0 运行环境，让你的 Windows PC 游戏跑在 macOS 上。不用双系统，不用虚拟机，打开就能玩。',
+        lede: 'BridgePlay 让你已经拥有的 Windows 游戏跑在你的 Mac 上，并替你完成每款游戏的配置 — 不用双系统，不用虚拟机，也不用调任何设置。',
         platformNoteStrong: 'BridgePlay 是面向 Apple 芯片 Mac 的 macOS 应用。',
         platformNoteRest: '没有 Windows、Linux、iOS 或 Android 版本。请在 M 系列芯片的 Mac 上打开本页，下载入口就在这里。',
         whatItNeeds: '它的运行条件',
         downloadNow: '立即下载',
         learnMore: '了解更多',
         fineLink: '运行要求，以及被 macOS 拦截时怎么办',
+        ctaNote: '免费下载 · 试用无需银行卡',
         statTrialValue: '7 天',
         statTrialLabel: '免费试用',
         statSiliconValue: 'Apple 芯片',
         statSiliconLabel: 'M1 及更新机型',
         statUpdatesValue: '自动',
         statUpdatesLabel: '更新',
-        caption: 'Wine 11.0，从源码编译 · WoW64 · Apple 芯片',
+        caption: 'Apple 芯片原生 · 逐游戏自动配置 · macOS 14+',
         screenshotAlt: 'macOS 上的 BridgePlay 游戏库：网格中排列着五款已安装的游戏，Aetherium Online 的详情面板已打开，随时可以启动',
     },
 
@@ -90,7 +91,7 @@ const zhCN: Dictionary = {
             },
             updates: {
                 title: '自动更新',
-                desc: 'BridgePlay 每次启动都会检查自身是否有新版本并为你安装。你的游戏文件不会被改动。',
+                desc: 'BridgePlay 每次启动都会检查自身是否有新版本，并询问你是否安装 — 不用手动下载，也不用拖动任何东西。你的游戏文件不会被改动。',
             },
             library: {
                 title: '游戏库',
@@ -164,6 +165,13 @@ const zhCN: Dictionary = {
                 title: '逐游戏的设置',
                 desc: '你改动的内容只会记在那一款游戏上，不会套用到整个游戏库。',
             },
+        },
+        fit: {
+            goodLabel: '跑得不错',
+            goodItems: ['2000 年代和 2010 年代的游戏', '在线世界和 MMO 客户端', '独立游戏和 2D 游戏', '任何能在较老的 Windows 电脑上跑的东西'],
+            badLabel: '别指望它能跑',
+            badItems: ['最近几年的大作', '带反作弊的竞技射击游戏', '只为 DirectX 12 打造的东西'],
+            note: '不确定你的属于哪一类？7 天免费试用就是用来弄清楚这件事的。',
         },
         visualLabel: '支持的技术',
         specs: {
@@ -612,11 +620,11 @@ const zhCN: Dictionary = {
     meta: {
         home: {
             title: 'BridgePlay — 在你的 Mac 上玩 Windows 游戏',
-            description: '在 Apple 芯片的 Mac 上运行你现有的 Windows 游戏。BridgePlay 是一款 macOS 原生启动器，替你管理一套从源码编译的 Wine 11.0 运行环境 — 不用双系统，也不用虚拟机。',
+            description: '在 Apple 芯片的 Mac 上运行你已经拥有的 Windows 游戏。BridgePlay 是一款 macOS 原生启动器，替你完成每款游戏的配置 — 不用双系统，不用虚拟机。7 天免费试用。',
         },
         download: {
             title: '下载 macOS 版 BridgePlay — Apple 芯片',
-            description: '为 Apple 芯片的 Mac 下载 BridgePlay 磁盘映像，附有实际所提供文件的大小与 SHA-256、系统要求，以及 Rosetta 2 和首次启动的步骤。',
+            description: '为 Apple 芯片的 Mac（M1 及更新，macOS 14+）下载 BridgePlay。含所提供文件的准确大小与 SHA-256、安装 Rosetta 2 的那条命令，以及首次启动被 macOS 拦截时的处理方法。',
         },
         limitations: {
             title: '已知限制 — BridgePlay',

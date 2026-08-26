@@ -3,7 +3,9 @@
     "version": "0.6.3",
     "date": "2026-08-22",
     "notes": [
-      "Fullscreen reliability overhaul: the temporary display is created deterministically and now closes within ~1s of quitting a game (no more lingering zoomed screen). Fixes launch flakiness caused by a starved process poller, and never kills a slow-to-start game. Notarized by Apple. Internal: complete third-party licensing, runtime signing fixes."
+      "Fullscreen is dependable now. The temporary display closes within about a second of quitting a game, so you are never left staring at a zoomed-in screen.",
+      "Launching is steadier, and a game that is slow to start is no longer given up on.",
+      "The app is now notarized by Apple, so macOS no longer stops you on first launch."
     ]
   },
   {

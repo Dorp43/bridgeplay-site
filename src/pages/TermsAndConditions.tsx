@@ -15,7 +15,7 @@ export default function TermsAndConditions() {
     return (
         <LegalLayout title="Terms of Service" lastUpdated="August 21, 2026">
             <h2>1. Who You Are Contracting With, and Acceptance</h2>
-            <p>BridgePlay ("the Software") is provided by Dor Shemesh, a sole trader based in Israel ("we", "us", or "the developer"). You can reach us through the <a href="/#contact">contact form</a> on this website. Purchases are sold and invoiced by our merchant of record, Paddle (see section 6), which acts as the seller of record for the transaction.</p>
+            <p>BridgePlay ("the Software") is provided by Dorp43 ("we", "us", or "the developer"). You can reach us through the <a href="/#contact">contact form</a> on this website. Purchases are sold and invoiced by our merchant of record, Paddle (see section 6), which acts as the seller of record for the transaction.</p>
             <p>By downloading, installing, or using the Software, you agree to be bound by these Terms of Service. If you do not agree, do not use the Software.</p>
 
             <h2>2. Licence</h2>
@@ -63,7 +63,7 @@ export default function TermsAndConditions() {
             <p>We may update these terms from time to time. The date at the top of this page reflects the most recent change. Continued use of the Software after changes constitutes acceptance of the new terms.</p>
 
             <h2>13. Governing Law and Disputes</h2>
-            <p>These terms, and any dispute arising out of or relating to them or the Software, are governed by the laws of the State of Israel, and the competent courts of Israel have jurisdiction. If you are a consumer resident in the EU, the UK, or another jurisdiction whose law grants you mandatory consumer protections, you keep the benefit of those protections and of any right to bring proceedings in your country of residence; nothing in these terms removes rights that cannot be waived under the law that applies to you.</p>
+            <p>If you are a consumer resident in the EU, the UK, or another jurisdiction whose law grants you mandatory consumer protections, you keep the benefit of those protections and of any right to bring proceedings in your country of residence; nothing in these terms removes rights that cannot be waived under the law that applies to you. Where a dispute cannot be resolved through the contact form, it is determined under the law that applies to you as a consumer.</p>
 
             <h2>14. Contact</h2>
             <p>For questions about these terms, contact us at the <a href="/#contact">contact form</a> on our website.</p>

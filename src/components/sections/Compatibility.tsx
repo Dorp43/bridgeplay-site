@@ -61,6 +61,29 @@ export default function Compatibility() {
                     title={t.compatibility.title}
                     description={t.compatibility.description}
                 />
+                {/* The spec sheet below answers "what does it support" in the
+                    vocabulary of someone who already knows what DirectX is.
+                    This answers "will it run MY game" for everyone else, which
+                    is the question they actually arrived with. Deliberately
+                    example-shaped rather than a list of titles: a compatibility
+                    list we cannot keep honest is worse than none, but a
+                    description of the SHAPE of what works needs no upkeep. */}
+                <div className={`${styles.fit} reveal`}>
+                    <div className={`${styles.fitCard} ${styles.fitGood}`}>
+                        <p className={styles.fitLabel}>{t.compatibility.fit.goodLabel}</p>
+                        <ul>
+                            {t.compatibility.fit.goodItems.map(item => <li key={item}>{item}</li>)}
+                        </ul>
+                    </div>
+                    <div className={`${styles.fitCard} ${styles.fitBad}`}>
+                        <p className={styles.fitLabel}>{t.compatibility.fit.badLabel}</p>
+                        <ul>
+                            {t.compatibility.fit.badItems.map(item => <li key={item}>{item}</li>)}
+                        </ul>
+                    </div>
+                </div>
+                <p className={`${styles.fitNote} reveal`}>{t.compatibility.fit.note}</p>
+
                 <div className={styles.grid}>
                     <ul className={`${styles.list} reveal-stagger`}>
                         {items.map((item, i) => {
