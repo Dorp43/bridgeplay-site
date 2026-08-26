@@ -14,7 +14,7 @@ export default function PrivacyPolicy() {
     return (
         <LegalLayout title="Privacy Policy" lastUpdated="August 21, 2026">
             <h2>1. Who Is Responsible for Your Data</h2>
-            <p>The data controller for BridgePlay is Dor Shemesh, a sole trader based in Israel. You can reach us through the <a href="/#contact">contact form</a> on this website for any privacy question or request.</p>
+            <p>BridgePlay is operated by Dorp43, who is the data controller for the personal data described in this policy. You can reach us through the <a href="/#contact">contact form</a> on this website for any privacy question or request.</p>
 
             <h2>2. The App and This Website Are Different</h2>
             <p>BridgePlay is two things: the Mac app you install, and this website. They collect different data, so this policy keeps them apart.</p>

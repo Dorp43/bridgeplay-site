@@ -40,7 +40,7 @@ const de: Dictionary = {
     },
 
     footer: {
-        tagline: 'Spiele Windows-Spiele auf deinem Mac. Gebaut auf unverändertem, quelloffenem Wine, für Apple Silicon.',
+        tagline: 'Spiele die Windows-Spiele, die du schon besitzt, auf deinem Mac. Für Apple Silicon gebaut.',
         product: 'Produkt',
         legal: 'Rechtliches',
         support: 'Support',
@@ -60,20 +60,21 @@ const de: Dictionary = {
     hero: {
         titleLine1: 'Windows-Spiele.',
         titleLine2: 'Dein Mac.',
-        lede: 'BridgePlay führt deine Windows-PC-Spiele unter macOS aus — über eine selbst kompilierte Wine-11.0-Laufzeitumgebung, die es für dich verwaltet. Kein Dual Boot. Keine virtuellen Maschinen. Einfach starten und spielen.',
+        lede: 'BridgePlay führt die Windows-Spiele, die du schon besitzt, auf deinem Mac aus. Es richtet jedes einzelne für dich ein — kein Dual Boot, keine virtuelle Maschine, nichts zu konfigurieren.',
         platformNoteStrong: 'BridgePlay ist eine macOS-App für Macs mit Apple Silicon.',
         platformNoteRest: 'Es gibt keine Version für Windows, Linux, iOS oder Android. Öffne diese Seite auf einem Mac mit M-Chip, dann ist der Download hier.',
         whatItNeeds: 'Was es zum Laufen braucht',
         downloadNow: 'Jetzt herunterladen',
         learnMore: 'Mehr erfahren',
         fineLink: 'Voraussetzungen — und was tun, wenn macOS blockiert',
+        ctaNote: 'Kostenloser Download · Zum Testen keine Karte nötig',
         statTrialValue: '7 Tage',
         statTrialLabel: 'Kostenlos testen',
         statSiliconValue: 'Apple Silicon',
         statSiliconLabel: 'M1 und neuer',
         statUpdatesValue: 'Auto',
         statUpdatesLabel: 'Updates',
-        caption: 'Wine 11.0, aus dem Quellcode gebaut · WoW64 · Apple Silicon',
+        caption: 'Nativ auf Apple Silicon · Automatische Einrichtung pro Spiel · macOS 14+',
         screenshotAlt: 'Die BridgePlay-Bibliothek unter macOS: fünf installierte Spiele in einem Raster, daneben das geöffnete Detailfenster für Aetherium Online, startbereit',
     },
 
@@ -92,7 +93,7 @@ const de: Dictionary = {
             },
             updates: {
                 title: 'Automatische Updates',
-                desc: 'BridgePlay sucht bei jedem Start nach einer neueren Version von sich selbst und installiert sie für dich. Deine Spiele werden dabei nie angefasst.',
+                desc: 'BridgePlay sucht bei jedem Start nach einer neueren Version von sich selbst und bietet dir an, sie zu installieren — kein manueller Download, nichts zu ziehen. Deine Spiele werden dabei nie angefasst.',
             },
             library: {
                 title: 'Spielebibliothek',
@@ -166,6 +167,13 @@ const de: Dictionary = {
                 title: 'Einstellungen pro Spiel',
                 desc: 'Was du änderst, merkt sich BridgePlay nur für dieses eine Spiel, nicht für deine ganze Bibliothek.',
             },
+        },
+        fit: {
+            goodLabel: 'Läuft gut',
+            goodItems: ['Spiele aus den 2000ern und 2010ern', 'Online-Welten und MMO-Clients', 'Indie- und 2D-Spiele', 'Alles, was auf einem älteren Windows-PC lief'],
+            badLabel: 'Erwarte nicht, dass es läuft',
+            badItems: ['Große Titel der letzten Jahre', 'Kompetitive Shooter mit Anti-Cheat', 'Alles, was nur für DirectX 12 gebaut ist'],
+            note: 'Du weißt nicht, wohin dein Spiel gehört? Genau dafür ist die kostenlose 7-Tage-Testphase da.',
         },
         visualLabel: 'Unterstützte Technologien',
         specs: {
@@ -614,11 +622,11 @@ const de: Dictionary = {
     meta: {
         home: {
             title: 'BridgePlay — Windows-Spiele auf deinem Mac spielen',
-            description: 'Führe deine vorhandenen Windows-Spiele auf einem Mac mit Apple Silicon aus. BridgePlay ist ein nativer macOS-Launcher, der eine selbst kompilierte Wine-11.0-Laufzeitumgebung für dich verwaltet — kein Dual Boot, keine virtuellen Maschinen.',
+            description: 'Führe die Windows-Spiele, die du schon besitzt, auf einem Mac mit Apple Silicon aus. BridgePlay ist ein nativer macOS-Launcher, der jedes Spiel für dich einrichtet — kein Dual Boot, keine virtuelle Maschine. 7 Tage kostenlos testen.',
         },
         download: {
             title: 'BridgePlay für macOS herunterladen — Apple Silicon',
-            description: 'Lade das BridgePlay-Image für Macs mit Apple Silicon herunter, mit Größe und SHA-256 genau der ausgelieferten Datei, den Systemvoraussetzungen sowie den Schritten für Rosetta 2 und den ersten Start.',
+            description: 'Lade BridgePlay für Macs mit Apple Silicon herunter — M1 oder neuer, macOS 14+. Mit exakter Größe und SHA-256 der ausgelieferten Datei, dem einen Rosetta-2-Befehl und dem Vorgehen, wenn macOS den ersten Start blockiert.',
         },
         limitations: {
             title: 'Bekannte Einschränkungen — BridgePlay',

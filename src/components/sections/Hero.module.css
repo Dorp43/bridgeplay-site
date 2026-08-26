@@ -100,6 +100,17 @@
 }
 /* Quiet second door under the buttons. width (not flex-basis) so it still takes
    its own row once .actions turns into a column at 600px. */
+/* Reassurance line under the action row. width:100% puts it on its own row
+   inside .actions, so it rides that row's single fadeInUp like .fineLink
+   does rather than needing a stagger delay of its own. */
+.ctaNote {
+    display: block;
+    width: 100%;
+    margin-top: -4px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+}
 .fineLink {
     display: block;
     width: 100%;

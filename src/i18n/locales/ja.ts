@@ -38,7 +38,7 @@ const ja: Dictionary = {
     },
 
     footer: {
-        tagline: 'Windows のゲームを Mac で。オープンソースの Wine をそのまま使い、Apple Silicon 向けに作られています。',
+        tagline: 'すでにお持ちの Windows のゲームを、あなたの Mac で。Apple Silicon 向けに開発。',
         product: '製品',
         legal: '規約',
         support: 'サポート',
@@ -58,20 +58,21 @@ const ja: Dictionary = {
     hero: {
         titleLine1: 'Windows のゲームを、',
         titleLine2: 'あなたの Mac で。',
-        lede: 'BridgePlay は、ソースからビルドした Wine 11.0 の実行環境を自動で管理し、Windows 用 PC ゲームを macOS 上で動かします。デュアルブートも仮想マシンも不要。起動して、遊ぶだけです。',
+        lede: 'BridgePlay は、すでにお持ちの Windows のゲームをあなたの Mac で動かします。ゲームごとの設定は自動で行うので、デュアルブートも仮想マシンも、面倒な設定も必要ありません。',
         platformNoteStrong: 'BridgePlay は Apple Silicon 搭載 Mac 向けの macOS アプリです。',
         platformNoteRest: 'Windows、Linux、iOS、Android 版はありません。M シリーズの Mac でこのページを開くと、ダウンロードが表示されます。',
         whatItNeeds: '動作に必要なもの',
         downloadNow: '今すぐダウンロード',
         learnMore: '詳しく見る',
         fineLink: '動作条件と、macOS にブロックされたときの対処',
+        ctaNote: 'ダウンロードは無料 · お試しにカードは不要',
         statTrialValue: '7 日間',
         statTrialLabel: '無料トライアル',
         statSiliconValue: 'Apple Silicon',
         statSiliconLabel: 'M1 以降',
         statUpdatesValue: '自動',
         statUpdatesLabel: 'アップデート',
-        caption: 'Wine 11.0（ソースからビルド）· WoW64 · Apple Silicon',
+        caption: 'Apple Silicon ネイティブ · ゲームごとの自動セットアップ · macOS 14 以降',
         screenshotAlt: 'macOS 上の BridgePlay ライブラリ。インストール済みの 5 本のゲームがグリッドに並び、Aetherium Online の詳細パネルが開いて起動できる状態',
     },
 
@@ -90,7 +91,7 @@ const ja: Dictionary = {
             },
             updates: {
                 title: '自動アップデート',
-                desc: 'BridgePlay は起動のたびに自身の新しいバージョンを確認し、自動でインストールします。ゲームには一切手を触れません。',
+                desc: 'BridgePlay は起動のたびに自身の新しいバージョンを確認し、インストールするかどうかを尋ねます。手動でのダウンロードもドラッグも不要です。ゲームには一切手を触れません。',
             },
             library: {
                 title: 'ゲームライブラリ',
@@ -164,6 +165,13 @@ const ja: Dictionary = {
                 title: 'ゲームごとの設定',
                 desc: '変更した内容はそのゲームだけに記憶され、ライブラリ全体には適用されません。',
             },
+        },
+        fit: {
+            goodLabel: 'よく動きます',
+            goodItems: ['2000年代・2010年代のゲーム', 'オンラインの世界や MMO のクライアント', 'インディーゲームや 2D のゲーム', '少し前の Windows PC で動いていたもの'],
+            badLabel: '動かないとお考えください',
+            badItems: ['ここ数年の大型タイトル', 'アンチチート付きの対戦シューター', 'DirectX 12 専用に作られたもの'],
+            note: 'どちらか分からない場合は、7 日間の無料トライアルでお確かめください。そのためのトライアルです。',
         },
         visualLabel: '対応テクノロジー',
         specs: {
@@ -612,11 +620,11 @@ const ja: Dictionary = {
     meta: {
         home: {
             title: 'BridgePlay — Windows のゲームを Mac で',
-            description: 'すでにお持ちの Windows のゲームを Apple Silicon 搭載 Mac で動かせます。BridgePlay は、ソースからビルドした Wine 11.0 の実行環境を自動で管理する macOS ネイティブのランチャーです。デュアルブートも仮想マシンも不要。',
+            description: 'すでにお持ちの Windows のゲームを Apple Silicon 搭載 Mac で。BridgePlay はゲームごとの設定を自動で行う macOS ネイティブのランチャーです。デュアルブートも仮想マシンも不要。7 日間の無料トライアルあり。',
         },
         download: {
             title: 'macOS 版 BridgePlay をダウンロード — Apple Silicon',
-            description: 'Apple Silicon 搭載 Mac 向けの BridgePlay ディスクイメージをダウンロード。配信中のファイルそのもののサイズと SHA-256、システム要件、Rosetta 2 と初回起動の手順を掲載しています。',
+            description: 'Apple Silicon 搭載 Mac（M1 以降、macOS 14 以降）向けの BridgePlay をダウンロード。配信中のファイルの正確なサイズと SHA-256、Rosetta 2 のインストールコマンド、初回起動が macOS にブロックされたときの対処を掲載しています。',
         },
         limitations: {
             title: '既知の制限 — BridgePlay',

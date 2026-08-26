@@ -49,7 +49,7 @@ const en = {
     },
 
     footer: {
-        tagline: 'Play Windows games on your Mac. Built on stock, open-source Wine, for Apple Silicon.',
+        tagline: 'Play the Windows games you already own on your Mac. Built for Apple Silicon.',
         product: 'Product',
         legal: 'Legal',
         support: 'Support',
@@ -69,20 +69,21 @@ const en = {
     hero: {
         titleLine1: 'Windows Games.',
         titleLine2: 'Your Mac.',
-        lede: 'BridgePlay runs your Windows PC games on macOS through a source-built Wine 11.0 runtime it manages for you. No dual boot. No virtual machines. Just launch and play.',
+        lede: 'BridgePlay runs the Windows games you already own on your Mac. It sets each one up for you — no dual boot, no virtual machine, nothing to configure.',
         platformNoteStrong: 'BridgePlay is a macOS app for Apple Silicon Macs.',
         platformNoteRest: 'There is no Windows, Linux, iOS or Android build. Open this page on an M-series Mac and the download is here.',
         whatItNeeds: 'What it needs to run',
         downloadNow: 'Download Now',
         learnMore: 'Learn More',
         fineLink: 'Requirements, and what to do if macOS blocks it',
+        ctaNote: 'Free to download · No card to try it',
         statTrialValue: '7 Days',
         statTrialLabel: 'Free Trial',
         statSiliconValue: 'Apple Silicon',
         statSiliconLabel: 'M1 and Later',
         statUpdatesValue: 'Auto',
         statUpdatesLabel: 'Updates',
-        caption: 'Wine 11.0, built from source · WoW64 · Apple Silicon',
+        caption: 'Native on Apple Silicon · Automatic per-game setup · macOS 14+',
         screenshotAlt: 'The BridgePlay library on macOS: five installed games in a grid, with the detail panel for Aetherium Online open and ready to launch',
     },
 
@@ -101,7 +102,7 @@ const en = {
             },
             updates: {
                 title: 'Automatic Updates',
-                desc: 'BridgePlay checks for a newer version of itself each time it starts and installs it for you. Your games are never touched.',
+                desc: 'BridgePlay checks for a newer version of itself each time it starts and offers to install it — no manual download, nothing to drag. Your games are never touched.',
             },
             library: {
                 title: 'Game Library',
@@ -177,6 +178,13 @@ const en = {
                 title: 'Per-Game Settings',
                 desc: 'Whatever you change is remembered for that one game, not applied across your library.',
             },
+        },
+        fit: {
+            goodLabel: 'Runs well',
+            goodItems: ['Games from the 2000s and 2010s', 'Online worlds and MMO clients', 'Indie and 2D games', 'Anything that ran on an older Windows PC'],
+            badLabel: 'Don’t expect it to run',
+            badItems: ['Big-name releases from the last few years', 'Competitive shooters with anti-cheat', 'Anything built only for DirectX 12'],
+            note: 'Not sure which yours is? That is exactly what the free 7-day trial is for.',
         },
         visualLabel: 'Supported Technologies',
         specs: {
@@ -641,11 +649,11 @@ const en = {
     meta: {
         home: {
             title: 'BridgePlay — Play Windows Games on Your Mac',
-            description: 'Run your existing Windows games on an Apple Silicon Mac. BridgePlay is a native macOS launcher that manages a source-built Wine 11.0 runtime for you — no dual boot, no virtual machines.',
+            description: 'Run the Windows games you already own on an Apple Silicon Mac. BridgePlay is a native macOS launcher that sets up each game for you — no dual boot, no virtual machine. Free 7-day trial.',
         },
         download: {
             title: 'Download BridgePlay for macOS — Apple Silicon',
-            description: 'Download the BridgePlay disk image for Apple Silicon Macs, with the size and SHA-256 of the exact file being served, the system requirements, and the Rosetta 2 and first-launch steps.',
+            description: 'Download BridgePlay for Apple Silicon Macs — M1 or later, macOS 14+. Includes the exact size and SHA-256 of the file served, the one Rosetta 2 command, and what to do if macOS blocks the first launch.',
         },
         limitations: {
             title: 'Known Limitations — BridgePlay',
