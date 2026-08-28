@@ -90,6 +90,61 @@ export function writeStoredLocale(code: LocaleCode): void {
     }
 }
 
-export function initialLocale(): LocaleCode {
-    return readStoredLocale() ?? detectLocale();
+/* ── URL is the source of truth for the active language ──────────────────
+   English lives at the root and every other language under /<code>/. Root
+   English keeps the existing URLs (and their search history) intact, and it
+   keeps the three paths that outside systems hard-code — /auth/action from the
+   Firebase console, /app-checkout from the Mac app's WKWebView and Paddle's
+   successUrl — working exactly as they did.
+
+   The prefix is handed to <BrowserRouter basename>, which means every existing
+   <Link to="/download"> resolves to /ja/download with no call-site change, and
+   useLocation().pathname still reports "/download" so path-dependent logic is
+   untouched. */
+
+/** The locale a URL declares, or English when it declares none. */
+export function localeFromPath(pathname: string): LocaleCode {
+    const first = pathname.split('/')[1] ?? '';
+    /* Case-insensitive: a shared link may arrive as /PT-BR/download. */
+    const match = CODES.find(code => code.toLowerCase() === first.toLowerCase());
+    return match ?? DEFAULT_LOCALE;
 }
+
+/** '' for English, '/ja' for the rest — the router basename. */
+export function localePrefix(code: LocaleCode): string {
+    return code === DEFAULT_LOCALE ? '' : `/${code}`;
+}
+
+/** Canonical origin. Absolute URLs must be on the real domain even in dev —
+    Paddle validates successUrl against the registered domain. */
+export const SITE_ORIGIN = 'https://bridgeplay.app';
+
+/** The prefix the page is currently being read under. */
+export function currentLocalePrefix(): string {
+    return localePrefix(localeFromPath(window.location.pathname));
+}
+
+/**
+ * An absolute site URL in the language the visitor is currently reading.
+ *
+ * For anywhere that has to hand an absolute URL to something outside the app
+ * and wants the visitor to come back to the same language — Paddle's
+ * successUrl above all. A bare '/account' there returns a Japanese buyer to
+ * the English page at the moment they finish paying, and the stored-preference
+ * redirect cannot save them: someone who arrived from a search result has
+ * never touched the selector, so there is nothing stored.
+ */
+export function absoluteLocalizedUrl(path: string): string {
+    return `${SITE_ORIGIN}${currentLocalePrefix()}${path}`;
+}
+
+/** The same page in another language, preserving path, query and hash. */
+export function localizedHref(code: LocaleCode, pathname: string, search = '', hash = ''): string {
+    const current = localeFromPath(pathname);
+    const bare = current === DEFAULT_LOCALE
+        ? pathname
+        : pathname.slice(`/${current}`.length) || '/';
+    const prefixed = `${localePrefix(code)}${bare === '/' ? '/' : bare}`;
+    return `${prefixed}${search}${hash}`;
+}
+

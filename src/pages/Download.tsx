@@ -273,7 +273,7 @@ export default function Download() {
                                     <CommandBlock command={SIGNATURE_COMMAND} label={t.downloadPage.copyLabelSignature} />
                                     <p className={styles.cardFine}>
                                         {t.downloadPage.signatureFineBefore}
-                                        {' '}<a href="/#contact">{t.downloadPage.signatureFineLink}</a> {t.downloadPage.signatureFineAfter}
+                                        {' '}<Link to="/#contact">{t.downloadPage.signatureFineLink}</Link> {t.downloadPage.signatureFineAfter}
                                     </p>
                                 </div>
                             </div>
@@ -287,8 +287,8 @@ export default function Download() {
                             <p>
                                 {t.downloadPage.outroBefore}
                                 {' '}<Link to="/limitations">{t.downloadPage.outroLimitations}</Link>{t.downloadPage.outroMiddle}
-                                {' '}<a href="/#faq">{t.downloadPage.outroFaq}</a> {t.downloadPage.outroDoesNotAnswer}
-                                {' '}<a href="/#contact">{t.downloadPage.outroContact}</a>.
+                                {' '}<Link to="/#faq">{t.downloadPage.outroFaq}</Link> {t.downloadPage.outroDoesNotAnswer}
+                                {' '}<Link to="/#contact">{t.downloadPage.outroContact}</Link>.
                             </p>
                             <Link to="/" className={styles.plainLink}>{t.common.backToBridgePlay}</Link>
                         </div>

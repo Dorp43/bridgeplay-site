@@ -1,0 +1,74 @@
+/* Sits directly under the fixed nav. Deliberately the quietest bar on the
+   site: it is an offer, not an announcement, and most visitors never see it. */
+.bar {
+    position: fixed;
+    top: 68px;
+    right: 24px;
+    z-index: 90;
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+    padding: 4px 4px 4px 6px;
+    border-radius: 100px;
+    background: rgba(12, 12, 20, 0.92);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
+    animation: langSuggestIn 0.45s 0.9s var(--ease-out-expo) both;
+}
+/* Delayed so it never competes with the boot splash handing off to the page. */
+@keyframes langSuggestIn {
+    from { opacity: 0; transform: translateY(-8px); }
+    to   { opacity: 1; transform: none; }
+}
+
+.offer {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 6px 12px;
+    border-radius: 100px;
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+    font-weight: 600;
+    transition: background 0.2s, color 0.2s;
+}
+.offer:hover {
+    background: rgba(255, 255, 255, 0.07);
+    color: var(--text-primary);
+}
+.endonym { white-space: nowrap; }
+.arrow {
+    opacity: 0.6;
+    transition: transform 0.25s var(--ease-out-expo);
+}
+.offer:hover .arrow { transform: translateX(3px); opacity: 1; }
+
+.dismiss {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    /* 32px is under the 44px touch target, but this is a decline control
+       sitting beside a much larger accept — the cost of missing it is that the
+       bar stays, not that anything is lost. */
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+}
+.dismiss:hover {
+    background: rgba(255, 255, 255, 0.07);
+    color: var(--text-primary);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .bar { animation: none; }
+    .offer:hover .arrow { transform: none; }
+}
+
+@media (max-width: 600px) {
+    .bar { top: 62px; right: 12px; left: 12px; justify-content: space-between; }
+}

@@ -4,6 +4,7 @@ import Nav from './components/layout/Nav';
 import Footer from './components/layout/Footer';
 import HomePage from './pages/HomePage';
 import ScrollToTop from './components/ui/ScrollToTop';
+import LanguageSuggestion from './components/layout/LanguageSuggestion';
 import { useI18n } from './i18n/useI18n';
 import type { Dictionary } from './i18n/types';
 
@@ -59,7 +60,7 @@ const pageTitles = (t: Dictionary): Record<string, string> => ({
 });
 
 function PageTitle() {
-    const { pathname } = useLocation();
+    const { pathname, hash } = useLocation();
     const { t } = useI18n();
     useEffect(() => {
         /* Unmatched paths render the wildcard NotFound route, so its title is
@@ -67,8 +68,16 @@ function PageTitle() {
         document.title = pageTitles(t)[pathname] || t.meta.notFound.title;
     }, [pathname, t]);
     /* Scroll reset stays keyed on pathname alone: re-running it when the
-       language changes would yank a reader back to the top mid-page. */
-    useEffect(() => { window.scrollTo(0, 0); }, [pathname]);
+       language changes would yank a reader back to the top mid-page.
+
+       A URL carrying a hash owns its own scroll position — /#faq from the
+       footer, or a shared deep link — and this reset used to stomp it, landing
+       every one of those at the top of the home page instead of the section
+       they named. */
+    useEffect(() => {
+        if (hash) return;
+        window.scrollTo(0, 0);
+    }, [pathname, hash]);
     return null;
 }
 
@@ -80,6 +89,10 @@ function MainLayout() {
     return (
         <>
             <Nav variant="full" />
+            {/* Marketing routes only. Search traffic lands here, and scoping it
+                this way keeps the bar out of /app-checkout, which renders
+                inside the Mac app's WKWebView. */}
+            <LanguageSuggestion />
             <Suspense fallback={<RouteFallback />}>
                 <Outlet />
             </Suspense>

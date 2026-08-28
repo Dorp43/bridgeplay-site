@@ -102,9 +102,9 @@ export default function Limitations() {
                         <div className={styles.outroLinks}>
                             <Link to="/download" className={styles.textLink}>{t.limitations.outroDownload}</Link>
                             <span className={styles.dot} aria-hidden="true">&middot;</span>
-                            <a href="/#faq" className={styles.textLink}>{t.limitations.outroFaq}</a>
+                            <Link to="/#faq" className={styles.textLink}>{t.limitations.outroFaq}</Link>
                             <span className={styles.dot} aria-hidden="true">&middot;</span>
-                            <a href="/#contact" className={styles.textLink}>{t.limitations.outroContact}</a>
+                            <Link to="/#contact" className={styles.textLink}>{t.limitations.outroContact}</Link>
                         </div>
                         <Link to="/" className="back-link">{t.common.backToBridgePlay}</Link>
                     </div>

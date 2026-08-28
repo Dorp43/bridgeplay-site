@@ -1,26 +1,27 @@
 import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
-import { initialLocale, localeMeta, writeStoredLocale, type LocaleCode } from './config';
+import { localeFromPath, localeMeta, localizedHref, writeStoredLocale, type LocaleCode } from './config';
 import { cachedDictionary, en, loadDictionary } from './dictionaries';
 import { I18nContext, type I18nState } from './useI18n';
 
 /**
- * Owns the active language.
+ * Owns the active language, which the URL determines: English at the root,
+ * every other language under /<code>/.
  *
- * The locale is resolved synchronously (stored choice, else navigator) so the
- * first render already knows which language it is in. Its dictionary may not
- * have arrived yet — every locale but English is a lazy chunk — so `ready` is
- * false until it does, and main.tsx's BootGate holds the splash on that flag.
- * Nobody sees English flash into Japanese.
+ * The locale is therefore known synchronously on the first render. Its
+ * dictionary may not have arrived — every locale but English is a lazy chunk —
+ * so `ready` stays false until it does, and main.tsx's BootGate holds the
+ * splash on that flag. Nobody sees English flash into Japanese.
  *
- * Switching language later keeps the OUTGOING dictionary on screen while the
- * new chunk loads, rather than falling back to English for a frame. A language
- * already visited this session is in the cache and swaps synchronously.
+ * Switching language navigates rather than swapping state; see setLocale.
  */
 export default function I18nProvider({ children }: { children: ReactNode }) {
-    const [locale, setLocaleState] = useState<LocaleCode>(initialLocale);
-    /* Seeded from the cache so an already-loaded language never re-flashes.
-       `locale` is already initialised by the line above, so these read the
-       resolved value rather than calling initialLocale() a second time. */
+    /* The URL decides the language — not localStorage, not the browser. That
+       makes /ja/download a real, shareable, indexable address rather than a
+       page whose language depends on who is looking at it. main.tsx has
+       already applied any stored preference by redirecting before React
+       mounted, so by here the URL is authoritative. */
+    const [locale] = useState<LocaleCode>(() => localeFromPath(window.location.pathname));
+    /* Seeded from the cache so an already-loaded language never re-flashes. */
     const [dict, setDict] = useState(() => cachedDictionary(locale) ?? en);
     const [ready, setReady] = useState(() => cachedDictionary(locale) !== undefined);
 
@@ -49,29 +50,33 @@ export default function I18nProvider({ children }: { children: ReactNode }) {
         forever. Written only once the matching dictionary is on screen, so the
         attribute never disagrees with the words under it. */
     useEffect(() => {
-        if (ready) document.documentElement.lang = locale;
+        if (!ready) return;
+        document.documentElement.lang = locale;
+        /* og:locale too, or a share of a page being read in Japanese still
+           announces itself as en_US to every social crawler. Underscore form,
+           which is what the Open Graph spec wants. */
+        let tag = document.head.querySelector('meta[property="og:locale"]');
+        if (!tag) {
+            tag = document.createElement('meta');
+            tag.setAttribute('property', 'og:locale');
+            document.head.appendChild(tag);
+        }
+        tag.setAttribute('content', localeMeta(locale).bcp47.replace('-', '_'));
     }, [locale, ready]);
 
+    /* Changing language changes the URL, so it is a real navigation rather
+       than a state swap. The router's basename is fixed for the life of the
+       document, which makes a full load the honest way to move between
+       language roots — and it guarantees canonical, hreflang and og:locale all
+       agree with the address bar afterwards. The dictionary chunk is already
+       in the HTTP cache by then, and BootGate covers the handoff. */
     const setLocale = useCallback((code: LocaleCode) => {
+        if (code === locale) return;
         writeStoredLocale(code);
-        setLocaleState(code);
-
-        const token = ++requestRef.current;
-        const cached = cachedDictionary(code);
-        if (cached) {
-            /* Already loaded this session — swap in the same tick so the page
-               never flickers back through English. */
-            setDict(cached);
-            setReady(true);
-            return;
-        }
-        setReady(false);
-        loadDictionary(code).then(loaded => {
-            if (requestRef.current !== token) return;
-            setDict(loaded);
-            setReady(true);
-        });
-    }, []);
+        window.location.assign(
+            localizedHref(code, window.location.pathname, window.location.search, window.location.hash)
+        );
+    }, [locale]);
 
     const value = useMemo<I18nState>(() => ({
         locale,

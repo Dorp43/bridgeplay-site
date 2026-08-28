@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import LegalLayout from '../components/layout/LegalLayout';
 import { useDocumentMeta } from '../hooks/useDocumentMeta';
 import { useI18n } from '../i18n/useI18n';
@@ -27,7 +28,7 @@ export default function Notices() {
 
             <h2>Wine</h2>
             <p><strong>Licence: LGPL-2.1-or-later.</strong> BridgePlay bundles <a href="https://www.winehq.org/" target="_blank" rel="noopener noreferrer">Wine</a> 11.0, built from upstream source and left unmodified. It ships as separate dynamic libraries under <code>Contents/Resources/Runtime/</code>, loaded at runtime rather than statically linked into BridgePlay's own binary, and you may replace them with a compatible build — the relinking right the LGPL reserves for you in section 6.</p>
-            <p><strong>Source.</strong> The exact revision shipped is pinned by URL and SHA-256 in the app's build manifest. Corresponding source for that version is available from winehq.org, and from us on request through the <a href="/#contact">contact form</a>.</p>
+            <p><strong>Source.</strong> The exact revision shipped is pinned by URL and SHA-256 in the app's build manifest. Corresponding source for that version is available from winehq.org, and from us on request through the <Link to="/#contact">contact form</Link>.</p>
 
             <h2>FreeType</h2>
             <p><strong>Licence: the FreeType License (FTL).</strong> FreeType 2.13.3 is built from pinned source as a shared library and loaded at runtime by Wine's <code>win32u</code>; it is not statically linked into the app binary. FreeType is offered under FTL or GPL-2.0-or-later, and this build elects the FTL.</p>

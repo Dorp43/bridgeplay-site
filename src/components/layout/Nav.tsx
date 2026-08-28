@@ -105,10 +105,10 @@ export default function Nav({ variant = 'full' }: Props) {
             <nav ref={navRef} className={styles.nav}>
                 <Link to="/" className={styles.logo}><img src="/favicon-192.png" alt="" className={styles.logoMark} width={26} height={26} />BridgePlay</Link>
                 <div className={styles.links}>
-                    <a href="/#features" onClick={e => handleAnchor(e, '#features')}>{t.nav.features}</a>
-                    <a href="/#how-it-works" onClick={e => handleAnchor(e, '#how-it-works')}>{t.nav.howItWorks}</a>
-                    <a href="/#pricing" onClick={e => handleAnchor(e, '#pricing')}>{t.nav.pricing}</a>
-                    <a href="/#faq" onClick={e => handleAnchor(e, '#faq')}>{t.nav.faq}</a>
+                    <Link to="/#features" onClick={e => handleAnchor(e, '#features')}>{t.nav.features}</Link>
+                    <Link to="/#how-it-works" onClick={e => handleAnchor(e, '#how-it-works')}>{t.nav.howItWorks}</Link>
+                    <Link to="/#pricing" onClick={e => handleAnchor(e, '#pricing')}>{t.nav.pricing}</Link>
+                    <Link to="/#faq" onClick={e => handleAnchor(e, '#faq')}>{t.nav.faq}</Link>
                     <Link to="/changelog">{t.nav.changelog}</Link>
                     <LanguageSelector />
                     <span className={`${styles.authSlot} ${!loading ? styles.ready : ''}`}>
@@ -164,10 +164,10 @@ export default function Nav({ variant = 'full' }: Props) {
                 inert={!menuOpen}
                 className={`${styles.mobileMenu} ${menuOpen ? styles.mobileMenuOpen : ''}`}
             >
-                <a href="/#features" onClick={e => handleAnchor(e, '#features')}>{t.nav.features}</a>
-                <a href="/#how-it-works" onClick={e => handleAnchor(e, '#how-it-works')}>{t.nav.howItWorks}</a>
-                <a href="/#pricing" onClick={e => handleAnchor(e, '#pricing')}>{t.nav.pricing}</a>
-                <a href="/#faq" onClick={e => handleAnchor(e, '#faq')}>{t.nav.faq}</a>
+                <Link to="/#features" onClick={e => handleAnchor(e, '#features')}>{t.nav.features}</Link>
+                <Link to="/#how-it-works" onClick={e => handleAnchor(e, '#how-it-works')}>{t.nav.howItWorks}</Link>
+                <Link to="/#pricing" onClick={e => handleAnchor(e, '#pricing')}>{t.nav.pricing}</Link>
+                <Link to="/#faq" onClick={e => handleAnchor(e, '#faq')}>{t.nav.faq}</Link>
                 <Link to="/changelog" onClick={() => setMenuOpen(false)}>{t.nav.changelog}</Link>
                 <span className={`${styles.authSlot} ${!loading ? styles.ready : ''}`}>
                     {!loading && (

@@ -1,11 +1,780 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://bridgeplay.app/</loc><priority>1.0</priority></url>
-  <url><loc>https://bridgeplay.app/download</loc><lastmod>2026-08-12</lastmod><priority>0.9</priority></url>
-  <url><loc>https://bridgeplay.app/account</loc><priority>0.7</priority></url>
-  <url><loc>https://bridgeplay.app/changelog</loc><priority>0.6</priority></url>
-  <url><loc>https://bridgeplay.app/limitations</loc><lastmod>2026-08-12</lastmod><priority>0.6</priority></url>
-  <url><loc>https://bridgeplay.app/privacy-policy</loc><priority>0.3</priority></url>
-  <url><loc>https://bridgeplay.app/terms</loc><priority>0.3</priority></url>
-  <url><loc>https://bridgeplay.app/refund-policy</loc><priority>0.3</priority></url>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <url>
+    <loc>https://bridgeplay.app/</loc>
+    <priority>1.0</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://bridgeplay.app/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://bridgeplay.app/es/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://bridgeplay.app/de/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://bridgeplay.app/fr/"/>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://bridgeplay.app/pt-BR/"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://bridgeplay.app/ja/"/>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://bridgeplay.app/zh-CN/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://bridgeplay.app/"/>
+  </url>
+  <url>
+    <loc>https://bridgeplay.app/es/</loc>
+    <priority>1.0</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://bridgeplay.app/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://bridgeplay.app/es/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://bridgeplay.app/de/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://bridgeplay.app/fr/"/>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://bridgeplay.app/pt-BR/"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://bridgeplay.app/ja/"/>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://bridgeplay.app/zh-CN/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://bridgeplay.app/"/>
+  </url>
+  <url>
+    <loc>https://bridgeplay.app/de/</loc>
+    <priority>1.0</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://bridgeplay.app/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://bridgeplay.app/es/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://bridgeplay.app/de/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://bridgeplay.app/fr/"/>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://bridgeplay.app/pt-BR/"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://bridgeplay.app/ja/"/>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://bridgeplay.app/zh-CN/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://bridgeplay.app/"/>
+  </url>
+  <url>
+    <loc>https://bridgeplay.app/fr/</loc>
+    <priority>1.0</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://bridgeplay.app/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://bridgeplay.app/es/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://bridgeplay.app/de/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://bridgeplay.app/fr/"/>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://bridgeplay.app/pt-BR/"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://bridgeplay.app/ja/"/>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://bridgeplay.app/zh-CN/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://bridgeplay.app/"/>
+  </url>
+  <url>
+    <loc>https://bridgeplay.app/pt-BR/</loc>
+    <priority>1.0</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://bridgeplay.app/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://bridgeplay.app/es/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://bridgeplay.app/de/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://bridgeplay.app/fr/"/>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://bridgeplay.app/pt-BR/"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://bridgeplay.app/ja/"/>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://bridgeplay.app/zh-CN/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://bridgeplay.app/"/>
+  </url>
+  <url>
+    <loc>https://bridgeplay.app/ja/</loc>
+    <priority>1.0</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://bridgeplay.app/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://bridgeplay.app/es/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://bridgeplay.app/de/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://bridgeplay.app/fr/"/>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://bridgeplay.app/pt-BR/"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://bridgeplay.app/ja/"/>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://bridgeplay.app/zh-CN/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://bridgeplay.app/"/>
+  </url>
+  <url>
+    <loc>https://bridgeplay.app/zh-CN/</loc>
+    <priority>1.0</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://bridgeplay.app/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://bridgeplay.app/es/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://bridgeplay.app/de/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://bridgeplay.app/fr/"/>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://bridgeplay.app/pt-BR/"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://bridgeplay.app/ja/"/>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://bridgeplay.app/zh-CN/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://bridgeplay.app/"/>
+  </url>
+  <url>
+    <loc>https://bridgeplay.app/download</loc>
+    <lastmod>2026-08-26</lastmod>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://bridgeplay.app/download"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://bridgeplay.app/es/download"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://bridgeplay.app/de/download"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://bridgeplay.app/fr/download"/>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://bridgeplay.app/pt-BR/download"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://bridgeplay.app/ja/download"/>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://bridgeplay.app/zh-CN/download"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://bridgeplay.app/download"/>
+  </url>
+  <url>
+    <loc>https://bridgeplay.app/es/download</loc>
+    <lastmod>2026-08-26</lastmod>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://bridgeplay.app/download"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://bridgeplay.app/es/download"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://bridgeplay.app/de/download"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://bridgeplay.app/fr/download"/>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://bridgeplay.app/pt-BR/download"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://bridgeplay.app/ja/download"/>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://bridgeplay.app/zh-CN/download"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://bridgeplay.app/download"/>
+  </url>
+  <url>
+    <loc>https://bridgeplay.app/de/download</loc>
+    <lastmod>2026-08-26</lastmod>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://bridgeplay.app/download"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://bridgeplay.app/es/download"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://bridgeplay.app/de/download"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://bridgeplay.app/fr/download"/>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://bridgeplay.app/pt-BR/download"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://bridgeplay.app/ja/download"/>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://bridgeplay.app/zh-CN/download"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://bridgeplay.app/download"/>
+  </url>
+  <url>
+    <loc>https://bridgeplay.app/fr/download</loc>
+    <lastmod>2026-08-26</lastmod>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://bridgeplay.app/download"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://bridgeplay.app/es/download"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://bridgeplay.app/de/download"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://bridgeplay.app/fr/download"/>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://bridgeplay.app/pt-BR/download"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://bridgeplay.app/ja/download"/>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://bridgeplay.app/zh-CN/download"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://bridgeplay.app/download"/>
+  </url>
+  <url>
+    <loc>https://bridgeplay.app/pt-BR/download</loc>
+    <lastmod>2026-08-26</lastmod>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://bridgeplay.app/download"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://bridgeplay.app/es/download"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://bridgeplay.app/de/download"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://bridgeplay.app/fr/download"/>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://bridgeplay.app/pt-BR/download"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://bridgeplay.app/ja/download"/>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://bridgeplay.app/zh-CN/download"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://bridgeplay.app/download"/>
+  </url>
+  <url>
+    <loc>https://bridgeplay.app/ja/download</loc>
+    <lastmod>2026-08-26</lastmod>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://bridgeplay.app/download"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://bridgeplay.app/es/download"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://bridgeplay.app/de/download"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://bridgeplay.app/fr/download"/>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://bridgeplay.app/pt-BR/download"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://bridgeplay.app/ja/download"/>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://bridgeplay.app/zh-CN/download"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://bridgeplay.app/download"/>
+  </url>
+  <url>
+    <loc>https://bridgeplay.app/zh-CN/download</loc>
+    <lastmod>2026-08-26</lastmod>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://bridgeplay.app/download"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://bridgeplay.app/es/download"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://bridgeplay.app/de/download"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://bridgeplay.app/fr/download"/>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://bridgeplay.app/pt-BR/download"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://bridgeplay.app/ja/download"/>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://bridgeplay.app/zh-CN/download"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://bridgeplay.app/download"/>
+  </url>
+  <url>
+    <loc>https://bridgeplay.app/changelog</loc>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://bridgeplay.app/changelog"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://bridgeplay.app/es/changelog"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://bridgeplay.app/de/changelog"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://bridgeplay.app/fr/changelog"/>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://bridgeplay.app/pt-BR/changelog"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://bridgeplay.app/ja/changelog"/>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://bridgeplay.app/zh-CN/changelog"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://bridgeplay.app/changelog"/>
+  </url>
+  <url>
+    <loc>https://bridgeplay.app/es/changelog</loc>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://bridgeplay.app/changelog"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://bridgeplay.app/es/changelog"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://bridgeplay.app/de/changelog"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://bridgeplay.app/fr/changelog"/>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://bridgeplay.app/pt-BR/changelog"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://bridgeplay.app/ja/changelog"/>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://bridgeplay.app/zh-CN/changelog"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://bridgeplay.app/changelog"/>
+  </url>
+  <url>
+    <loc>https://bridgeplay.app/de/changelog</loc>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://bridgeplay.app/changelog"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://bridgeplay.app/es/changelog"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://bridgeplay.app/de/changelog"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://bridgeplay.app/fr/changelog"/>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://bridgeplay.app/pt-BR/changelog"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://bridgeplay.app/ja/changelog"/>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://bridgeplay.app/zh-CN/changelog"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://bridgeplay.app/changelog"/>
+  </url>
+  <url>
+    <loc>https://bridgeplay.app/fr/changelog</loc>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://bridgeplay.app/changelog"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://bridgeplay.app/es/changelog"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://bridgeplay.app/de/changelog"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://bridgeplay.app/fr/changelog"/>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://bridgeplay.app/pt-BR/changelog"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://bridgeplay.app/ja/changelog"/>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://bridgeplay.app/zh-CN/changelog"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://bridgeplay.app/changelog"/>
+  </url>
+  <url>
+    <loc>https://bridgeplay.app/pt-BR/changelog</loc>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://bridgeplay.app/changelog"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://bridgeplay.app/es/changelog"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://bridgeplay.app/de/changelog"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://bridgeplay.app/fr/changelog"/>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://bridgeplay.app/pt-BR/changelog"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://bridgeplay.app/ja/changelog"/>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://bridgeplay.app/zh-CN/changelog"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://bridgeplay.app/changelog"/>
+  </url>
+  <url>
+    <loc>https://bridgeplay.app/ja/changelog</loc>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://bridgeplay.app/changelog"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://bridgeplay.app/es/changelog"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://bridgeplay.app/de/changelog"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://bridgeplay.app/fr/changelog"/>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://bridgeplay.app/pt-BR/changelog"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://bridgeplay.app/ja/changelog"/>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://bridgeplay.app/zh-CN/changelog"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://bridgeplay.app/changelog"/>
+  </url>
+  <url>
+    <loc>https://bridgeplay.app/zh-CN/changelog</loc>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://bridgeplay.app/changelog"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://bridgeplay.app/es/changelog"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://bridgeplay.app/de/changelog"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://bridgeplay.app/fr/changelog"/>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://bridgeplay.app/pt-BR/changelog"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://bridgeplay.app/ja/changelog"/>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://bridgeplay.app/zh-CN/changelog"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://bridgeplay.app/changelog"/>
+  </url>
+  <url>
+    <loc>https://bridgeplay.app/limitations</loc>
+    <lastmod>2026-08-26</lastmod>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://bridgeplay.app/limitations"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://bridgeplay.app/es/limitations"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://bridgeplay.app/de/limitations"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://bridgeplay.app/fr/limitations"/>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://bridgeplay.app/pt-BR/limitations"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://bridgeplay.app/ja/limitations"/>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://bridgeplay.app/zh-CN/limitations"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://bridgeplay.app/limitations"/>
+  </url>
+  <url>
+    <loc>https://bridgeplay.app/es/limitations</loc>
+    <lastmod>2026-08-26</lastmod>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://bridgeplay.app/limitations"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://bridgeplay.app/es/limitations"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://bridgeplay.app/de/limitations"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://bridgeplay.app/fr/limitations"/>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://bridgeplay.app/pt-BR/limitations"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://bridgeplay.app/ja/limitations"/>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://bridgeplay.app/zh-CN/limitations"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://bridgeplay.app/limitations"/>
+  </url>
+  <url>
+    <loc>https://bridgeplay.app/de/limitations</loc>
+    <lastmod>2026-08-26</lastmod>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://bridgeplay.app/limitations"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://bridgeplay.app/es/limitations"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://bridgeplay.app/de/limitations"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://bridgeplay.app/fr/limitations"/>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://bridgeplay.app/pt-BR/limitations"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://bridgeplay.app/ja/limitations"/>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://bridgeplay.app/zh-CN/limitations"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://bridgeplay.app/limitations"/>
+  </url>
+  <url>
+    <loc>https://bridgeplay.app/fr/limitations</loc>
+    <lastmod>2026-08-26</lastmod>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://bridgeplay.app/limitations"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://bridgeplay.app/es/limitations"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://bridgeplay.app/de/limitations"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://bridgeplay.app/fr/limitations"/>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://bridgeplay.app/pt-BR/limitations"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://bridgeplay.app/ja/limitations"/>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://bridgeplay.app/zh-CN/limitations"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://bridgeplay.app/limitations"/>
+  </url>
+  <url>
+    <loc>https://bridgeplay.app/pt-BR/limitations</loc>
+    <lastmod>2026-08-26</lastmod>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://bridgeplay.app/limitations"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://bridgeplay.app/es/limitations"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://bridgeplay.app/de/limitations"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://bridgeplay.app/fr/limitations"/>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://bridgeplay.app/pt-BR/limitations"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://bridgeplay.app/ja/limitations"/>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://bridgeplay.app/zh-CN/limitations"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://bridgeplay.app/limitations"/>
+  </url>
+  <url>
+    <loc>https://bridgeplay.app/ja/limitations</loc>
+    <lastmod>2026-08-26</lastmod>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://bridgeplay.app/limitations"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://bridgeplay.app/es/limitations"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://bridgeplay.app/de/limitations"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://bridgeplay.app/fr/limitations"/>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://bridgeplay.app/pt-BR/limitations"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://bridgeplay.app/ja/limitations"/>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://bridgeplay.app/zh-CN/limitations"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://bridgeplay.app/limitations"/>
+  </url>
+  <url>
+    <loc>https://bridgeplay.app/zh-CN/limitations</loc>
+    <lastmod>2026-08-26</lastmod>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://bridgeplay.app/limitations"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://bridgeplay.app/es/limitations"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://bridgeplay.app/de/limitations"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://bridgeplay.app/fr/limitations"/>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://bridgeplay.app/pt-BR/limitations"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://bridgeplay.app/ja/limitations"/>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://bridgeplay.app/zh-CN/limitations"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://bridgeplay.app/limitations"/>
+  </url>
+  <url>
+    <loc>https://bridgeplay.app/account</loc>
+    <priority>0.5</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://bridgeplay.app/account"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://bridgeplay.app/es/account"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://bridgeplay.app/de/account"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://bridgeplay.app/fr/account"/>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://bridgeplay.app/pt-BR/account"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://bridgeplay.app/ja/account"/>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://bridgeplay.app/zh-CN/account"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://bridgeplay.app/account"/>
+  </url>
+  <url>
+    <loc>https://bridgeplay.app/es/account</loc>
+    <priority>0.5</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://bridgeplay.app/account"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://bridgeplay.app/es/account"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://bridgeplay.app/de/account"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://bridgeplay.app/fr/account"/>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://bridgeplay.app/pt-BR/account"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://bridgeplay.app/ja/account"/>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://bridgeplay.app/zh-CN/account"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://bridgeplay.app/account"/>
+  </url>
+  <url>
+    <loc>https://bridgeplay.app/de/account</loc>
+    <priority>0.5</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://bridgeplay.app/account"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://bridgeplay.app/es/account"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://bridgeplay.app/de/account"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://bridgeplay.app/fr/account"/>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://bridgeplay.app/pt-BR/account"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://bridgeplay.app/ja/account"/>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://bridgeplay.app/zh-CN/account"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://bridgeplay.app/account"/>
+  </url>
+  <url>
+    <loc>https://bridgeplay.app/fr/account</loc>
+    <priority>0.5</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://bridgeplay.app/account"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://bridgeplay.app/es/account"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://bridgeplay.app/de/account"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://bridgeplay.app/fr/account"/>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://bridgeplay.app/pt-BR/account"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://bridgeplay.app/ja/account"/>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://bridgeplay.app/zh-CN/account"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://bridgeplay.app/account"/>
+  </url>
+  <url>
+    <loc>https://bridgeplay.app/pt-BR/account</loc>
+    <priority>0.5</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://bridgeplay.app/account"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://bridgeplay.app/es/account"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://bridgeplay.app/de/account"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://bridgeplay.app/fr/account"/>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://bridgeplay.app/pt-BR/account"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://bridgeplay.app/ja/account"/>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://bridgeplay.app/zh-CN/account"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://bridgeplay.app/account"/>
+  </url>
+  <url>
+    <loc>https://bridgeplay.app/ja/account</loc>
+    <priority>0.5</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://bridgeplay.app/account"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://bridgeplay.app/es/account"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://bridgeplay.app/de/account"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://bridgeplay.app/fr/account"/>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://bridgeplay.app/pt-BR/account"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://bridgeplay.app/ja/account"/>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://bridgeplay.app/zh-CN/account"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://bridgeplay.app/account"/>
+  </url>
+  <url>
+    <loc>https://bridgeplay.app/zh-CN/account</loc>
+    <priority>0.5</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://bridgeplay.app/account"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://bridgeplay.app/es/account"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://bridgeplay.app/de/account"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://bridgeplay.app/fr/account"/>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://bridgeplay.app/pt-BR/account"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://bridgeplay.app/ja/account"/>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://bridgeplay.app/zh-CN/account"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://bridgeplay.app/account"/>
+  </url>
+  <url>
+    <loc>https://bridgeplay.app/privacy-policy</loc>
+    <priority>0.3</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://bridgeplay.app/privacy-policy"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://bridgeplay.app/es/privacy-policy"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://bridgeplay.app/de/privacy-policy"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://bridgeplay.app/fr/privacy-policy"/>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://bridgeplay.app/pt-BR/privacy-policy"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://bridgeplay.app/ja/privacy-policy"/>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://bridgeplay.app/zh-CN/privacy-policy"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://bridgeplay.app/privacy-policy"/>
+  </url>
+  <url>
+    <loc>https://bridgeplay.app/es/privacy-policy</loc>
+    <priority>0.3</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://bridgeplay.app/privacy-policy"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://bridgeplay.app/es/privacy-policy"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://bridgeplay.app/de/privacy-policy"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://bridgeplay.app/fr/privacy-policy"/>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://bridgeplay.app/pt-BR/privacy-policy"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://bridgeplay.app/ja/privacy-policy"/>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://bridgeplay.app/zh-CN/privacy-policy"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://bridgeplay.app/privacy-policy"/>
+  </url>
+  <url>
+    <loc>https://bridgeplay.app/de/privacy-policy</loc>
+    <priority>0.3</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://bridgeplay.app/privacy-policy"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://bridgeplay.app/es/privacy-policy"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://bridgeplay.app/de/privacy-policy"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://bridgeplay.app/fr/privacy-policy"/>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://bridgeplay.app/pt-BR/privacy-policy"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://bridgeplay.app/ja/privacy-policy"/>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://bridgeplay.app/zh-CN/privacy-policy"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://bridgeplay.app/privacy-policy"/>
+  </url>
+  <url>
+    <loc>https://bridgeplay.app/fr/privacy-policy</loc>
+    <priority>0.3</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://bridgeplay.app/privacy-policy"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://bridgeplay.app/es/privacy-policy"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://bridgeplay.app/de/privacy-policy"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://bridgeplay.app/fr/privacy-policy"/>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://bridgeplay.app/pt-BR/privacy-policy"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://bridgeplay.app/ja/privacy-policy"/>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://bridgeplay.app/zh-CN/privacy-policy"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://bridgeplay.app/privacy-policy"/>
+  </url>
+  <url>
+    <loc>https://bridgeplay.app/pt-BR/privacy-policy</loc>
+    <priority>0.3</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://bridgeplay.app/privacy-policy"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://bridgeplay.app/es/privacy-policy"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://bridgeplay.app/de/privacy-policy"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://bridgeplay.app/fr/privacy-policy"/>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://bridgeplay.app/pt-BR/privacy-policy"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://bridgeplay.app/ja/privacy-policy"/>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://bridgeplay.app/zh-CN/privacy-policy"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://bridgeplay.app/privacy-policy"/>
+  </url>
+  <url>
+    <loc>https://bridgeplay.app/ja/privacy-policy</loc>
+    <priority>0.3</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://bridgeplay.app/privacy-policy"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://bridgeplay.app/es/privacy-policy"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://bridgeplay.app/de/privacy-policy"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://bridgeplay.app/fr/privacy-policy"/>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://bridgeplay.app/pt-BR/privacy-policy"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://bridgeplay.app/ja/privacy-policy"/>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://bridgeplay.app/zh-CN/privacy-policy"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://bridgeplay.app/privacy-policy"/>
+  </url>
+  <url>
+    <loc>https://bridgeplay.app/zh-CN/privacy-policy</loc>
+    <priority>0.3</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://bridgeplay.app/privacy-policy"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://bridgeplay.app/es/privacy-policy"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://bridgeplay.app/de/privacy-policy"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://bridgeplay.app/fr/privacy-policy"/>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://bridgeplay.app/pt-BR/privacy-policy"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://bridgeplay.app/ja/privacy-policy"/>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://bridgeplay.app/zh-CN/privacy-policy"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://bridgeplay.app/privacy-policy"/>
+  </url>
+  <url>
+    <loc>https://bridgeplay.app/terms</loc>
+    <priority>0.3</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://bridgeplay.app/terms"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://bridgeplay.app/es/terms"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://bridgeplay.app/de/terms"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://bridgeplay.app/fr/terms"/>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://bridgeplay.app/pt-BR/terms"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://bridgeplay.app/ja/terms"/>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://bridgeplay.app/zh-CN/terms"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://bridgeplay.app/terms"/>
+  </url>
+  <url>
+    <loc>https://bridgeplay.app/es/terms</loc>
+    <priority>0.3</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://bridgeplay.app/terms"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://bridgeplay.app/es/terms"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://bridgeplay.app/de/terms"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://bridgeplay.app/fr/terms"/>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://bridgeplay.app/pt-BR/terms"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://bridgeplay.app/ja/terms"/>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://bridgeplay.app/zh-CN/terms"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://bridgeplay.app/terms"/>
+  </url>
+  <url>
+    <loc>https://bridgeplay.app/de/terms</loc>
+    <priority>0.3</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://bridgeplay.app/terms"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://bridgeplay.app/es/terms"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://bridgeplay.app/de/terms"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://bridgeplay.app/fr/terms"/>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://bridgeplay.app/pt-BR/terms"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://bridgeplay.app/ja/terms"/>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://bridgeplay.app/zh-CN/terms"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://bridgeplay.app/terms"/>
+  </url>
+  <url>
+    <loc>https://bridgeplay.app/fr/terms</loc>
+    <priority>0.3</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://bridgeplay.app/terms"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://bridgeplay.app/es/terms"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://bridgeplay.app/de/terms"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://bridgeplay.app/fr/terms"/>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://bridgeplay.app/pt-BR/terms"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://bridgeplay.app/ja/terms"/>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://bridgeplay.app/zh-CN/terms"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://bridgeplay.app/terms"/>
+  </url>
+  <url>
+    <loc>https://bridgeplay.app/pt-BR/terms</loc>
+    <priority>0.3</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://bridgeplay.app/terms"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://bridgeplay.app/es/terms"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://bridgeplay.app/de/terms"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://bridgeplay.app/fr/terms"/>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://bridgeplay.app/pt-BR/terms"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://bridgeplay.app/ja/terms"/>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://bridgeplay.app/zh-CN/terms"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://bridgeplay.app/terms"/>
+  </url>
+  <url>
+    <loc>https://bridgeplay.app/ja/terms</loc>
+    <priority>0.3</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://bridgeplay.app/terms"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://bridgeplay.app/es/terms"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://bridgeplay.app/de/terms"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://bridgeplay.app/fr/terms"/>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://bridgeplay.app/pt-BR/terms"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://bridgeplay.app/ja/terms"/>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://bridgeplay.app/zh-CN/terms"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://bridgeplay.app/terms"/>
+  </url>
+  <url>
+    <loc>https://bridgeplay.app/zh-CN/terms</loc>
+    <priority>0.3</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://bridgeplay.app/terms"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://bridgeplay.app/es/terms"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://bridgeplay.app/de/terms"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://bridgeplay.app/fr/terms"/>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://bridgeplay.app/pt-BR/terms"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://bridgeplay.app/ja/terms"/>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://bridgeplay.app/zh-CN/terms"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://bridgeplay.app/terms"/>
+  </url>
+  <url>
+    <loc>https://bridgeplay.app/refund-policy</loc>
+    <priority>0.3</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://bridgeplay.app/refund-policy"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://bridgeplay.app/es/refund-policy"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://bridgeplay.app/de/refund-policy"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://bridgeplay.app/fr/refund-policy"/>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://bridgeplay.app/pt-BR/refund-policy"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://bridgeplay.app/ja/refund-policy"/>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://bridgeplay.app/zh-CN/refund-policy"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://bridgeplay.app/refund-policy"/>
+  </url>
+  <url>
+    <loc>https://bridgeplay.app/es/refund-policy</loc>
+    <priority>0.3</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://bridgeplay.app/refund-policy"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://bridgeplay.app/es/refund-policy"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://bridgeplay.app/de/refund-policy"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://bridgeplay.app/fr/refund-policy"/>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://bridgeplay.app/pt-BR/refund-policy"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://bridgeplay.app/ja/refund-policy"/>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://bridgeplay.app/zh-CN/refund-policy"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://bridgeplay.app/refund-policy"/>
+  </url>
+  <url>
+    <loc>https://bridgeplay.app/de/refund-policy</loc>
+    <priority>0.3</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://bridgeplay.app/refund-policy"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://bridgeplay.app/es/refund-policy"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://bridgeplay.app/de/refund-policy"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://bridgeplay.app/fr/refund-policy"/>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://bridgeplay.app/pt-BR/refund-policy"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://bridgeplay.app/ja/refund-policy"/>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://bridgeplay.app/zh-CN/refund-policy"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://bridgeplay.app/refund-policy"/>
+  </url>
+  <url>
+    <loc>https://bridgeplay.app/fr/refund-policy</loc>
+    <priority>0.3</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://bridgeplay.app/refund-policy"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://bridgeplay.app/es/refund-policy"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://bridgeplay.app/de/refund-policy"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://bridgeplay.app/fr/refund-policy"/>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://bridgeplay.app/pt-BR/refund-policy"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://bridgeplay.app/ja/refund-policy"/>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://bridgeplay.app/zh-CN/refund-policy"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://bridgeplay.app/refund-policy"/>
+  </url>
+  <url>
+    <loc>https://bridgeplay.app/pt-BR/refund-policy</loc>
+    <priority>0.3</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://bridgeplay.app/refund-policy"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://bridgeplay.app/es/refund-policy"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://bridgeplay.app/de/refund-policy"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://bridgeplay.app/fr/refund-policy"/>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://bridgeplay.app/pt-BR/refund-policy"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://bridgeplay.app/ja/refund-policy"/>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://bridgeplay.app/zh-CN/refund-policy"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://bridgeplay.app/refund-policy"/>
+  </url>
+  <url>
+    <loc>https://bridgeplay.app/ja/refund-policy</loc>
+    <priority>0.3</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://bridgeplay.app/refund-policy"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://bridgeplay.app/es/refund-policy"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://bridgeplay.app/de/refund-policy"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://bridgeplay.app/fr/refund-policy"/>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://bridgeplay.app/pt-BR/refund-policy"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://bridgeplay.app/ja/refund-policy"/>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://bridgeplay.app/zh-CN/refund-policy"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://bridgeplay.app/refund-policy"/>
+  </url>
+  <url>
+    <loc>https://bridgeplay.app/zh-CN/refund-policy</loc>
+    <priority>0.3</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://bridgeplay.app/refund-policy"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://bridgeplay.app/es/refund-policy"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://bridgeplay.app/de/refund-policy"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://bridgeplay.app/fr/refund-policy"/>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://bridgeplay.app/pt-BR/refund-policy"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://bridgeplay.app/ja/refund-policy"/>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://bridgeplay.app/zh-CN/refund-policy"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://bridgeplay.app/refund-policy"/>
+  </url>
+  <url>
+    <loc>https://bridgeplay.app/notices</loc>
+    <lastmod>2026-08-26</lastmod>
+    <priority>0.3</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://bridgeplay.app/notices"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://bridgeplay.app/es/notices"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://bridgeplay.app/de/notices"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://bridgeplay.app/fr/notices"/>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://bridgeplay.app/pt-BR/notices"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://bridgeplay.app/ja/notices"/>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://bridgeplay.app/zh-CN/notices"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://bridgeplay.app/notices"/>
+  </url>
+  <url>
+    <loc>https://bridgeplay.app/es/notices</loc>
+    <lastmod>2026-08-26</lastmod>
+    <priority>0.3</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://bridgeplay.app/notices"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://bridgeplay.app/es/notices"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://bridgeplay.app/de/notices"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://bridgeplay.app/fr/notices"/>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://bridgeplay.app/pt-BR/notices"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://bridgeplay.app/ja/notices"/>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://bridgeplay.app/zh-CN/notices"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://bridgeplay.app/notices"/>
+  </url>
+  <url>
+    <loc>https://bridgeplay.app/de/notices</loc>
+    <lastmod>2026-08-26</lastmod>
+    <priority>0.3</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://bridgeplay.app/notices"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://bridgeplay.app/es/notices"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://bridgeplay.app/de/notices"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://bridgeplay.app/fr/notices"/>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://bridgeplay.app/pt-BR/notices"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://bridgeplay.app/ja/notices"/>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://bridgeplay.app/zh-CN/notices"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://bridgeplay.app/notices"/>
+  </url>
+  <url>
+    <loc>https://bridgeplay.app/fr/notices</loc>
+    <lastmod>2026-08-26</lastmod>
+    <priority>0.3</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://bridgeplay.app/notices"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://bridgeplay.app/es/notices"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://bridgeplay.app/de/notices"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://bridgeplay.app/fr/notices"/>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://bridgeplay.app/pt-BR/notices"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://bridgeplay.app/ja/notices"/>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://bridgeplay.app/zh-CN/notices"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://bridgeplay.app/notices"/>
+  </url>
+  <url>
+    <loc>https://bridgeplay.app/pt-BR/notices</loc>
+    <lastmod>2026-08-26</lastmod>
+    <priority>0.3</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://bridgeplay.app/notices"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://bridgeplay.app/es/notices"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://bridgeplay.app/de/notices"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://bridgeplay.app/fr/notices"/>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://bridgeplay.app/pt-BR/notices"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://bridgeplay.app/ja/notices"/>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://bridgeplay.app/zh-CN/notices"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://bridgeplay.app/notices"/>
+  </url>
+  <url>
+    <loc>https://bridgeplay.app/ja/notices</loc>
+    <lastmod>2026-08-26</lastmod>
+    <priority>0.3</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://bridgeplay.app/notices"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://bridgeplay.app/es/notices"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://bridgeplay.app/de/notices"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://bridgeplay.app/fr/notices"/>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://bridgeplay.app/pt-BR/notices"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://bridgeplay.app/ja/notices"/>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://bridgeplay.app/zh-CN/notices"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://bridgeplay.app/notices"/>
+  </url>
+  <url>
+    <loc>https://bridgeplay.app/zh-CN/notices</loc>
+    <lastmod>2026-08-26</lastmod>
+    <priority>0.3</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://bridgeplay.app/notices"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://bridgeplay.app/es/notices"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://bridgeplay.app/de/notices"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://bridgeplay.app/fr/notices"/>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://bridgeplay.app/pt-BR/notices"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://bridgeplay.app/ja/notices"/>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://bridgeplay.app/zh-CN/notices"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://bridgeplay.app/notices"/>
+  </url>
 </urlset>

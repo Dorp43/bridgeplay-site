@@ -208,7 +208,7 @@ export default function LegalLayout({ title, lastUpdated, eyebrow, children }: P
                             {others.map(doc => (
                                 <Link key={doc.to} to={doc.to} className={styles.footLink}>{t.footer[doc.key]}</Link>
                             ))}
-                            <a href="/#contact" className={styles.footLink}>{t.footer.contact}</a>
+                            <Link to="/#contact" className={styles.footLink}>{t.footer.contact}</Link>
                         </div>
                         <Link to="/" className="back-link">{t.common.backToBridgePlay}</Link>
                     </footer>

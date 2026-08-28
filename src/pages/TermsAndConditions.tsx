@@ -15,7 +15,7 @@ export default function TermsAndConditions() {
     return (
         <LegalLayout title="Terms of Service" lastUpdated="August 21, 2026">
             <h2>1. Who You Are Contracting With, and Acceptance</h2>
-            <p>BridgePlay ("the Software") is provided by Dorp43 ("we", "us", or "the developer"). You can reach us through the <a href="/#contact">contact form</a> on this website. Purchases are sold and invoiced by our merchant of record, Paddle (see section 6), which acts as the seller of record for the transaction.</p>
+            <p>BridgePlay ("the Software") is provided by Dorp43 ("we", "us", or "the developer"). You can reach us through the <Link to="/#contact">contact form</Link> on this website. Purchases are sold and invoiced by our merchant of record, Paddle (see section 6), which acts as the seller of record for the transaction.</p>
             <p>By downloading, installing, or using the Software, you agree to be bound by these Terms of Service. If you do not agree, do not use the Software.</p>
 
             <h2>2. Licence</h2>
@@ -37,7 +37,7 @@ export default function TermsAndConditions() {
             <p><strong>Price changes.</strong> We may change subscription prices. If we do, we will tell you before a changed price applies to a renewal, and you may cancel before that renewal if you do not want to continue at the new price.</p>
 
             <h2>5. Cancellation and What Happens to Your Access</h2>
-            <p>You may cancel a subscription at any time, and you do not need a reason. To cancel, use the <a href="/#contact">contact form</a> on this website, or use the subscription-management link in the payment receipt that Paddle emails you for each charge.</p>
+            <p>You may cancel a subscription at any time, and you do not need a reason. To cancel, use the <Link to="/#contact">contact form</Link> on this website, or use the subscription-management link in the payment receipt that Paddle emails you for each charge.</p>
             <p>When you cancel, the cancellation takes effect at the end of the billing period you have already paid for. You keep full access until that date, you are not charged again, and we do not pro-rate or refund the remainder of a period you chose to cancel mid-way (separately from this, the <Link to="/refund-policy">refund policy</Link> may apply to a recent charge).</p>
             <p>After a subscription lapses, the Software stops launching games and returns to its unlicensed state. Nothing on your Mac is deleted: your game files, save data, and per-game settings remain in place and are yours. Starting a new subscription restores access to them. A Lifetime licence does not lapse.</p>
 
@@ -66,7 +66,7 @@ export default function TermsAndConditions() {
             <p>If you are a consumer resident in the EU, the UK, or another jurisdiction whose law grants you mandatory consumer protections, you keep the benefit of those protections and of any right to bring proceedings in your country of residence; nothing in these terms removes rights that cannot be waived under the law that applies to you. Where a dispute cannot be resolved through the contact form, it is determined under the law that applies to you as a consumer.</p>
 
             <h2>14. Contact</h2>
-            <p>For questions about these terms, contact us at the <a href="/#contact">contact form</a> on our website.</p>
+            <p>For questions about these terms, contact us at the <Link to="/#contact">contact form</Link> on our website.</p>
         </LegalLayout>
     );
 }

@@ -25,7 +25,7 @@ export default function RefundPolicy() {
             <p>Cancelling part-way through a period you have already paid for is not itself a refund: you keep access until that period ends. See the <Link to="/terms">terms of service</Link> for how cancellation works.</p>
 
             <h2>How to Request a Refund</h2>
-            <p>Contact us through the <a href="/#contact">contact form</a> on this website and include:</p>
+            <p>Contact us through the <Link to="/#contact">contact form</Link> on this website and include:</p>
             <ul>
                 <li>Your <strong>Paddle order ID</strong> (it is in the receipt email Paddle sent you for the charge)</li>
                 <li>The email address you used at checkout, if it differs from the one you are writing from</li>

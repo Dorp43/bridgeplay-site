@@ -22,6 +22,8 @@ const es: Dictionary = {
         label: 'Idioma',
         choose: 'Elige un idioma',
         current: (name: string) => `Idioma actual: ${name}`,
+        alsoAvailable: 'También disponible en',
+        dismissSuggestion: 'Descartar',
     },
 
     nav: {

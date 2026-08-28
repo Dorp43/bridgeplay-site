@@ -77,8 +77,11 @@
     background: var(--hairline) top / 100% 1px no-repeat;
     font-size: var(--text-label);
     line-height: 1.75;
-    color: var(--text-muted);
-    opacity: 0.75;
+    /* NOT var(--text-muted) at reduced opacity: that blended to 3.44:1 on the
+       page ground, under the 4.5:1 WCAG AA floor for text this size. The notice
+       has to be quiet, but a legal disclaimer nobody can read is not a
+       disclaimer. This is the same hue, lightened until it passes. */
+    color: #9a9ab0;
 }
 .disclaimer a {
     color: inherit;

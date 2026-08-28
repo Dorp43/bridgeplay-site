@@ -26,6 +26,21 @@ The short version:
 optional, adding an index signature, or falling back to English at runtime. The
 build failure is the only thing standing between us and a half-translated site.
 
+## URLs carry the language
+
+English at the root, everything else prefixed: `/download` and `/ja/download`.
+`<BrowserRouter basename>` does the work, so **`<Link to="/download">` needs no
+change** — but a raw `<a href="/#faq">` does NOT get the prefix and must be a
+`<Link>`. The only legitimate bare `<a href="/…">` are `/BridgePlay.dmg` and
+`/third-party-notices.md`, which are static files, not routes.
+
+**Never move `/auth/action` or `/app-checkout` behind a prefix.** Firebase's
+console action URL and the Mac app's WKWebView (plus Paddle's `successUrl`)
+hard-code those exact paths.
+
+**Adding a route means adding it to `public/sitemap.xml`** — every route × all
+seven languages. Nothing enforces it.
+
 ## Other things that bite
 
 - **CSS import order in `src/main.tsx` is load-bearing.** `global.css` must be

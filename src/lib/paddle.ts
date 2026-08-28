@@ -1,3 +1,5 @@
+import { absoluteLocalizedUrl } from '../i18n/config';
+
 declare global {
     interface Window {
         Paddle: {
@@ -60,11 +62,16 @@ export function initPaddle(eventCallback?: (event: { name?: string }) => void) {
     initialized = true;
 }
 
+/// successUrl is resolved per call, in the language the buyer is reading. A
+/// bare '/account' default would land a Japanese buyer on the English account
+/// page the instant their payment succeeded — and the stored-preference
+/// redirect in main.tsx cannot rescue that, because a visitor who arrived from
+/// a search result has never opened the language selector.
 export function openCheckout(
     priceId: string,
     email?: string,
     uid?: string,
-    successUrl: string = 'https://bridgeplay.app/account',
+    successUrl: string = absoluteLocalizedUrl('/account'),
 ) {
     initPaddle();
     window.Paddle.Checkout.open({
