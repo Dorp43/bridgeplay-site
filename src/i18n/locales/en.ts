@@ -31,6 +31,8 @@ const en = {
         label: 'Language',
         choose: 'Choose a language',
         current: (name: string) => `Current language: ${name}`,
+        alsoAvailable: 'Also available in',
+        dismissSuggestion: 'Dismiss',
     },
 
     nav: {

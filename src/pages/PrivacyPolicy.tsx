@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import LegalLayout from '../components/layout/LegalLayout';
 import { useDocumentMeta } from '../hooks/useDocumentMeta';
 import { useI18n } from '../i18n/useI18n';
@@ -14,7 +15,7 @@ export default function PrivacyPolicy() {
     return (
         <LegalLayout title="Privacy Policy" lastUpdated="August 21, 2026">
             <h2>1. Who Is Responsible for Your Data</h2>
-            <p>BridgePlay is operated by Dorp43, who is the data controller for the personal data described in this policy. You can reach us through the <a href="/#contact">contact form</a> on this website for any privacy question or request.</p>
+            <p>BridgePlay is operated by Dorp43, who is the data controller for the personal data described in this policy. You can reach us through the <Link to="/#contact">contact form</Link> on this website for any privacy question or request.</p>
 
             <h2>2. The App and This Website Are Different</h2>
             <p>BridgePlay is two things: the Mac app you install, and this website. They collect different data, so this policy keeps them apart.</p>
@@ -72,7 +73,7 @@ export default function PrivacyPolicy() {
             <p>Our processors — Google Firebase, Google Fonts, Paddle, Vercel, and Formspree — operate on infrastructure that may be located outside your country, including in the United States. Where personal data is transferred out of the EU/UK, it is done under the transfer safeguards those providers offer, such as the European Commission's Standard Contractual Clauses or an applicable adequacy decision.</p>
 
             <h2>10. Data Deletion</h2>
-            <p>You may request deletion of your account and all associated data at any time using the <a href="/#contact">contact form</a>. Upon deletion, your account record is permanently removed. One exception, so this is not a surprise: the device-trial record that says "this Mac has used its free trial" is retained, because deleting it would turn the 7-day trial into an unlimited one. That record contains only the hardware hash and dates.</p>
+            <p>You may request deletion of your account and all associated data at any time using the <Link to="/#contact">contact form</Link>. Upon deletion, your account record is permanently removed. One exception, so this is not a surprise: the device-trial record that says "this Mac has used its free trial" is retained, because deleting it would turn the 7-day trial into an unlimited one. That record contains only the hardware hash and dates.</p>
 
             <h2>11. Your Rights</h2>
             <p>If you are in the EU, UK, or another jurisdiction with equivalent law, you have the right to access, correct, export, or delete your personal data, to restrict or object to its processing, and to withdraw consent where processing relies on it. Contact us and we will action it. You also have the right to lodge a complaint with your local data-protection supervisory authority.</p>
@@ -81,7 +82,7 @@ export default function PrivacyPolicy() {
             <p>We may update this privacy policy from time to time. Changes will be reflected on this page with an updated date.</p>
 
             <h2>13. Contact</h2>
-            <p>For privacy concerns, contact us at the <a href="/#contact">contact form</a> on our website.</p>
+            <p>For privacy concerns, contact us at the <Link to="/#contact">contact form</Link> on our website.</p>
         </LegalLayout>
     );
 }

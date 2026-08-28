@@ -22,6 +22,8 @@ const ptBR: Dictionary = {
         label: 'Idioma',
         choose: 'Escolha um idioma',
         current: (name: string) => `Idioma atual: ${name}`,
+        alsoAvailable: 'Também disponível em',
+        dismissSuggestion: 'Dispensar',
     },
 
     nav: {

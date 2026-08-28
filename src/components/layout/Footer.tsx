@@ -20,12 +20,12 @@ export default function Footer() {
                         section h2, so h4 skipped a level. Styling is unchanged. */}
                     <div className={`${styles.col} reveal`} style={{ ['--i' as string]: 1 }}>
                         <h3>{t.footer.product}</h3>
-                        <a href="/#features">{t.nav.features}</a>
-                        <a href="/#pricing">{t.nav.pricing}</a>
+                        <Link to="/#features">{t.nav.features}</Link>
+                        <Link to="/#pricing">{t.nav.pricing}</Link>
                         {/* The real page, not the home CTA anchor: it carries the
                             requirements, the checksum and the first-launch steps. */}
                         <Link to="/download">{t.nav.download}</Link>
-                        <a href="/#faq">{t.nav.faq}</a>
+                        <Link to="/#faq">{t.nav.faq}</Link>
                         <Link to="/changelog">{t.nav.changelog}</Link>
                     </div>
                     <div className={`${styles.col} reveal`} style={{ ['--i' as string]: 2 }}>
@@ -44,7 +44,7 @@ export default function Footer() {
                             already-signed-in visitor manages their licence. */}
                         <Link to="/account">{t.footer.account}</Link>
                         <Link to="/limitations">{t.footer.limitations}</Link>
-                        <a href="/#contact">{t.footer.contact}</a>
+                        <Link to="/#contact">{t.footer.contact}</Link>
                     </div>
                 </div>
                 {/* Names are used descriptively, to say what BridgePlay is

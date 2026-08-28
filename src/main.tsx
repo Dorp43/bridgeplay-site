@@ -10,6 +10,7 @@ import { AuthContext, useAuth, type AuthState } from './context/useAuth';
 import { ToastProvider } from './context/ToastContext';
 import I18nProvider from './i18n/I18nProvider';
 import { useI18n } from './i18n/useI18n';
+import { localeFromPath, localePrefix, localizedHref, readStoredLocale } from './i18n/config';
 import { inject } from '@vercel/analytics';
 // global.css must be imported BEFORE App so global styles are emitted first
 // and *.module.css rules win specificity ties (button sizing, card transforms).
@@ -98,9 +99,28 @@ function SkipLink() {
     return <a href="#main-content" className="skip-link">{t.common.skipToContent}</a>;
 }
 
+/* Resolved once, from the URL, before React mounts. The router then treats
+   /ja as its root, so every <Link to="/download"> in the app becomes
+   /ja/download without a single call-site change, and useLocation().pathname
+   still reports "/download" to any logic that reads it.
+
+   A visitor who previously chose a language and then lands on a bare English
+   URL is sent to their language, but ONLY on the strength of a stored choice —
+   never on browser-language detection. Search crawlers carry no localStorage,
+   so they are never redirected and always index what they asked for. */
+const bootLocale = localeFromPath(window.location.pathname);
+if (bootLocale === 'en') {
+    const stored = readStoredLocale();
+    if (stored && stored !== 'en') {
+        window.location.replace(
+            localizedHref(stored, window.location.pathname, window.location.search, window.location.hash)
+        );
+    }
+}
+
 createRoot(document.getElementById('root')!).render(
     <StrictMode>
-        <BrowserRouter>
+        <BrowserRouter basename={localePrefix(bootLocale)}>
             {/* First focusable node on the page, ahead of Nav. It is rendered
                 unconditionally, so every route has to provide the target or the
                 first thing a keyboard user tabs to is a dead control: HomePage,

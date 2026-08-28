@@ -153,7 +153,7 @@ export default function Changelog() {
                             <span className={styles.footLabel}>{t.common.also}</span>
                             <Link to="/download" className={styles.footLink}>{t.changelogPage.alsoDownload}</Link>
                             <Link to="/limitations" className={styles.footLink}>{t.changelogPage.alsoLimitations}</Link>
-                            <a href="/#faq" className={styles.footLink}>{t.changelogPage.alsoFaq}</a>
+                            <Link to="/#faq" className={styles.footLink}>{t.changelogPage.alsoFaq}</Link>
                         </div>
                         <Link to="/" className="back-link">{t.common.backToBridgePlay}</Link>
                     </footer>

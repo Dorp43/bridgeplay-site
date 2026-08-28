@@ -21,6 +21,8 @@ const zhCN: Dictionary = {
         label: '语言',
         choose: '选择语言',
         current: (name: string) => `当前语言：${name}`,
+        alsoAvailable: '也提供以下语言：',
+        dismissSuggestion: '关闭',
     },
 
     nav: {

@@ -23,6 +23,8 @@ const fr: Dictionary = {
         label: 'Langue',
         choose: 'Choisir une langue',
         current: (name: string) => `Langue actuelle : ${name}`,
+        alsoAvailable: 'Également disponible en',
+        dismissSuggestion: 'Fermer',
     },
 
     nav: {

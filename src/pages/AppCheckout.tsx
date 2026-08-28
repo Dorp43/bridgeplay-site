@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { initPaddle, readPriceOverride } from '../lib/paddle';
 import { APP_PLAN_ORDER, PLANS } from '../lib/plans';
+import { absoluteLocalizedUrl } from '../i18n/config';
 import { useI18n } from '../i18n/useI18n';
 import styles from './AppCheckout.module.css';
 
@@ -107,7 +108,7 @@ export default function AppCheckout() {
             items: [{ priceId: readPriceOverride() ?? priceId, quantity: 1 }],
             ...(appUser.email && { customer: { email: appUser.email } }),
             customData: { uid: appUser.uid },
-            successUrl: 'https://bridgeplay.app/app-checkout?status=success',
+            successUrl: absoluteLocalizedUrl('/app-checkout?status=success'),
             settings: { displayMode: 'overlay' },
         });
     };

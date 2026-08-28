@@ -15,6 +15,18 @@
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
     <link rel="shortcut icon" href="/favicon.png">
     <link rel="canonical" href="https://bridgeplay.app">
+    <!-- Static hreflang for the home page, so a crawler that does not execute
+         JavaScript still discovers the seven language variants. Once React
+         mounts, useDocumentMeta clears and rewrites this whole set for the
+         current route — see writeAlternates(). -->
+    <link rel="alternate" hreflang="en" href="https://bridgeplay.app/">
+    <link rel="alternate" hreflang="es" href="https://bridgeplay.app/es/">
+    <link rel="alternate" hreflang="de" href="https://bridgeplay.app/de/">
+    <link rel="alternate" hreflang="fr" href="https://bridgeplay.app/fr/">
+    <link rel="alternate" hreflang="pt-BR" href="https://bridgeplay.app/pt-BR/">
+    <link rel="alternate" hreflang="ja" href="https://bridgeplay.app/ja/">
+    <link rel="alternate" hreflang="zh-CN" href="https://bridgeplay.app/zh-CN/">
+    <link rel="alternate" hreflang="x-default" href="https://bridgeplay.app/">
     <script type="application/ld+json">
     {
         "@context": "https://schema.org",

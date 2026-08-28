@@ -21,6 +21,8 @@ const ja: Dictionary = {
         label: '言語',
         choose: '言語を選択',
         current: (name: string) => `現在の言語: ${name}`,
+        alsoAvailable: '次の言語でもご覧いただけます:',
+        dismissSuggestion: '閉じる',
     },
 
     nav: {
