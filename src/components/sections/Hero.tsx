@@ -5,6 +5,7 @@ import { useI18n } from '../../i18n/useI18n';
 import styles from './Hero.module.css';
 import shot1x from '../../assets/app-screenshot.webp';
 import shot2x from '../../assets/app-screenshot-2x.webp';
+import { DOWNLOAD_URL } from '../../config/download';
 
 export default function Hero() {
     /* Settled before first paint — see usePlatform. Only a visitor we
@@ -36,7 +37,7 @@ export default function Hero() {
                         <Link to="/download" className={styles.btnSecondary}>{t.hero.whatItNeeds}</Link>
                     ) : (
                         <a
-                            href="/BridgePlay.dmg"
+                            href={DOWNLOAD_URL}
                             download
                             className={styles.btnPrimary}
                             onClick={() => track('download_click', { source: 'hero' })}

@@ -133,16 +133,35 @@ function versionComplaint(appVersion, advertised) {
     );
 }
 
+/* The metadata the release pipeline wrote for the published asset, if any. */
+async function readExistingMeta() {
+    try {
+        const parsed = JSON.parse(await readFile(OUT_PATH, 'utf8'));
+        return typeof parsed?.sha256 === 'string' && parsed.sha256.length === 64 ? parsed : null;
+    } catch {
+        return null;
+    }
+}
+
 async function main() {
     let meta = EMPTY_META;
 
     try {
         meta = await readMeta();
-    } catch (error) {
-        console.warn(
-            `[stamp-download] Could not read public/BridgePlay.dmg (${error.message}). ` +
-            'Writing null download metadata — /download will hide the file details and still link the disk image.'
-        );
+    } catch {
+        /* The disk image is deliberately NOT in this repo: it is ~340 MB and
+         * GitHub refuses anything over 100 MB, so downloads point at the
+         * GitHub release asset (src/config/download.ts). Keep whatever
+         * public/download-meta.json already says — the release pipeline writes
+         * the published asset's real size and SHA-256 there — rather than
+         * blanking it. Overwriting with nulls would silently drop the
+         * verification the /download page offers. */
+        const existing = await readExistingMeta();
+        if (existing) {
+            console.log('[stamp-download] No local disk image; keeping the published asset metadata already in public/download-meta.json.');
+            return;
+        }
+        console.warn('[stamp-download] No local disk image and no existing metadata — /download will hide the file details.');
     }
 
     try {
