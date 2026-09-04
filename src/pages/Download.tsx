@@ -9,6 +9,7 @@ import { useScrollReveal } from '../hooks/useScrollReveal';
 import { useToast } from '../context/useToast';
 import { useI18n } from '../i18n/useI18n';
 import styles from './Download.module.css';
+import { DOWNLOAD_URL } from '../config/download';
 
 const ROSETTA_COMMAND = 'softwareupdate --install-rosetta --agree-to-license';
 const VERIFY_COMMAND = 'shasum -a 256 ~/Downloads/BridgePlay.dmg';
@@ -138,13 +139,13 @@ export default function Download() {
                                     <p className={`${styles.unsupported} notice-card`}>
                                         {t.downloadPage.unsupportedNote}
                                     </p>
-                                    <a href="/BridgePlay.dmg" download className={styles.plainLink}>
+                                    <a href={DOWNLOAD_URL} download className={styles.plainLink}>
                                         {t.downloadPage.downloadAnyway}
                                     </a>
                                 </>
                             ) : (
                                 <>
-                                    <a href="/BridgePlay.dmg" download className={styles.primary}>
+                                    <a href={DOWNLOAD_URL} download className={styles.primary}>
                                         <Icon name="download" size={20} />
                                         {t.downloadPage.downloadForMac}
                                     </a>
