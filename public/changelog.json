@@ -1,5 +1,19 @@
 [
   {
+    "version": "0.6.5",
+    "date": "2026-09-05",
+    "notes": [
+      "Big graphics accuracy pass for DirectDraw and Direct3D games — walls, floors and objects no longer look see-through from certain angles",
+      "Distance haze now appears in games that use it, instead of being missing entirely",
+      "Textures are sharper and no longer drop out or show the wrong detail level",
+      "Fixed missing triangles and holes in level geometry",
+      "Scene lighting now works in games that rely on it",
+      "Reflective and environment-mapped surfaces no longer cause a game to close unexpectedly",
+      "Everything on screen now lands exactly where it should, fixing subtle blurring and misaligned edges",
+      "Internal: graphics handling stays fully generic — every game benefits and none is special-cased"
+    ]
+  },
+  {
     "version": "0.6.3",
     "date": "2026-08-22",
     "notes": [
