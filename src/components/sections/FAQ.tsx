@@ -11,10 +11,10 @@ import styles from './FAQ.module.css';
 
    Each concept on this site has one canonical home, and the FAQ is not it for
    most of them — an answer here states the fact and points at the page that
-   explains it. Wine lives in the compatibility section, kernel anti-cheat and
-   DirectX 12 on /limitations, Rosetta 2 on /download. The exceptions are the
-   trial and billing answers, which are canonical here, and the billing one is a
-   legal disclosure — do not trim it. */
+   explains it. Compatibility coverage lives in the compatibility section,
+   kernel anti-cheat and DirectX 12 on /limitations, Rosetta 2 on /download. The
+   exceptions are the trial and billing answers, which are canonical here, and
+   the billing one is a legal disclosure — do not trim it. */
 const FAQ_KEYS = [
     'whatIs', 'whichMacs', 'multiplayer', 'directx12', 'performance', 'gameBroken',
     'ownGames', 'legal', 'trial', 'howManyMacs', 'cancel', 'offline', 'stopPaying',

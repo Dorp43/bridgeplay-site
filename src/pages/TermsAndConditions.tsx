@@ -51,7 +51,7 @@ export default function TermsAndConditions() {
             <p>BridgePlay and all associated intellectual property remain the property of the developer. You may not reverse engineer, decompile, or modify the Software, except where such a restriction is prohibited by applicable law or where the licence of a bundled open-source component grants you that right.</p>
 
             <h2>9. Third-Party Software</h2>
-            <p>BridgePlay bundles Wine 11.0, built from upstream source, together with other open-source components to run Windows software. These components are licensed under their own terms (Wine under the LGPL v2.1-or-later), and the third-party notices shipped inside the app list them with their licences and source provenance. BridgePlay does not include or distribute any game, nor any Microsoft code.</p>
+            <p>BridgePlay bundles open-source components to run Windows software. Each is used under its own licence — some permissive, some under the GNU LGPL v2.1-or-later — and every one is named, with its licence and source provenance, in the third-party notices shipped inside the app and published at <Link to="/notices">third-party notices</Link>. BridgePlay does not include or distribute any game, nor any Microsoft code.</p>
 
             <h2>10. Requirements and Disclaimer of Warranties</h2>
             <p>BridgePlay requires an Apple Silicon Mac (M1 or later), macOS 14 or newer, and Rosetta 2. Intel Macs are not supported. The Software is provided "as is" without warranties of any kind. Game compatibility varies and is not guaranteed for any specific title: DirectX 12 is not supported, and games protected by kernel-level anti-cheat will not run. Use the free trial to confirm your own games work before paying.</p>

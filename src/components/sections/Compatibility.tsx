@@ -11,7 +11,7 @@ type GroupKey = keyof typeof en.compatibility.specs;
 
 const items: { key: ItemKey; icon: IconName; color: string; bg: string }[] = [
     { key: 'directx', icon: 'display', color: 'var(--accent)', bg: 'var(--accent-glow)' },
-    { key: 'stockWine', icon: 'layers', color: 'var(--green)', bg: 'var(--green-glow)' },
+    { key: 'bundled', icon: 'layers', color: 'var(--green)', bg: 'var(--green-glow)' },
     { key: 'protected', icon: 'bolt', color: 'var(--purple)', bg: 'var(--purple-glow)' },
     { key: 'display', icon: 'expand', color: 'var(--orange)', bg: 'var(--orange-glow)' },
     { key: 'settings', icon: 'sliders', color: 'var(--accent)', bg: 'var(--accent-glow)' },
@@ -19,8 +19,10 @@ const items: { key: ItemKey; icon: IconName; color: string; bg: string }[] = [
 
 const GROUPS = ['graphics', 'display', 'runtime'] as const satisfies readonly GroupKey[];
 
-/* Splits on every arrow so a multi-stage chain (wined3d → OpenGL → Metal) keeps
-   all of its stages; each arrow gets its own travelling span. */
+/* Splits on every arrow so a multi-stage entry keeps all of its stages; each
+   arrow gets its own travelling span. Entries are free of arrows today — the
+   spec sheet names what is supported, never the chain that implements it — but
+   a translation may still reach for one. */
 function SpecEntry({ text }: { text: string }) {
     const parts = text.split('→');
     if (parts.length === 1) return <>{text}</>;
@@ -50,12 +52,12 @@ export default function Compatibility() {
     return (
         <section className={styles.section} id="compatibility" ref={ref}>
             <div className={styles.container}>
-                {/* THE canonical explanation of Wine on this site: what it is,
-                    then what it covers, then the limit. Every other surface
-                    (hero, features, FAQ, /limitations) names Wine without
-                    re-glossing it and links here or to /limitations instead — so
-                    if the gloss moves, it moves out of this description, not
-                    into a second copy somewhere else. */}
+                {/* THE canonical statement of coverage on this site: what
+                    BridgePlay runs, then the limit. It says what is supported,
+                    never which compatibility stack does the supporting — that
+                    is deliberate and applies to every surface. Other pages
+                    (hero, features, FAQ, /limitations) link here rather than
+                    restating it. */}
                 <SectionHeader
                     label={t.compatibility.label}
                     title={t.compatibility.title}

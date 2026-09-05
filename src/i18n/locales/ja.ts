@@ -53,7 +53,7 @@ const ja: Dictionary = {
         contact: 'お問い合わせ',
         copyright: '© 2026 BridgePlay. All rights reserved.',
         madeFor: 'Mac でゲームをするすべての人へ',
-        disclaimerBody: 'BridgePlay は独立した製品であり、Microsoft、Apple、Valve、Wine プロジェクト、およびいかなるゲームパブリッシャーとも提携しておらず、これらによる承認も受けていません。Windows および DirectX は Microsoft Corporation の商標です。Apple、Mac、macOS、Rosetta は Apple Inc. の商標です。その他の商標はそれぞれの権利者に帰属します。',
+        disclaimerBody: 'BridgePlay は独立した製品であり、Microsoft、Apple、Valve、およびいかなるゲームパブリッシャーとも提携しておらず、これらによる承認も受けていません。Windows および DirectX は Microsoft Corporation の商標です。Apple、Mac、macOS、Rosetta は Apple Inc. の商標です。その他の商標はそれぞれの権利者に帰属します。',
         disclaimerLink: '第三者ソフトウェア表示',
     },
 
@@ -145,19 +145,19 @@ const ja: Dictionary = {
     compatibility: {
         label: '対応状況',
         title: '動くもの、動かないもの',
-        description: 'BridgePlay は Wine（Windows なしで Windows のプログラムを動かすためのオープンソースプロジェクト）のバージョン 11.0 を、上流のソースからビルドし無改変のまま同梱しています。DirectX 8 から 11 を使うゲームは動作します。DirectX 12 は動作せず、カーネルレベルのアンチチートで保護されたゲームも動作しません。',
+        description: 'BridgePlay は独自の Windows 互換実行環境を同梱しているため、ほかにインストールするものはなく、Windows のライセンスを購入する必要もありません。DirectDraw と DirectX 8・9・10・11 を使うゲームは動作します。DirectX 12 は動作せず、カーネルレベルのアンチチートで保護されたゲームも動作しません。',
         items: {
             directx: {
-                title: 'DirectX 8・9・10・11',
-                desc: 'DirectX は Windows のゲームが描画に使う仕組みです。Wine 自身の wined3d がこれを OpenGL に変換し、macOS が Metal で描画します。',
+                title: 'DirectDraw と DirectX 8–11',
+                desc: 'DirectX は Windows のゲームが描画に使う仕組みです。BridgePlay は DirectDraw と DirectX 8・9・10・11 に対応しているので、ゲームが求めた描画がそのまま Mac の画面に届きます。',
             },
-            stockWine: {
-                title: '無改変の Wine 11.0、ソースからビルド',
-                desc: 'Proton のフォークも、DXVK（Valve が Steam Deck で提供している部分）も、クローズドソースも一切なし — 誰でもビルドできる同じ Wine です。',
+            bundled: {
+                title: 'すべて同梱されています',
+                desc: '互換実行環境はアプリの中に入っています。ほかにダウンロードするものも、組み立てる作業も、Windows のライセンスも不要です — BridgePlay をインストールすれば、もうそこにあります。',
             },
             protected: {
                 title: 'コピー防止付きクライアントにも対応',
-                desc: '一部のゲームクライアントは Themida というコピー防止ラッパーに包まれており、Rosetta 2 上ではクラッシュします。そうしたものには BridgePlay が x87（旧来の浮動小数点演算）エミュレータを有効にします。',
+                desc: '一部のゲームクライアントはコピー防止ラッパーに包まれて配布されており、Apple Silicon 上ではクラッシュします。BridgePlay はそうしたクライアントを見つけ出し、必要となる追加の処理を有効にします。',
             },
             display: {
                 title: 'ゲームごとの画面制御',
@@ -179,7 +179,7 @@ const ja: Dictionary = {
         specs: {
             graphics: {
                 label: 'グラフィックス',
-                entries: ['DirectDraw と DirectX 8', 'DirectX 9', 'DirectX 10', 'DirectX 11', 'wined3d → OpenGL → Metal'],
+                entries: ['DirectDraw と DirectX 8', 'DirectX 9', 'DirectX 10', 'DirectX 11', 'ハードウェアアクセラレーションによる 3D'],
             },
             display: {
                 label: 'ディスプレイ',
@@ -187,7 +187,7 @@ const ja: Dictionary = {
             },
             runtime: {
                 label: '実行環境',
-                entries: ['Wine 11.0（ソースからビルド）', 'WoW64（32 ビットゲーム、64 ビット Wine）', 'Rosetta 2 経由の Intel ゲーム', 'ゲームごとの自動セットアップ'],
+                entries: ['同梱の Windows 実行環境', '32 ビットと 64 ビットのゲーム', 'Rosetta 2 経由の Intel ゲーム', 'ゲームごとの自動セットアップ'],
             },
         },
         limitLink: '動かないもの',
@@ -248,7 +248,7 @@ const ja: Dictionary = {
         items: {
             whatIs: {
                 q: 'BridgePlay とは何ですか？',
-                a: 'BridgePlay は、Windows のゲームを Mac で動かす macOS アプリです。無改変のままソースからビルドした Wine 11.0 を同梱し、ゲームごとの設定を代わりに行います。',
+                a: 'BridgePlay は、Windows のゲームを Mac で動かす macOS アプリです。独自の Windows 互換実行環境を同梱し、ゲームごとのセットアップも代わりに行うので、ご自分で用意する必要はありません。',
             },
             whichMacs: {
                 q: '対応している Mac は？',
@@ -276,7 +276,7 @@ const ja: Dictionary = {
             },
             legal: {
                 q: 'これは合法ですか？',
-                a: 'はい。Wine は Windows API のオープンソース（LGPL）による再実装であり、Microsoft のコードは含まれていません。また BridgePlay はゲームを一切配布していません。合法的に入手したご自身のゲームファイルを、ご自身の所有するハードウェアで動かす形になります。',
+                a: 'はい。BridgePlay に Microsoft のコードは含まれておらず、ゲームを配布することもありません。BridgePlay はランチャーであり、その互換実行環境は Windows の複製ではなく、Windows API を独自に実装したものです。合法的に入手したご自身のゲームファイルを、ご自身の所有するハードウェアで動かす形になります。アプリが同梱しているオープンソースのコンポーネントは、第三者ソフトウェア表示にすべて記載しています。',
             },
             trial: {
                 q: '無料トライアルはどう使いますか？',
@@ -369,7 +369,7 @@ const ja: Dictionary = {
         reqRosettaDesc: 'Rosetta 2 は Apple 自身による変換レイヤーで、Intel プロセッサ向けに作られたソフトウェアを Apple Silicon 搭載 Mac 上で動かせるようにするものです。BridgePlay が動かす Windows 実行環境は Intel（x86_64）のコードなので、実際にそれを実行しているのが Rosetta 2 です。これがないとランチャーは「Rosetta が必要です」と表示し、ゲームを起動できません。',
         reqDiskTerm: '空きディスク容量',
         reqDiskBefore: 'BridgePlay は実行環境を',
-        reqDiskAfter: 'に保存し、その中でゲームごとに専用の Windows プレフィックスを作ります。ゲームファイル自体に加えてこの分が必要になるため、ボリュームには余裕を残してください。',
+        reqDiskAfter: 'に保存し、その中でゲームごとに独立した専用の Windows 環境を作ります。ゲームファイル自体に加えてこの分が必要になるため、ボリュームには余裕を残してください。',
         reqGamesTerm: 'ご自身のゲームファイル',
         reqGamesDesc: 'BridgePlay はランチャーであり、ゲームストアではありません。すでにお持ちの Windows 用インストーラーまたはクライアントのフォルダをご用意ください。',
         rosettaCardTitle: 'Rosetta 2 をインストールする',
@@ -411,10 +411,10 @@ const ja: Dictionary = {
         anticheatP2: 'BridgePlay はゲームを完全にユーザー空間で、特権を持たない通常のアプリとして実行します。カーネル拡張もシステム拡張も、いかなるドライバもインストールしないため、Windows のカーネルドライバを読み込もうとするアンチチートには、読み込む先が存在しません。',
         anticheatChipsLabel: 'これらは動作しないとお考えください',
         anticheatP3: '画面上では、ゲームがまったく起動しない、数秒で勝手に終了する、あるいはメニューまでは進むもののマッチに参加しようとした瞬間に落ちる、といった形で現れます。こうしたタイトルは動作しないものとお考えのうえ、お金を払う前にトライアル期間中にご自分のゲームをお試しください。設定で変えられるものではなく、私たちが何かを提供して解決できるものでもありません。ランチャーが Windows のドライバに macOS のカーネルを渡すことはできないからです。',
-        anticheatCounter: '一方で言えること: BridgePlay が実際に想定しているマルチプレイはプライベートサーバー向けクライアントであり、そちらは動作します。ランチャーがゲームごとに調整しているのはまさにそうしたタイトルで、名前解決に失敗するクライアント向けのネットワーク処理から、Rosetta 2 上で異常終了するパック済みクライアントに注入する x87 エミュレータまでが含まれます。あなたのマルチプレイがプライベートサーバーであれば、この制限による損失はありません。',
+        anticheatCounter: '一方で言えること: BridgePlay が実際に想定しているマルチプレイはプライベートサーバー向けクライアントであり、そちらは動作します。ランチャーがゲームごとに調整しているのはまさにそうしたタイトルで、名前解決に失敗するクライアント向けのネットワーク処理から、コピー防止付きクライアントが Apple Silicon 上で必要とする追加の処理までが含まれます。あなたのマルチプレイがプライベートサーバーであれば、この制限による損失はありません。',
         dx12Title: 'DirectX 12 と最新の AAA タイトルは手が届きません',
         dx12Blunt: '正直に言えば足りていないのはちょうど一段階、DirectX 12 の最新 AAA タイトルであり、この実行環境はそこには届きません。',
-        dx12P1: 'グラフィックス経路がカバーするのは DirectX 8 から 11 までで、DirectX 12 はまったくカバーしていません。それを変えるための DXVK も VKD3D も上に載せていません。古いタイトル、インディーゲーム、そして実際に利用者が遊んでいる 2D/3D クライアントが得意な領域です。D3D12 専用のレンダラーを使う最新の AAA タイトルは起動せず、ゲームごとの設定をいくら変えても状況は変わりません。',
+        dx12P1: 'グラフィックス経路がカバーするのは DirectDraw と DirectX 8 から 11 までで、DirectX 12 はまったくカバーしていません。古いタイトル、インディーゲーム、そして実際に利用者が遊んでいる 2D/3D クライアントが得意な領域です。DirectX 12 専用のレンダラーを使う最新の AAA タイトルは起動せず、ゲームごとの設定をいくら変えても状況は変わりません。',
         dx12P2: '要求の高い DirectX 11 タイトルは別の話です。動くこともあれば、設定を下げれば動くことも、動作が重いこともあります。トライアルはそのためにあります。',
         intelTitle: 'Intel 搭載 Mac にはまったく対応していません',
         intelP1: '「遅い」のではなく、対応していません。アプリは arm64 単一のバイナリとして配布しているため、そもそもインストールできる Intel 版が存在しません。',

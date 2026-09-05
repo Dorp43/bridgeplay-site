@@ -26,6 +26,37 @@ The short version:
 optional, adding an index signature, or falling back to English at runtime. The
 build failure is the only thing standing between us and a half-translated site.
 
+## 🔒 THE OTHER RULE: never name the compatibility stack
+
+**Say what runs, never how it runs.** No visitor-facing string outside the legal
+notices may name or explain the technology the runtime is built from:
+
+> Wine · WineHQ · wined3d · WoW64 · Proton · DXVK · VKD3D · OpenGL · Metal (as a
+> graphics API) · Themida · x87 · "built from source" · "open-source
+> reimplementation of the Windows API"
+
+Write **"its own Windows compatibility runtime"** instead, and describe coverage
+in the vocabulary a player already has: **DirectDraw and DirectX 8, 9, 10 and
+11** work, DirectX 12 does not. `D3D12` is written out as "DirectX 12".
+
+Rosetta 2, Apple Silicon, macOS and the DirectX names **stay** — those are things
+a visitor has to know about, not things we build with. So does the anti-cheat
+vendor list on `/limitations`.
+
+**The two exceptions are `/notices` (`src/pages/Notices.tsx`) and
+`public/third-party-notices.md`**, which *must* keep naming Wine, FreeType and
+the bundled libraries. That is the LGPL attribution and it is a legal document —
+stripping it would be a licence violation, not a copy edit. Everything else —
+hero, features, compatibility, FAQ, `/limitations`, `/download`, `index.html`
+meta and JSON-LD, `public/changelog.json` — stays clean.
+
+Nothing in the type system enforces this. Before you commit a copy change:
+
+```
+grep -rniE "wine|wined3d|opengl|metal|dxvk|vkd3d|proton|wow64|themida|x87|d3d12" \
+  src public index.html | grep -v third-party-notices | grep -v Notices.tsx
+```
+
 ## URLs carry the language
 
 English at the root, everything else prefixed: `/download` and `/ja/download`.
@@ -45,11 +76,12 @@ seven languages. Nothing enforces it.
 
 - **CSS import order in `src/main.tsx` is load-bearing.** `global.css` must be
   imported *before* `App` so `*.module.css` wins specificity ties.
-- **One canonical explanation per concept.** Wine is explained once, in the
-  compatibility section. Rosetta 2 once, on `/download`. Kernel anti-cheat and
-  DirectX 12 once, on `/limitations`. Everywhere else names the thing and links.
-  Do not re-gloss a term that already has a home — that duplication is what the
-  Aug 2026 copy pass removed, and it costs 7× to maintain.
+- **One canonical explanation per concept.** What BridgePlay covers is stated
+  once, in the compatibility section. Rosetta 2 once, on `/download`. Kernel
+  anti-cheat and DirectX 12 once, on `/limitations`. Everywhere else names the
+  thing and links. Do not re-gloss a term that already has a home — that
+  duplication is what the Aug 2026 copy pass removed, and it costs 7× to
+  maintain.
 - **Some strings are legal disclosures, not marketing copy.** `pricing.footer*`
   and `faq.items.cancel` must keep every term (price, renewal cadence, how to
   cancel, what happens to access). They are commented as such in `en.ts`.
