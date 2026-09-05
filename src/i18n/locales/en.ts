@@ -64,7 +64,7 @@ const en = {
         contact: 'Contact',
         copyright: '© 2026 BridgePlay. All rights reserved.',
         madeFor: 'Made for Mac gamers everywhere',
-        disclaimerBody: 'BridgePlay is an independent product, not affiliated with or endorsed by Microsoft, Apple, Valve, the Wine project, or any game publisher. Windows and DirectX are trademarks of Microsoft Corporation; Apple, Mac, macOS and Rosetta are trademarks of Apple Inc. All other trademarks are the property of their respective owners.',
+        disclaimerBody: 'BridgePlay is an independent product, not affiliated with or endorsed by Microsoft, Apple, Valve, or any game publisher. Windows and DirectX are trademarks of Microsoft Corporation; Apple, Mac, macOS and Rosetta are trademarks of Apple Inc. All other trademarks are the property of their respective owners.',
         disclaimerLink: 'Third-party notices',
     },
 
@@ -156,21 +156,23 @@ const en = {
     compatibility: {
         label: 'Compatibility',
         title: "What Runs, and What Doesn't",
-        /* THE canonical gloss of "Wine" on this site. Other surfaces name Wine
-           without explaining it and link here — keep it that way. */
-        description: 'BridgePlay carries its own copy of Wine — the open-source project that lets Windows programs run without Windows — at version 11.0, built from upstream source and left unmodified. Games that use DirectX 8 through 11 work. DirectX 12 does not, and neither do games guarded by kernel-level anti-cheat.',
+        /* THE canonical statement of what BridgePlay covers. Say what runs,
+           never how it runs: the compatibility stack is not named or explained
+           anywhere in marketing copy — see CLAUDE.md. Other surfaces state the
+           DirectX range and link here rather than repeating it. */
+        description: 'BridgePlay brings its own Windows compatibility runtime, so there is nothing else to install and no Windows licence to buy. Games that use DirectDraw and DirectX 8, 9, 10 and 11 work. DirectX 12 does not, and neither do games guarded by kernel-level anti-cheat.',
         items: {
             directx: {
-                title: 'DirectX 8, 9, 10 & 11',
-                desc: 'DirectX is how Windows games draw. Wine’s own wined3d converts it to OpenGL, which macOS draws with Metal.',
+                title: 'DirectDraw & DirectX 8–11',
+                desc: 'DirectX is how Windows games draw. BridgePlay covers DirectDraw and DirectX 8, 9, 10 and 11, so what the game asks for reaches your Mac’s screen.',
             },
-            stockWine: {
-                title: 'Stock Wine 11.0, From Source',
-                desc: 'No Proton fork, no DXVK (the pieces Valve ships on Steam Deck), nothing closed-source — the same Wine anyone can build.',
+            bundled: {
+                title: 'Everything Is Bundled',
+                desc: 'The compatibility runtime ships inside the app. Nothing else to download, nothing to assemble, no Windows licence — install BridgePlay and it is already there.',
             },
             protected: {
                 title: 'Copy-Protected Clients Handled',
-                desc: 'Some game clients ship inside Themida, a copy-protection wrapper that crashes under Rosetta 2. BridgePlay turns on an x87 (legacy floating-point) emulator for those.',
+                desc: 'Some game clients ship inside a copy-protection wrapper that crashes on Apple Silicon. BridgePlay spots those and switches on the extra handling they need.',
             },
             display: {
                 title: 'Per-Game Display Control',
@@ -194,7 +196,7 @@ const en = {
                the group labels and the few prose entries; leave the rest. */
             graphics: {
                 label: 'Graphics',
-                entries: ['DirectDraw & DirectX 8', 'DirectX 9', 'DirectX 10', 'DirectX 11', 'wined3d → OpenGL → Metal'],
+                entries: ['DirectDraw & DirectX 8', 'DirectX 9', 'DirectX 10', 'DirectX 11', 'Hardware-accelerated 3D'],
             },
             display: {
                 label: 'Display',
@@ -202,7 +204,7 @@ const en = {
             },
             runtime: {
                 label: 'Runtime',
-                entries: ['Wine 11.0 (source-built)', 'WoW64 (32-bit games, 64-bit Wine)', 'Intel games via Rosetta 2', 'Automatic per-game setup'],
+                entries: ['Bundled Windows runtime', '32-bit & 64-bit games', 'Intel games via Rosetta 2', 'Automatic per-game setup'],
             },
         },
         limitLink: 'What doesn’t work',
@@ -269,7 +271,7 @@ const en = {
         items: {
             whatIs: {
                 q: 'What is BridgePlay?',
-                a: 'BridgePlay is a macOS app that runs Windows games on your Mac. It bundles Wine 11.0 — stock, unmodified and built from source — and sets it up for each of your games so you do not have to.',
+                a: 'BridgePlay is a macOS app that runs Windows games on your Mac. It brings its own Windows compatibility runtime and sets that up for each of your games so you do not have to.',
             },
             whichMacs: {
                 q: 'Which Macs are supported?',
@@ -297,7 +299,7 @@ const en = {
             },
             legal: {
                 q: 'Is this legal?',
-                a: 'Yes. Wine is an open-source (LGPL) reimplementation of the Windows API and contains no Microsoft code, and BridgePlay ships no games. You supply your own legally obtained game files and play them on hardware you own.',
+                a: 'Yes. BridgePlay contains no Microsoft code and ships no games — it is a launcher, and its compatibility runtime is an independent implementation of the Windows APIs rather than a copy of Windows. You supply your own legally obtained game files and play them on hardware you own. The third-party notices list every open-source component the app bundles.',
             },
             trial: {
                 q: 'How does the free trial work?',
@@ -394,7 +396,7 @@ const en = {
         reqRosettaDesc: 'Rosetta 2 is Apple’s own translation layer: it lets software built for Intel processors run on an Apple Silicon Mac. The Windows runtime BridgePlay drives is Intel (x86_64) code, so Rosetta 2 is the piece that actually executes it. Without it the launcher reports “Rosetta required” and will not start a game.',
         reqDiskTerm: 'Free disk space',
         reqDiskBefore: 'BridgePlay keeps its runtime under',
-        reqDiskAfter: 'and gives every game its own Windows prefix in there, on top of the game files themselves. Leave headroom on the volume.',
+        reqDiskAfter: 'and gives every game its own isolated Windows environment in there, on top of the game files themselves. Leave headroom on the volume.',
         reqGamesTerm: 'Your own game files',
         reqGamesDesc: 'BridgePlay is a launcher, not a game store. Bring the Windows installer or client folder you already have.',
         rosettaCardTitle: 'Install Rosetta 2',
@@ -436,10 +438,10 @@ const en = {
         anticheatP2: 'BridgePlay runs your game entirely in user space, as a normal unprivileged app. It installs no kernel extension, no system extension and no driver of any kind, so anti-cheat that expects to load a Windows kernel driver has nothing to load into.',
         anticheatChipsLabel: 'Assume these do not run',
         anticheatP3: 'On screen this looks like a game that refuses to start, quits by itself within seconds, or reaches the menus and fails the moment it tries to put you in a match. Assume these titles do not run, and test yours during the trial before paying us anything. No setting changes it, and nothing we could ship would — a launcher cannot hand a Windows driver a macOS kernel.',
-        anticheatCounter: 'The counter-position: the multiplayer BridgePlay is built around is private-server clients, and those do run. They are the titles the launcher tunes per game, from network handling for clients whose resolver fails to the x87 emulator injected into packed clients that fault under Rosetta 2. If your multiplayer is a private server, this limitation costs you nothing.',
+        anticheatCounter: 'The counter-position: the multiplayer BridgePlay is built around is private-server clients, and those do run. They are the titles the launcher tunes per game, from network handling for clients whose name lookup fails to the extra handling that copy-protected clients need on Apple Silicon. If your multiplayer is a private server, this limitation costs you nothing.',
         dx12Title: 'DirectX 12 and bleeding-edge AAA are out of reach',
         dx12Blunt: 'The honest gap is exactly one tier — bleeding-edge DirectX 12 AAA — and this runtime does not reach it.',
-        dx12P1: 'The graphics path covers DirectX 8 through 11, and covers DirectX 12 not at all — there is no DXVK and no VKD3D layered on top to change that. Older titles, indie games and the 2D/3D clients our players actually run are the sweet spot; a current AAA release with a D3D12-only renderer will not start, and no amount of per-game settings will change it.',
+        dx12P1: 'The graphics path covers DirectDraw and DirectX 8 through 11, and covers DirectX 12 not at all. Older titles, indie games and the 2D/3D clients our players actually run are the sweet spot; a current AAA release with a DirectX 12-only renderer will not start, and no amount of per-game settings will change it.',
         dx12P2: 'Demanding DirectX 11 titles are a different question — they may run, at lower settings, or run badly. That is what the trial is for.',
         intelTitle: 'Intel Macs are not supported, at all',
         intelP1: 'Not “slower” — not supported. The app ships as a single arm64 binary, so there is no Intel build to install in the first place.',

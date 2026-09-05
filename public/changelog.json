@@ -36,7 +36,7 @@
     "version": "0.6.1",
     "date": "2026-08-06",
     "notes": [
-      "The x87 compatibility layer now runs inside the game itself instead of the Wine desktop host. Themida-protected clients like MapleEra and MapleLegends finally get the protection they were always meant to have.",
+      "Compatibility handling for copy-protected clients now runs inside the game itself instead of the launcher's desktop host. Protected clients like MapleEra and MapleLegends finally get the protection they were always meant to have.",
       "64-bit titles such as Ha Repacker now correctly skip the 32-bit compatibility shim, and a shim that cannot load can no longer stop a game from launching at all.",
       "Config recovery no longer resets your per-game settings, hotkeys or selected game after a damaged config file, and can no longer silently drop a game and leave its files to be cleaned up.",
       "A bound hotkey chord no longer leaks through into the game."
@@ -60,7 +60,7 @@
       "Completes the login-crash fix started in 0.5.3.",
       "MapleRoyals: fixes the crash after entering your PIC and logging in. 0.5.3 removed the bad network library from the installer, but the launcher still reinstalled it on every launch — that path is now fixed too, and existing installs repair themselves on the next launch.",
       "Fixed the What's New window's Close button doing nothing.",
-      "Note: your first launch after this update may take longer than usual while the runtime and game prefixes are refreshed. This is expected — let it finish."
+      "Note: your first launch after this update may take longer than usual while the runtime and each game's Windows environment are refreshed. This is expected — let it finish."
     ]
   },
   {
@@ -68,9 +68,9 @@
     "date": "2026-08-02",
     "notes": [
       "Fixes a login crash introduced in 0.5.2.",
-      "MapleRoyals: fixed a crash right after entering your PIC and logging in. 0.5.2 shipped a patched network library into the Wine runtime that was never meant to load for every game; it is now only applied on demand, per game, as it was before.",
+      "MapleRoyals: fixed a crash right after entering your PIC and logging in. 0.5.2 shipped a patched network library into the compatibility runtime that was never meant to load for every game; it is now only applied on demand, per game, as it was before.",
       "Fixed the What's New window's Close button doing nothing.",
-      "Note: your first launch after this update will take longer than usual while the runtime and game prefixes are refreshed. This is expected — let it finish."
+      "Note: your first launch after this update will take longer than usual while the runtime and each game's Windows environment are refreshed. This is expected — let it finish."
     ]
   },
   {
@@ -87,7 +87,7 @@
     "date": "2026-07-25",
     "notes": [
       "Per-client audio mute and a new CLIENTS section (mute / close one / close all)",
-      "Repair Game + automatic cleanup of stuck wine processes",
+      "Repair Game + automatic cleanup of stuck background processes",
       "Live launch status so long launches never look frozen",
       "Complete game deletion with disk-usage breakdown",
       "Installer cleanup, rename by double-click, What's New, and a launch log viewer",
@@ -98,7 +98,7 @@
     "version": "0.4.5",
     "date": "2026-07-24",
     "notes": [
-      "Deleting a game now completely removes it (game folder, Wine environment, shader cache, desktop shortcuts)",
+      "Deleting a game now completely removes it (game folder, its Windows environment, cached data, desktop shortcuts)",
       "Automatic cleanup of orphaned game folders from older versions — can reclaim many GB",
       "Deletion precisely targets only the chosen game"
     ]
@@ -138,7 +138,7 @@
       "Running games show Launch Another / Run Another (N)",
       "Exact client detection, no Screen Recording permission needed",
       "Fixed launcher stalls while applying game settings",
-      "Wine commands tolerate slow cold starts"
+      "Runtime commands tolerate slow cold starts"
     ]
   },
   {
@@ -154,7 +154,7 @@
     "date": "2026-04-20",
     "notes": [
       "Initial release of BridgePlay",
-      "Wine-based Windows game compatibility for macOS",
+      "Windows game compatibility for macOS",
       "Apple Silicon native support"
     ]
   }

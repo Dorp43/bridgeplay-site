@@ -31,8 +31,9 @@ export default function Features() {
     return (
         <section className={styles.features} id="features" ref={ref}>
             <div className={styles.container}>
-                {/* Deliberately does NOT gloss "Wine" — the compatibility
-                    section below is where that explanation lives, once. */}
+                {/* Talks about what the app does for you, never about the
+                    compatibility stack underneath — the section below is where
+                    coverage is stated, once, and it names no components. */}
                 <SectionHeader
                     label={t.features.label}
                     title={t.features.title}

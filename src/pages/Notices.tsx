@@ -17,7 +17,7 @@ export default function Notices() {
 
     useDocumentMeta({
         title: t.meta.notices.title,
-        description: 'The open-source components BridgePlay bundles, the licences they are used under, and where to get their source — Wine under the LGPL, FreeType under the FTL, and the runtime libraries shipped alongside them.',
+        description: 'The open-source components BridgePlay bundles, the licences they are used under, and where to get their source.',
         canonicalPath: '/notices',
     });
 
