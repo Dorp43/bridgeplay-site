@@ -5,7 +5,7 @@ compatibility runtime (Wine and its supporting libraries) and a small set of
 compatibility shims. This document lists the third-party components that ship in
 the product and the terms under which they are included. The full text of every
 license named here is distributed with the app under
-`Contents/Resources/ThirdPartyNotices/licenses/<component>/`.
+`Contents/Resources/Legal/licenses/<component>/`.
 
 Every component listed below is present in the shipped bundle. Nothing described
 here is aspirational: the runtime libraries are read out of the assembled bundle,
@@ -20,11 +20,30 @@ not from a plan.
 - License: `LGPL-2.1-or-later`
 - Source provenance: pinned by URL and SHA-256 in
   [RuntimeSources.lock.json](RuntimeSources.lock.json).
-- How the LGPL is satisfied: Wine and its libraries ship as separate,
-  unmodified dynamic libraries under `Contents/Resources/Runtime/`, which the
-  user may replace with a compatible build (LGPL §6 relinking). The full LGPL-2.1
-  text ships at `licenses/Wine/COPYING.LIB`. Corresponding source for the exact
-  version shipped is available from winehq.org and on request.
+- **This is a modified version of Wine** (LGPL-2.1 §2(a) notice). The
+  modifications are, in full:
+  1. The source patches declared under `patches` in
+     [RuntimeSources.lock.json](RuntimeSources.lock.json).
+  2. The modules under `overlayModules` in the same file, built from that
+     patched source. The SHA-256 of each file as shipped is recorded under
+     `overlayModules` in the runtime's `runtime-manifest.json`
+     (`BridgePlay.app/Contents/Resources/Runtime/`), written by
+     `scripts/assemble-runtime.sh`.
+  3. Product naming — strings in PE resources, the loader's embedded
+     `Info.plist`, icons, and file and directory names — rewritten by
+     `scripts/debrand-runtime.py`. This changes no instruction and no program
+     logic. `VS_VERSION_INFO` `LegalCopyright` and `CompanyName` are left
+     intact, as is this notice.
+- How the LGPL is satisfied: the runtime ships as separate dynamic libraries
+  under `Contents/Resources/Runtime/`, which the user may replace with a
+  compatible build (LGPL §6 relinking); nothing in it is statically linked into
+  BridgePlay's own binary. The full LGPL-2.1 text ships at
+  `licenses/compat-runtime/COPYING.LIB`.
+- Corresponding source (LGPL §4): `BridgePlay-runtime-src-<version>.tar.xz`,
+  attached to the same release as the application. It carries the pinned
+  upstream identity, every patch, the de-branding script and the assembly
+  scripts, with instructions to reproduce the shipped tree. Upstream winehq.org
+  is **not** a substitute: it does not have these modifications.
 
 ## FreeType
 
@@ -43,6 +62,51 @@ not from a plan.
   software is based in part on the work of the FreeType Team; the FreeType
   Project is copyright (C) 1996-2024 David Turner, Robert Wilhelm, and Werner
   Lemberg.
+
+---
+
+## Runtime engines bundled under `Contents/Resources/Runtime/share`
+
+Wine's build produces `fonts`, `nls`, `winmd` and its setup INF — shipped as
+`core.inf`, `wine.inf` upstream — which are its own data,
+covered by the Wine notice above. The other two entries in that directory are
+not Wine's code at all. They are separately-licensed upstream projects that the
+Wine project repackages, they account for roughly 438 MB of the shipped bundle,
+and until the licence gate was widened to walk `share/` (it had only ever walked
+`lib/`) they shipped with no attribution whatsoever. They are not removable:
+Windows programs that embed a browser control — a game's patcher, in-client news
+panes — render HTML through the engine, and `mscoree` is backed by the .NET
+replacement; dropping either breaks titles.
+
+### Gecko (`share/wine/gecko`)
+
+- Project: [Wine Gecko](https://gitlab.winehq.org/wine/wine-gecko) — the Wine
+  project's build of Mozilla Gecko, the engine behind Firefox.
+- Bundled builds: `wine-gecko-2.47.4-x86` and `wine-gecko-2.47.4-x86_64`.
+- Role: backs the runtime's `mshtml`, so Windows programs that embed a browser
+  control render inside the game rather than failing to start.
+- License: `MPL-2.0`, which also covers the NSS/NSPR libraries shipped inside the
+  build (`nss3.dll`, `softokn3.dll`, `freebl3.dll`, `nssckbi.dll`, `mozglue.dll`).
+  Full text: `licenses/gecko/LICENSE`.
+- How the MPL is satisfied: the build ships unmodified, as separate files the
+  user may replace, and BridgePlay's own source is not a "Larger Work" covered by
+  §3.3. Corresponding source for the exact version shipped is available from the
+  project above and on request.
+
+### Mono (`share/wine/mono`)
+
+- Project: [Wine Mono](https://gitlab.winehq.org/wine/wine-mono) — the Wine
+  project's build of Mono, the open-source .NET implementation.
+- Bundled build: `wine-mono-10.4.1`.
+- Role: backs the runtime's `mscoree`, so a .NET program (several game launchers
+  and patchers are .NET) runs without Microsoft's redistributable installed.
+- License: `MIT` for the runtime and the class libraries that ship here. Two
+  texts are carried because the payload is a mix: Mono's own
+  (`licenses/mono/LICENSE`) and the .NET Foundation's, which covers the
+  `System.*` assemblies (`licenses/mono/LICENSE.NET`).
+- The payload ships unmodified as separate files the user may replace.
+  Corresponding source for the exact version shipped is available from the
+  project above and on request.
 
 ---
 
@@ -166,8 +230,170 @@ additional obligation arises.
 
 ## Compatibility shims bundled in `Contents/Resources/CompatibilityFixes`
 
-`mrwindowctl.exe` and `iphlpapi.dll` are built by BridgePlay from sources in this
+`mrwindowctl.exe`, `iphlpapi.dll`, `libmtl_noexec.dylib` (BUG-45: drops the execute bit on
+host memory Metal adopts as a GPU buffer; built from `AppAssets/CompatibilityFixes/mtl_noexec.m`)
+`bpsteamhelper_userenv.dll` (a `userenv.dll` proxy for Steam's web helper, built from
+`AppAssets/CompatibilityFixes/steamwebhelper_cmdline.c`; it forwards every export to the
+runtime's own builtin, copied beside it as `userenv_real.dll`)
+`libbpdocktile.dylib` (a Wine process presents like its program on Windows: a
+Dock tile only while it has a window, named and iconed as the program it hosts; also
+translucent windows, letterboxed emulated modes and a window's first frame; built from
+`AppAssets/CompatibilityFixes/dock_tile.m`, `window_alpha.m`, `letterbox_fit.m` and
+`first_present.m`) with `libbpsteamdock.dylib`, a link to it under the name an earlier
+build used (BUG-93),
+`libbploopback.dylib` (BUG-95: the whole 127.0.0.0/8 range is loopback, as on Windows;
+built from `AppAssets/CompatibilityFixes/loopback_range.c`)
+and `dwmapi_shim_x64.dll` / `dwmapi_shim_x86.dll` (BUG-106: DWM composition answers for
+translucent windows, forwarding everything else to the runtime's own `dwmapi.dll`; built
+from `AppAssets/CompatibilityFixes/dwmapi_shim.c`)
+are built by BridgePlay from sources in this
 repository and carry no third-party notice.
+
+### Steam client (downloaded from Valve at install time, not bundled)
+
+BridgePlay does not ship any part of the Steam client. "Install Steam for Windows…"
+downloads Valve's own `SteamSetup.exe` from Valve's CDN when the user asks for it, checks
+that its Authenticode signer is Valve Corp., and runs it inside the user's environment; the
+client then updates itself from Valve. Use of the client is governed by Valve's Steam
+Subscriber Agreement between the user and Valve; BridgePlay is a launcher and takes no
+part in the sign-in (see `docs/investigations/2026-09-16-steam-terms-third-party-launcher.md`).
+
+### DXVK (Direct3D 9, 10 and 11 on Vulkan) — zlib
+
+`Contents/Resources/CompatibilityFixes/dxvk/` holds `d3d9.dll`,
+`d3d10core.dll`, `d3d11.dll` and `dxgi.dll` in 32- and 64-bit form, all built
+from one source tree: the macOS fork of DXVK
+(<https://github.com/Gcenx/DXVK-macOS>, itself a fork of
+<https://github.com/doitsujin/dxvk>) at tag `v1.10.3-20230507`, with Direct3D 9
+enabled (the fork's own releases leave `d3d9.dll` out).
+
+All four libraries are **modified**, as the zlib licence permits. Every change
+is recorded in full in `AppAssets/RuntimePatches/dxvk-1.10.3-*.patch` and
+registered, in the order it is applied, under `bundledDxvkPatches` in
+`RuntimeSources.lock.json`:
+
+- `honour-shaderCullDistance` — the shader compiler honours the device's
+  `shaderCullDistance` feature. Metal has no cull distance, the Vulkan driver
+  reports the feature as unsupported, and emitting it anyway produced Metal
+  source the compiler rejected, so every shader declaring it failed and its
+  draw calls vanished.
+- `inprocess-shared-resources` — Direct3D 11 textures and fences shared between
+  the devices of one process (BUG-99).
+- `dwm-composition-alpha` — a swap chain whose window asked for DWM per-pixel
+  composition presents with alpha (BUG-106).
+- `system-vulkan-driver` — Vulkan is loaded from the system's driver before any
+  `vulkan-1.dll` (BUG-116).
+- `d3d9-mingw13-header` — a build fix: a backport of upstream DXVK commit
+  `62b99d7b` by Philip Rebohle.
+- `d3d9-moltenvk-pr20` — pull request #20 to the macOS fork, "Fix D3D9 on
+  MoltenVK", by **MiloszP** (<https://github.com/Gcenx/DXVK-macOS/pull/20>),
+  used as published: Direct3D 9 no longer requires geometry shaders and cull
+  distance, which Metal lacks, and gives each variant of a sampler its own
+  binding (`d3d9.deAliasedSamplers`), since Metal cannot express aliased ones.
+- `d3d9-closest-mode` — BridgePlay's own: a full-screen Direct3D 9 display mode
+  the display does not list is set as the closest listed one, as Wine's own
+  Direct3D does, instead of failing (BUG-130).
+- `no-recreate-on-suboptimal` — BridgePlay's own: Direct3D 9 and 11 keep their
+  swap chain when a present reports it as suboptimal (a scaled surface) instead
+  of rebuilding it before every frame (BUG-120, BUG-130).
+- `d3d9-processvertices-vertex-stage` — BridgePlay's own: on a device without
+  geometry shaders, which Metal lacks, Direct3D 9's `ProcessVertices` runs in
+  the vertex stage instead of in a geometry shader the Vulkan driver drops
+  (BUG-130). A call without a vertex declaration takes the destination
+  buffer's layout, as Direct3D 9 allows, by upstream DXVK's check (commit
+  `b2ad25755a` by Adam Jereczek, co-authored by Aneta Roztkowska
+  <aneta.roztkowska@intel.com>), and the call no longer leaks a reference to
+  the declaration. Its change to DXVK's shared core (a vertex shader can turn
+  rasterization off) is in `d3d11.dll` and `dxgi.dll` too.
+
+They are copied into every game environment (Wine prefix) and selected there
+for every program, the way Windows provides Direct3D to every program: the
+runtime's own Direct3D 11 cannot create a Shader Model 5 device on macOS, and
+its Direct3D 9 on Vulkan loses draws DXVK's does not (BUG-78, BUG-98, BUG-130).
+BridgePlay does not link against them; they are loaded by the programs inside
+the prefix.
+
+DXVK is licensed under the **zlib license** (Copyright (c) 2017-2021 Philip
+Rebohle, Copyright (c) 2019-2021 Joshua Ashton; see the `LICENSE` file of
+either repository above). The pull request above is a contribution to the
+zlib-licensed fork and carries no other terms. Source for the exact build
+shipped here is the fork's tag plus the patch files listed above, built by
+`scripts/build-dxvk.sh` with the compiler versions it checks for. The runtime's
+own Direct3D libraries are never replaced (BUG-13); only the game's prefix
+receives copies.
+
+### unar (The Unarchiver command-line tool) — LGPL-2.1-or-later
+
+`Contents/Resources/Tools/unar` is The Unarchiver's command-line extractor,
+shipped **unmodified** and used to open the ZIP and RAR archives games are
+distributed in, including password-protected ones (macOS itself cannot read
+RAR, and its `ditto` cannot accept a password). BridgePlay invokes it as a
+separate process and does not link against it.
+
+It is licensed under the **GNU Lesser General Public License, version 2.1 or
+later**. Source code for this program is available from its upstream project at
+<https://theunarchiver.com/command-line> and
+<https://github.com/MacPaw/XADMaster>. Because the tool ships unmodified as a
+standalone executable, it can be replaced by a user-built copy of the same
+program at `Contents/Resources/Tools/unar`.
+
+### msxml3 (Microsoft XML Core Services 3.0)
+
+`msxml3.dll` and `msxml3r.dll` are Microsoft's freely redistributable MSXML 3.0
+parser and its resource library, extracted unmodified from Microsoft's
+`msxml3.msi` redistributable package. They are installed into a game's Wine
+prefix only when the user enables that game's "Native XML Services" option, as
+a compatibility substitute for Wine's builtin msxml3 (which crashes some games
+while they save settings through the MSXML DOM). The files are Microsoft
+proprietary software distributed under the redistribution terms of the MSXML
+redistributable package; they are not open source and no source is available
+or provided.
+
+### Microsoft .NET Framework 4.8 and 4 (downloaded by each user's copy, not bundled)
+
+BridgePlay gives every Wine environment the .NET Framework, as a Windows PC has
+it. In the background, when the app starts, it downloads Microsoft's freely
+redistributable .NET Framework 4.8 offline installer
+(`ndp48-x86-x64-allos-enu.exe`, from
+<https://download.visualstudio.microsoft.com/download/pr/7afca223-55d2-470a-8edc-6a1739ae3252/abd170b4b0ec15ad0222a809b761a036/ndp48-x86-x64-allos-enu.exe>)
+and the .NET Framework 4 full redistributable (`dotNetFx40_Full_x86_x64.exe`,
+from
+<https://download.microsoft.com/download/9/5/A/95A9616B-7A37-4AF6-BC36-D6EA96C8DAAE/dotNetFx40_Full_x86_x64.exe>)
+directly from Microsoft's servers, verifies each against the SHA-256 pinned in
+`RuntimeSources.lock.json`, and installs from them into each environment's
+Wine prefix at its next setup with nothing of it running. The 4 package is
+used only as the source of `mscoree.dll` / `mscorees.dll` (its
+`Windows6.1-KB958488-v6001-x64.msu` payload), which are Windows components the
+4.8 package does not carry; both packages are downloaded and used. The
+framework replaces wine-mono, whose JIT rejects the obfuscated IL some
+launchers ship and whose WPF draws only some windows; it does not touch any
+game's own protection or licence checks.
+
+Each package comes with Microsoft's own terms, its English `1033/eula.rtf`,
+reproduced verbatim (converted to plain text) in this folder:
+
+- **Microsoft .NET Framework 4.8** (the installer) -- "Microsoft Software
+  Supplemental License Terms: .NET Framework and Associated Language Packs for
+  Microsoft Windows Operating System": `licenses/microsoft-dotnet-framework/NET-Framework-4.8-Supplemental-Terms.txt`
+  (`eula.rtf` SHA-256 `4399b24e…c31855d`,
+  `LicenseRef-Microsoft-NET-Framework-4.8-Supplemental-Terms`). Its data
+  processing terms are at <http://go.microsoft.com/fwlink/?LinkId=867296>.
+- **Microsoft .NET Framework 4 redistributable** -- "Microsoft Software
+  Supplemental License Terms: Microsoft .NET Framework 4 for Microsoft Windows
+  Operating System, Microsoft .NET Framework 4 Client Profile for Microsoft
+  Windows Operating System and Associated Language Packs", which include
+  Microsoft's .NET Framework benchmark-testing terms:
+  `licenses/microsoft-dotnet-framework/NET-Framework-4-Supplemental-Terms.txt`
+  (`eula.rtf` SHA-256 `da3d6a6a…232ea3b4`,
+  `LicenseRef-Microsoft-NET-Framework-4-Supplemental-Terms`). The
+  benchmark-testing conditions are at
+  <http://go.microsoft.com/fwlink/?LinkID=66406>.
+
+Both grant use of the supplement to those licensed to use Microsoft Windows.
+The packages are Microsoft proprietary software used under the terms above;
+they are not open source, no source is available or provided, and nothing from
+them is bundled in or distributed with the app. Each user's copy is fetched
+from Microsoft's servers on that user's machine.
 
 ### rosettax87
 
@@ -211,20 +437,23 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 ### winerosetta2
 
-`winerosetta2.dll` / `winerosetta2.exe` — a Windows-side shim for per-game DLL
-injection and x87-instruction emulation. Its ARPL/FCOMP exception-handler
+`bpcompat.dll` / `bpcompat.exe` — a Windows-side shim for per-game DLL
+injection and x87-instruction emulation. It ships under a BridgePlay filename
+because it sits in the player's own game folder, but it is the same code and the
+attribution below is unchanged: the upstream project is named in full, as the
+licence requires, and only the filename differs. Its ARPL/FCOMP exception-handler
 emulation is **derived from [winerosetta2 by blinkysc](https://github.com/blinkysc/winerosetta2)**,
 itself based on **WineRosetta by Lifeisawful**, and is used here under the **MIT
-License**. BridgePlay's changes (a pure-C mingw port and the Maple-port
-`connect()` redirect) are layered on top; the MIT notice below is preserved as
-that license requires. Full text: `licenses/winerosetta2/LICENSE.md`.
+License**. BridgePlay's changes (a pure-C mingw port and the in-process helpers
+described in `winerosetta2.cpp`) are layered on top; the MIT notice below is
+preserved as that license requires. Full text: `licenses/winerosetta2/LICENSE.md`.
 
 ```
 MIT License
 
 Copyright (c) 2025 blinkysc
 Copyright (c) 2024 Lifeisawful (Original WineRosetta Implementation)
-Copyright (c) 2026 Dorp43 / BridgePlay (modifications)
+Copyright (c) 2026 Dor Shemesh / BridgePlay (modifications)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of
 this software and associated documentation files (the "Software"), to deal in

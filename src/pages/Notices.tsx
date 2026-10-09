@@ -22,8 +22,8 @@ export default function Notices() {
     });
 
     return (
-        <LegalLayout title="Third-Party Notices" lastUpdated="August 26, 2026" eyebrow={t.legal.openSourceEyebrow}>
-            <p>BridgePlay is proprietary software that bundles an open-source Windows compatibility runtime. This page lists the third-party components that ship in the product and the terms they are included under. It is a summary: the authoritative document is the <a href="/third-party-notices.md">full third-party notices</a>, and the complete text of every licence named here is distributed with the app under <code>Contents/Resources/ThirdPartyNotices/licenses/</code>.</p>
+        <LegalLayout title="Third-Party Notices" lastUpdated="October 10, 2026" eyebrow={t.legal.openSourceEyebrow}>
+            <p>BridgePlay is proprietary software that bundles an open-source Windows compatibility runtime. This page lists the third-party components that ship in the product and the terms they are included under. It is a summary: the authoritative document is the <a href="/third-party-notices.md">full third-party notices</a>, and the complete text of every licence named here is distributed with the app under <code>Contents/Resources/Legal/licenses/</code>.</p>
             <p>Nothing described here is aspirational — the component list is read out of the assembled app bundle, not from a plan.</p>
 
             <h2>Wine</h2>
@@ -42,6 +42,9 @@ export default function Notices() {
             <p><strong>rosettax87</strong> — an x87 floating-point compatibility helper for running 32-bit x86 Windows code under Rosetta 2. It statically links Berkeley SoftFloat Release 3e, whose BSD-style notice is reproduced in full in the notices document.</p>
             <p><strong>winerosetta2</strong> — a Windows-side shim for per-game DLL injection and x87-instruction emulation, used under the <strong>MIT License</strong>. Its exception-handler emulation is derived from <a href="https://github.com/blinkysc/winerosetta2" target="_blank" rel="noopener noreferrer">winerosetta2 by blinkysc</a>, itself based on WineRosetta by Lifeisawful. BridgePlay's own changes are layered on top and the upstream MIT notice is preserved, as that licence requires.</p>
             <p><code>mrwindowctl.exe</code> and <code>iphlpapi.dll</code> are built by BridgePlay from its own sources and carry no third-party notice.</p>
+
+            <h2>Microsoft .NET Framework (downloaded, not bundled)</h2>
+            <p>BridgePlay gives every compatibility environment Microsoft's .NET Framework 4.8, as a Windows PC has it. The app does not contain it: on each user's Mac it downloads Microsoft's freely redistributable .NET Framework 4.8 offline installer and the .NET Framework 4 full redistributable directly from Microsoft's servers, verifies each against a pinned SHA-256, and installs the framework into each environment. Both packages remain under Microsoft's own terms, the Microsoft Software Supplemental License Terms for each, whose full text ships with the app under <code>Contents/Resources/Legal/licenses/microsoft-dotnet-framework/</code> and is reproduced in the <a href="/third-party-notices.md">full third-party notices</a>.</p>
 
             <h2>Trademarks and Affiliation</h2>
             <p>BridgePlay is an independent product. It is <strong>not affiliated with, sponsored by, or endorsed by</strong> Microsoft Corporation, Apple Inc., Valve Corporation, the Wine project, or any game publisher or anti-cheat vendor named on this site.</p>
